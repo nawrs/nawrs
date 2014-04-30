@@ -1,0 +1,136 @@
+html { height: 100% }
+body { 
+	height: 100%; 
+	margin: 0px; 
+	padding: 0px; 
+	background-color: black; 
+	color: black;
+	text-align: center;
+	font-family:Sans-serif}
+h1 {
+	font-size:14pt;
+	margin-top: 1px;
+	position: absolute;
+	z-index:  1000;
+	color:  black;
+	left: 30px;
+	top: 5px;
+}
+
+ul {
+	list-style-type: none;
+	text-shadow: #000000 0 0 0;
+	list-style-position: inside;
+	padding-top: 0;
+	margin: 0;
+	padding-left: 8px;
+	padding-right: 3px;
+	text-indent: -8px;
+}
+
+#map_canvas { 
+	position:absolute;
+	width:100%; 
+	height:100%; 
+	margin-left: auto; 
+	margin-right: auto;
+	z-index: 900;
+}
+
+#docList {
+	position: fixed;
+	bottom: 0px;
+	height: 300px;
+	width: 100%;
+	font-size: 8pt;
+	z-index: 990;
+	background-color: white;
+	opacity: .90;
+	color: black;
+	display: none
+}
+
+#docListHandle {
+	bottom: 0px;
+	height: 24px;
+	left: 10px;
+	position: fixed;
+	cursor: pointer;
+	width: 200px;
+	z-index:1000;
+	background-color: white;
+	border-style:solid;
+	border-color:gray;
+	color: black;
+	text-align: center;
+	font-size:8pt;
+	height: 18px;
+	padding-top: 3px;
+	display:none;
+}
+
+#allReservations,#docsReservations,#docsStates,#docsHucs, #docsType {
+	position: absolute;
+	cursor: pointer;
+	top: 5px;
+	width: 200px;
+	z-index:1000;
+	background-color: white;
+	border-style:solid;
+	border-color:gray;
+	color: black;
+	text-align: center;
+	font-size:8pt;
+	height: 18px;
+	padding-top: 3px;
+}
+
+#docsReservations {
+	left: 200px;
+}
+
+#docsStates {
+	left: 400px;
+}
+
+#docsHucs {
+	left: 600px;
+}
+
+#docsType {
+	left: 800px;
+}
+
+#docsReservationsPopUp, #docsStatesPopUp, #allReservationsPopUp, #docsHucsPopUp, #docsTypePopUp {
+	position: absolute;
+	width: 190px;
+	text-align: left;
+	top: 30px;
+	max-height: 300px;
+	overflow: scroll;
+	text-indent: 0px;
+	background-color: white;
+	color: black;
+	display: None;
+	z-index: 1000;
+	opacity: .75;
+	font-size: 8pt;
+	cursor:pointer;
+	padding: 3pt
+}
+
+#docsReservationsPopUp {
+	left: 203px;
+}
+
+#docsStatesPopUp {
+	left: 403px;
+}
+
+#docsHucsPopUp {
+	left: 603px;
+}
+
+#docsTypePopUp {
+	left: 803px;
+}
