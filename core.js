@@ -476,7 +476,7 @@ function initialize() {
 		myOptions);
 
   	var HUCbounds = new google.maps.KmlLayer({
- 		url: "http://nawrs.net/huc2_geomedupl_s11.kml",
+ 		url: "http://karlbenedict.com/nawrs/huc2_geomedupl_s11.kml",
  		preserveViewport: true,
  		clickable: false
 		})
@@ -485,7 +485,7 @@ function initialize() {
 	
  	
  	var BIAbounds = new google.maps.KmlLayer({
- 		url: "http://nawrs.net/BIA_004.kml",
+ 		url: "http://karlbenedict.com/nawrs/BIA_004.kml",
  		preserveViewport: true
 		})
  	BIAbounds.setMap(map)
