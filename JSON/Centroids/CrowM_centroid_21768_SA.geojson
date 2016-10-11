@@ -1,0 +1,7 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "AIANNHCE": "0845", "AIANNHNS": "00806896", "GEOID": "0845R", "NAME": "Crow", "NAMELSAD": "Crow Reservation", "LSAD": "86", "COMPTYP": "R", "CLASSFP": "D8", "AIANNHR": "F", "MTFCC": "G2101", "FUNCSTAT": "A", "ALAND": 9227997595.0, "AWATER": 31354212.0, "INTPTLAT": "+45.3984584", "INTPTLON": "-107.7128057" }, "geometry": { "type": "Point", "coordinates": [ -107.7508594382286, 45.379555387100559 ] } }
+]
+}
