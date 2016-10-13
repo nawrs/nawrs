@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "AIANNHCE": "2635", "AIANNHNS": "00272502", "GEOID": "2635R", "NAME": "Pala", "NAMELSAD": "Pala Reservation", "LSAD": "86", "COMPTYP": "R", "CLASSFP": "D2", "AIANNHR": "F", "MTFCC": "G2101", "FUNCSTAT": "A", "ALAND": 52706182.0, "AWATER": 0.0, "INTPTLAT": "+33.3593093", "INTPTLON": "-117.0468137" }, "geometry": { "type": "Point", "coordinates": [ -117.04680940798779, 33.359309578024025 ] } },
+{ "type": "Feature", "properties": { "AIANNHCE": "3460", "AIANNHNS": "00255933", "GEOID": "3460R", "NAME": "San Pasqual", "NAMELSAD": "San Pasqual Reservation", "LSAD": "86", "COMPTYP": "R", "CLASSFP": "D2", "AIANNHR": "F", "MTFCC": "G2101", "FUNCSTAT": "A", "ALAND": 5793800.0, "AWATER": 0.0, "INTPTLAT": "+33.2111903", "INTPTLON": "-116.9627310" }, "geometry": { "type": "Point", "coordinates": [ -116.97175637205017, 33.205431816899377 ] } }
+]
+}

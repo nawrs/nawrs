@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "AIANNHCE": "3205", "AIANNHNS": "00767936", "GEOID": "3205T", "NAME": "Rocky Boy's", "NAMELSAD": "Rocky Boy's Off-Reservation Trust Land", "LSAD": "OT", "COMPTYP": "T", "CLASSFP": "D5", "AIANNHR": "F", "MTFCC": "G2102", "FUNCSTAT": "A", "ALAND": 215345482, "AWATER": 133221, "INTPTLAT": "+48.3225860", "INTPTLON": "-109.9024006" }, "geometry": { "type": "Point", "coordinates": [ -109.90206128031761, 48.32353481976579 ] } },
+{ "type": "Feature", "properties": { "AIANNHCE": "3205", "AIANNHNS": "00767936", "GEOID": "3205R", "NAME": "Rocky Boy's", "NAMELSAD": "Rocky Boy's Reservation", "LSAD": "86", "COMPTYP": "R", "CLASSFP": "D8", "AIANNHR": "F", "MTFCC": "G2101", "FUNCSTAT": "A", "ALAND": 227971460, "AWATER": 306432, "INTPTLAT": "+48.2103973", "INTPTLON": "-109.7690071" }, "geometry": { "type": "Point", "coordinates": [ -109.75000338929428, 48.220453285752782 ] } }
+]
+}
