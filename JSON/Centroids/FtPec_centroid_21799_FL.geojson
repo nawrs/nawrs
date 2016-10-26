@@ -1,7 +1,0 @@
-{
-"type": "FeatureCollection",
-"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-"features": [
-{ "type": "Feature", "properties": { "AIANNHCE": "1250", "AIANNHNS": "00805884", "GEOID": "1250R", "NAME": "Fort Peck", "NAMELSAD": "Fort Peck Indian Reservation", "LSAD": "96", "COMPTYP": "R", "CLASSFP": "D8", "AIANNHR": "F", "MTFCC": "G2101", "FUNCSTAT": "A", "ALAND": 8516655854.0, "AWATER": 34551295.0, "INTPTLAT": "+48.3675377", "INTPTLON": "-105.5297091" }, "geometry": { "type": "Point", "coordinates": [ -105.5382743496053, 48.361029262303994 ] } }
-]
-}

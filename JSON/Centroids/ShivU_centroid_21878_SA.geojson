@@ -1,7 +1,0 @@
-{
-"type": "FeatureCollection",
-"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-"features": [
-{ "type": "Feature", "properties": { "AIANNHCE": "2625", "AIANNHNS": "01436088", "GEOID": "2625R", "NAME": "Paiute (UT)", "NAMELSAD": "Paiute (UT) Reservation", "LSAD": "86", "COMPTYP": "R", "CLASSFP": "D2", "AIANNHR": "F", "MTFCC": "G2101", "FUNCSTAT": "A", "ALAND": 131567990.0, "AWATER": 47655.0, "INTPTLAT": "+37.1701757", "INTPTLON": "-113.7832703" }, "geometry": { "type": "Point", "coordinates": [ -113.6058097085857, 37.323540582475481 ] } }
-]
-}
