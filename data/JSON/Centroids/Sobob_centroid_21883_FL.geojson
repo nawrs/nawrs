@@ -1,0 +1,7 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "AIANNHCE": "3870", "AIANNHNS": "00249635", "GEOID": "3870R", "NAME": "Soboba", "NAMELSAD": "Soboba Reservation", "LSAD": "86", "COMPTYP": "R", "CLASSFP": "D8", "AIANNHR": "F", "MTFCC": "G2101", "FUNCSTAT": "A", "ALAND": 23621529.0, "AWATER": 476657.0, "INTPTLAT": "+33.7741421", "INTPTLON": "-116.8806640" }, "geometry": { "type": "Point", "coordinates": [ -116.88572310557072, 33.776734407296075 ] } }
+]
+}
