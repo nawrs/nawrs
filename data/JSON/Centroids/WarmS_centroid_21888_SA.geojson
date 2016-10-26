@@ -1,7 +1,0 @@
-{
-"type": "FeatureCollection",
-"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-"features": [
-{ "type": "Feature", "properties": { "AIANNHCE": "4545", "AIANNHNS": "01133438", "GEOID": "4545R", "NAME": "Warm Springs", "NAMELSAD": "Warm Springs Reservation", "LSAD": "86", "COMPTYP": "R", "CLASSFP": "D8", "AIANNHR": "F", "MTFCC": "G2101", "FUNCSTAT": "A", "ALAND": 2616812844.0, "AWATER": 10698806.0, "INTPTLAT": "+44.8686817", "INTPTLON": "-121.4432309" }, "geometry": { "type": "Point", "coordinates": [ -121.46083902392854, 44.864303513574626 ] } }
-]
-}

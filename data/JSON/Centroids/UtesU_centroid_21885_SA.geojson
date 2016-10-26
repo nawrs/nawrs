@@ -1,7 +1,0 @@
-{
-"type": "FeatureCollection",
-"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-"features": [
-{ "type": "Feature", "properties": { "AIANNHCE": "4390", "AIANNHNS": "01448012", "GEOID": "4390R", "NAME": "Uintah and Ouray", "NAMELSAD": "Uintah and Ouray Reservation", "LSAD": "86", "COMPTYP": "R", "CLASSFP": "D8", "AIANNHR": "F", "MTFCC": "G2101", "FUNCSTAT": "A", "ALAND": 17541631147.0, "AWATER": 132015576.0, "INTPTLAT": "+40.4127134", "INTPTLON": "-110.7468495" }, "geometry": { "type": "Point", "coordinates": [ -110.09055061925081, 40.09481139892354 ] } }
-]
-}

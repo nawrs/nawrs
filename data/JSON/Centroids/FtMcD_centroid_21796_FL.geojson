@@ -1,7 +1,0 @@
-{
-"type": "FeatureCollection",
-"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-"features": [
-{ "type": "Feature", "properties": { "AIANNHCE": "1220", "AIANNHNS": "00036978", "GEOID": "1220R", "NAME": "Fort McDowell Yavapai Nation", "NAMELSAD": "Fort McDowell Yavapai Nation Reservation", "LSAD": "86", "COMPTYP": "R", "CLASSFP": "D2", "AIANNHR": "F", "MTFCC": "G2101", "FUNCSTAT": "A", "ALAND": 99968322.0, "AWATER": 934540.0, "INTPTLAT": "+33.6461625", "INTPTLON": "-111.6598954" }, "geometry": { "type": "Point", "coordinates": [ -111.66449893702536, 33.641192850985234 ] } }
-]
-}
