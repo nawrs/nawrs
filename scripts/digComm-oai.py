@@ -3,7 +3,9 @@
 # This code is licensed under a Creative Commons Attribution 4.0 International (CC BY 4.0) License
 # http://creativecommons.org/licenses/by/4.0/
 
-# a tool for harvesting metadata from oai-pmh
+# a tool for harvesting metadata from oai-pmh repositories
+# create a folder structure that mirrors the community and collection
+# hierarchy then save all collection level item metadata
 
 # import any necessary system libraries
 import string
@@ -14,6 +16,27 @@ import urllib
 import urllib2
 import re
 import codecs
+from xmljson import badgerfish as bf
+from json import dumps
+
+# http://digitalrepository.unm.edu/do/oai/?verb=GetRecord&metadataPrefix=dcs&identifier=
+# get record, header, identifier
+# XPATH: /OAI-PMH/ListRecords/record/header/identifier
+
+def oaiItemHarvest(oaiURL, identifier, autoNum):
+    params = urllib.urlencode({'verb': 'GetRecord',
+                               'metadataPrefix': 'dcs',
+                               'identifier': identifier})
+    requestURL = oaiURL + "?" + params
+    request = urllib2.Request(requestURL)
+    response = urllib2.urlopen(request)
+    result = response.read()
+    uRes = codecs.decode(result, 'utf-8')
+    oaiXML = xml.dom.minidom.parseString(uRes.encode("utf-8"))
+    with codecs.open(str(autoNum) + '.xml', 'w', encoding='utf-8') as dataz:
+            oaiXML.writexml(dataz, indent='', newl='')
+    #dumps(bf.data(fromstring(str(autoNum) + '.xml')))
+    return
 
 def oaiResume(oaiURL, oaiXML):
     # get resumption token and build new URL
@@ -72,6 +95,15 @@ def oaiHarvest(oaiURL, getSet):
         resumeXML = oaiResume(oaiURL, oaiXML)
         with codecs.open(oaiColHandle + '.xml', 'w', encoding='utf-8') as data:
             resumeXML.writexml(data, indent='', newl='')
+    records = oaiXML.getElementsByTagNameNS('*', 'identifier')
+    autoNum = 0
+    for record in records:
+        value = record.firstChild.nodeValue
+        protocol = re.compile('oai')
+        getOAI = protocol.match(value)
+        if getOAI:
+            autoNum = autoNum + 1
+            oaiItemHarvest(oaiURL, value, autoNum)
     return
 
 
