@@ -4,8 +4,7 @@
 # http://creativecommons.org/licenses/by/4.0/
 
 # a tool for harvesting metadata from oai-pmh repositories
-# create a folder structure that mirrors the community and collection
-# hierarchy then save all collection level item metadata
+
 
 # import any necessary system libraries
 import string
@@ -17,11 +16,7 @@ import urllib2
 import re
 import codecs
 from xmljson import badgerfish as bf
-from json import dumps
-
-# http://digitalrepository.unm.edu/do/oai/?verb=GetRecord&metadataPrefix=dcs&identifier=
-# get record, header, identifier
-# XPATH: /OAI-PMH/ListRecords/record/header/identifier
+from xml.etree.ElementTree import fromstring, Element, tostring
 
 def oaiItemHarvest(oaiURL, identifier, autoNum):
     params = urllib.urlencode({'verb': 'GetRecord',
@@ -35,7 +30,8 @@ def oaiItemHarvest(oaiURL, identifier, autoNum):
     oaiXML = xml.dom.minidom.parseString(uRes.encode("utf-8"))
     with codecs.open(str(autoNum) + '.xml', 'w', encoding='utf-8') as dataz:
             oaiXML.writexml(dataz, indent='', newl='')
-    #dumps(bf.data(fromstring(str(autoNum) + '.xml')))
+    with open(str(autoNum) + '.json', 'wb') as outFile:
+        json.dump(bf.data(fromstring(uRes.encode('utf-8'))), outFile)
     return
 
 def oaiResume(oaiURL, oaiXML):
@@ -140,7 +136,6 @@ def main():
     eCols.close()
     
     # get the base URL for OAI-PMH interface
-    # http://repository.unm.edu/oai
     oaiURL = "http://digitalrepository.unm.edu/do/oai/"
     # oaiURL = raw_input('Enter the base URL for the OAI-PMH service: ' )
 
