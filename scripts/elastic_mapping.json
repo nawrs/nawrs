@@ -1,0 +1,271 @@
+{"properties": {
+    "coverage": {"type": "geo_point"},
+    "date": {"type": "date"},
+    "identifier": {"type": "text"},
+    "creator": {"type": "text"},
+    "polygon": {"type": "geo_shape"},
+    "subject": {"type": "text"},
+    "centroid": {"properties": {
+        "features": {"properties": {
+            "geometry": {"type": "geo_shape"},
+            "type": {
+                "type": "text",
+                "fields": {"keyword": {
+                    "ignore_above": 256,
+                    "type": "keyword"
+                }}
+            },
+            "properties": {"properties": {
+                "AWATER": {"type": "long"},
+                "GEOID": {
+                    "type": "text",
+                    "fields": {"keyword": {
+                        "ignore_above": 256,
+                        "type": "keyword"
+                    }}
+                },
+                "LSAD": {
+                    "type": "text",
+                    "fields": {"keyword": {
+                        "ignore_above": 256,
+                        "type": "keyword"
+                    }}
+                },
+                "FUNCSTAT": {
+                    "type": "text",
+                    "fields": {"keyword": {
+                        "ignore_above": 256,
+                        "type": "keyword"
+                    }}
+                },
+                "INTPTLAT": {
+                    "type": "text",
+                    "fields": {"keyword": {
+                        "ignore_above": 256,
+                        "type": "keyword"
+                    }}
+                },
+                "CLASSFP": {
+                    "type": "text",
+                    "fields": {"keyword": {
+                        "ignore_above": 256,
+                        "type": "keyword"
+                    }}
+                },
+                "COMPTYP": {
+                    "type": "text",
+                    "fields": {"keyword": {
+                        "ignore_above": 256,
+                        "type": "keyword"
+                    }}
+                },
+                "NAME": {
+                    "type": "text",
+                    "fields": {"keyword": {
+                        "ignore_above": 256,
+                        "type": "keyword"
+                    }}
+                },
+                "NAMELSAD": {
+                    "type": "text",
+                    "fields": {"keyword": {
+                        "ignore_above": 256,
+                        "type": "keyword"
+                    }}
+                },
+                "INTPTLON": {
+                    "type": "text",
+                    "fields": {"keyword": {
+                        "ignore_above": 256,
+                        "type": "keyword"
+                    }}
+                },
+                "AIANNHNS": {
+                    "type": "text",
+                    "fields": {"keyword": {
+                        "ignore_above": 256,
+                        "type": "keyword"
+                    }}
+                },
+                "ALAND": {"type": "long"},
+                "MTFCC": {
+                    "type": "text",
+                    "fields": {"keyword": {
+                        "ignore_above": 256,
+                        "type": "keyword"
+                    }}
+                },
+                "AIANNHCE": {
+                    "type": "text",
+                    "fields": {"keyword": {
+                        "ignore_above": 256,
+                        "type": "keyword"
+                    }}
+                },
+                "AIANNHR": {
+                    "type": "text",
+                    "fields": {"keyword": {
+                        "ignore_above": 256,
+                        "type": "keyword"
+                    }}
+                }
+            }}
+        }},
+        "crs": {"properties": {
+            "type": {
+                "type": "text",
+                "fields": {"keyword": {
+                    "ignore_above": 256,
+                    "type": "keyword"
+                }}
+            },
+            "properties": {"properties": {"name": {
+                "type": "text",
+                "fields": {"keyword": {
+                    "ignore_above": 256,
+                    "type": "keyword"
+                }}
+            }}}
+        }},
+        "type": {
+            "type": "text",
+            "fields": {"keyword": {
+                "ignore_above": 256,
+                "type": "keyword"
+            }}
+        }
+    }},
+    "description": {"type": "text"},
+    "polygon": {"properties": {
+        "features": {"properties": {
+            "geometry": {"type": "geo_shape"},
+            "type": {
+                "type": "text",
+                "fields": {"keyword": {
+                    "ignore_above": 256,
+                    "type": "keyword"
+                }}
+            },
+            "properties": {"properties": {
+                "AWATER": {"type": "long"},
+                "GEOID": {
+                    "type": "text",
+                    "fields": {"keyword": {
+                        "ignore_above": 256,
+                        "type": "keyword"
+                    }}
+                },
+                "LSAD": {
+                    "type": "text",
+                    "fields": {"keyword": {
+                        "ignore_above": 256,
+                        "type": "keyword"
+                    }}
+                },
+                "FUNCSTAT": {
+                    "type": "text",
+                    "fields": {"keyword": {
+                        "ignore_above": 256,
+                        "type": "keyword"
+                    }}
+                },
+                "INTPTLAT": {
+                    "type": "text",
+                    "fields": {"keyword": {
+                        "ignore_above": 256,
+                        "type": "keyword"
+                    }}
+                },
+                "CLASSFP": {
+                    "type": "text",
+                    "fields": {"keyword": {
+                        "ignore_above": 256,
+                        "type": "keyword"
+                    }}
+                },
+                "COMPTYP": {
+                    "type": "text",
+                    "fields": {"keyword": {
+                        "ignore_above": 256,
+                        "type": "keyword"
+                    }}
+                },
+                "NAME": {
+                    "type": "text",
+                    "fields": {"keyword": {
+                        "ignore_above": 256,
+                        "type": "keyword"
+                    }}
+                },
+                "NAMELSAD": {
+                    "type": "text",
+                    "fields": {"keyword": {
+                        "ignore_above": 256,
+                        "type": "keyword"
+                    }}
+                },
+                "INTPTLON": {
+                    "type": "text",
+                    "fields": {"keyword": {
+                        "ignore_above": 256,
+                        "type": "keyword"
+                    }}
+                },
+                "AIANNHNS": {
+                    "type": "text",
+                    "fields": {"keyword": {
+                        "ignore_above": 256,
+                        "type": "keyword"
+                    }}
+                },
+                "ALAND": {"type": "long"},
+                "MTFCC": {
+                    "type": "text",
+                    "fields": {"keyword": {
+                        "ignore_above": 256,
+                        "type": "keyword"
+                    }}
+                },
+                "AIANNHCE": {
+                    "type": "text",
+                    "fields": {"keyword": {
+                        "ignore_above": 256,
+                        "type": "keyword"
+                    }}
+                },
+                "AIANNHR": {
+                    "type": "text",
+                    "fields": {"keyword": {
+                        "ignore_above": 256,
+                        "type": "keyword"
+                    }}
+                }
+            }}
+        }},
+        "crs": {"properties": {
+            "type": {
+                "type": "text",
+                "fields": {"keyword": {
+                    "ignore_above": 256,
+                    "type": "keyword"
+                }}
+            },
+            "properties": {"properties": {"name": {
+                "type": "text",
+                "fields": {"keyword": {
+                    "ignore_above": 256,
+                    "type": "keyword"
+                }}
+            }}}
+        }},
+        "type": {
+            "type": "text",
+            "fields": {"keyword": {
+                "ignore_above": 256,
+                "type": "keyword"
+            }}
+        }
+    }},
+    "title": {"type": "text"},
+    "type": {"type": "text"}
+}}
