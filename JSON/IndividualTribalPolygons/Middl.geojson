@@ -1,0 +1,7 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "AIANNHCE": "2255", "AIANNHNS": "00228627", "GEOID": "2255R", "NAME": "Middletown", "NAMELSAD": "Middletown Rancheria", "LSAD": "85", "COMPTYP": "R", "CLASSFP": "D2", "AIANNHR": "F", "MTFCC": "G2101", "FUNCSTAT": "A", "ALAND": 489059.0, "AWATER": 0.0, "INTPTLAT": "+38.7286756", "INTPTLON": "-122.6258468" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -122.624459, 38.734118 ], [ -122.624378, 38.733997 ], [ -122.623592, 38.732769 ], [ -122.62279, 38.731577 ], [ -122.622118, 38.730577 ], [ -122.621208, 38.729204 ], [ -122.620698, 38.728436 ], [ -122.627603, 38.724045 ], [ -122.631023, 38.727078 ], [ -122.631563, 38.727558 ], [ -122.629242, 38.729115 ], [ -122.626135, 38.731201 ], [ -122.627096, 38.732193 ], [ -122.624529, 38.73407 ], [ -122.624459, 38.734118 ] ] ] } }
+]
+}

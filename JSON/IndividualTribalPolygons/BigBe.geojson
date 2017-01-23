@@ -1,0 +1,7 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "AIANNHCE": "0215", "AIANNHNS": "00256889", "GEOID": "0215R", "NAME": "Big Bend", "NAMELSAD": "Big Bend Rancheria", "LSAD": "85", "COMPTYP": "R", "CLASSFP": "D2", "AIANNHR": "F", "MTFCC": "G2101", "FUNCSTAT": "A", "ALAND": 182729.0, "AWATER": 0.0, "INTPTLAT": "+41.0264205", "INTPTLON": "-121.9188956" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -121.919276, 41.028347 ], [ -121.917947, 41.028369 ], [ -121.916369, 41.028377 ], [ -121.916344, 41.025921 ], [ -121.91635, 41.025407 ], [ -121.916363, 41.024959 ], [ -121.916382, 41.024554 ], [ -121.92142, 41.024419 ], [ -121.921407, 41.025504 ], [ -121.921433, 41.02832 ], [ -121.919276, 41.028347 ] ] ] } }
+]
+}

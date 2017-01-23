@@ -1,0 +1,7 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "AIANNHCE": "2150", "AIANNHNS": "02547776", "GEOID": "2150R", "NAME": "Match-e-be-nash-she-wish Band of Pottawatomi", "NAMELSAD": "Match-e-be-nash-she-wish Band of Pottawatomi Reservation", "LSAD": "86", "COMPTYP": "R", "CLASSFP": "D2", "AIANNHR": "F", "MTFCC": "G2101", "FUNCSTAT": "A", "ALAND": 633449.0, "AWATER": 0.0, "INTPTLAT": "+42.6340623", "INTPTLON": "-085.6572037" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -85.662089, 42.636002 ], [ -85.662074, 42.637626 ], [ -85.66159, 42.637624 ], [ -85.652422, 42.637631 ], [ -85.652326, 42.635717 ], [ -85.652183, 42.631365 ], [ -85.653075, 42.631403 ], [ -85.653059, 42.630416 ], [ -85.658485, 42.630386 ], [ -85.658929, 42.630384 ], [ -85.661385, 42.630378 ], [ -85.66197, 42.632015 ], [ -85.661982, 42.632041 ], [ -85.662148, 42.632408 ], [ -85.662089, 42.636002 ] ] ] } }
+]
+}

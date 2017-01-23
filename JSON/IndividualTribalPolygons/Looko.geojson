@@ -1,0 +1,7 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "AIANNHCE": "1980", "AIANNHNS": "00227643", "GEOID": "1980R", "NAME": "Lookout", "NAMELSAD": "Lookout Rancheria", "LSAD": "85", "COMPTYP": "R", "CLASSFP": "D2", "AIANNHR": "F", "MTFCC": "G2101", "FUNCSTAT": "A", "ALAND": 163356.0, "AWATER": 0.0, "INTPTLAT": "+41.2138759", "INTPTLON": "-121.0933983" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -121.093635, 41.212053 ], [ -121.095607, 41.212061 ], [ -121.095829, 41.212058 ], [ -121.095799, 41.214559 ], [ -121.095792, 41.215698 ], [ -121.090953, 41.215689 ], [ -121.091025, 41.21205 ], [ -121.093635, 41.212053 ] ] ] } }
+]
+}

@@ -1,0 +1,7 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "AIANNHCE": "3185", "AIANNHNS": "00265444", "GEOID": "3185R", "NAME": "Roaring Creek", "NAMELSAD": "Roaring Creek Rancheria", "LSAD": "85", "COMPTYP": "R", "CLASSFP": "D2", "AIANNHR": "F", "MTFCC": "G2101", "FUNCSTAT": "A", "ALAND": 331930.0, "AWATER": 234.0, "INTPTLAT": "+40.8933119", "INTPTLON": "-121.9534750" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -121.951112, 40.895183 ], [ -121.951109, 40.894906 ], [ -121.951066, 40.889585 ], [ -121.955795, 40.88956 ], [ -121.95586, 40.897047 ], [ -121.951115, 40.897097 ], [ -121.951112, 40.895183 ] ] ] } }
+]
+}

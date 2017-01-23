@@ -1,0 +1,7 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "AIANNHCE": "9400", "AIANNHNS": "02419487", "GEOID": "9400R", "NAME": "Tama", "NAMELSAD": "Tama (state) Reservation", "LSAD": "86", "COMPTYP": "R", "CLASSFP": "D4", "AIANNHR": "S", "MTFCC": "G2101", "FUNCSTAT": "A", "ALAND": 365137.0, "AWATER": 2118.0, "INTPTLAT": "+30.8622593", "INTPTLON": "-084.2650091" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -84.271273, 30.860707 ], [ -84.271173, 30.860865 ], [ -84.268004, 30.863608 ], [ -84.267103, 30.863804 ], [ -84.263068, 30.864867 ], [ -84.260399, 30.865559 ], [ -84.260518, 30.860656 ], [ -84.262383, 30.860643 ], [ -84.267741, 30.860616 ], [ -84.267894, 30.860622 ], [ -84.268098, 30.860617 ], [ -84.271273, 30.860707 ] ] ] } }
+]
+}

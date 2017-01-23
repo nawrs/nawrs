@@ -1,0 +1,7 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "AIANNHCE": "1955", "AIANNHNS": "00276402", "GEOID": "1955R", "NAME": "Likely", "NAMELSAD": "Likely Rancheria", "LSAD": "85", "COMPTYP": "R", "CLASSFP": "D2", "AIANNHR": "F", "MTFCC": "G2101", "FUNCSTAT": "A", "ALAND": 6237.0, "AWATER": 0.0, "INTPTLAT": "+41.2047695", "INTPTLON": "-120.4788308" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -120.478347, 41.204466 ], [ -120.479348, 41.204394 ], [ -120.479275, 41.205121 ], [ -120.478311, 41.205105 ], [ -120.478347, 41.204466 ] ] ] } }
+]
+}

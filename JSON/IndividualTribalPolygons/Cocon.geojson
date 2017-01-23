@@ -1,0 +1,7 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "AIANNHCE": "0690", "AIANNHNS": "02418876", "GEOID": "0690T", "NAME": "Coconut Creek", "NAMELSAD": "Coconut Creek Trust Land", "LSAD": "89", "COMPTYP": "T", "CLASSFP": "D3", "AIANNHR": "F", "MTFCC": "G2102", "FUNCSTAT": "A", "ALAND": 25839.0, "AWATER": 0.0, "INTPTLAT": "+26.2775289", "INTPTLON": "-080.1998341" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -80.200463, 26.27843 ], [ -80.200203, 26.278429 ], [ -80.199811, 26.278428 ], [ -80.199426, 26.278427 ], [ -80.199167, 26.278427 ], [ -80.199161, 26.278275 ], [ -80.199178, 26.2778 ], [ -80.19919, 26.277449 ], [ -80.199219, 26.276614 ], [ -80.199626, 26.276621 ], [ -80.200503, 26.276636 ], [ -80.200484, 26.277451 ], [ -80.200463, 26.27843 ] ] ] } }
+]
+}

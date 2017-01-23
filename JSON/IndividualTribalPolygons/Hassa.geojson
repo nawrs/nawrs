@@ -1,0 +1,7 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "AIANNHCE": "9150", "AIANNHNS": "02418958", "GEOID": "9150R", "NAME": "Hassanamisco", "NAMELSAD": "Hassanamisco (state) Reservation", "LSAD": "86", "COMPTYP": "R", "CLASSFP": "D4", "AIANNHR": "S", "MTFCC": "G2101", "FUNCSTAT": "A", "ALAND": 20909.0, "AWATER": 0.0, "INTPTLAT": "+42.2120115", "INTPTLON": "-071.7044957" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -71.705726, 42.21107 ], [ -71.705675, 42.211474 ], [ -71.70547, 42.211562 ], [ -71.705322, 42.212058 ], [ -71.705139, 42.212063 ], [ -71.705068, 42.212479 ], [ -71.70351, 42.212925 ], [ -71.702978, 42.212227 ], [ -71.704592, 42.211806 ], [ -71.704902, 42.210864 ], [ -71.704978, 42.210902 ], [ -71.705256, 42.210995 ], [ -71.705629, 42.211047 ], [ -71.705726, 42.21107 ] ] ] } }
+]
+}

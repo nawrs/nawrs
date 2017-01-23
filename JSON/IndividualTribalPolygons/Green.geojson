@@ -1,0 +1,7 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "AIANNHCE": "1380", "AIANNHNS": "01666180", "GEOID": "1380R", "NAME": "Greenville", "NAMELSAD": "Greenville Rancheria", "LSAD": "85", "COMPTYP": "R", "CLASSFP": "D2", "AIANNHR": "F", "MTFCC": "G2101", "FUNCSTAT": "A", "ALAND": 284692.0, "AWATER": 0.0, "INTPTLAT": "+40.1487839", "INTPTLON": "-120.8933989" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -120.894475, 40.151053 ], [ -120.892039, 40.151104 ], [ -120.892071, 40.149159 ], [ -120.887748, 40.149149 ], [ -120.887755, 40.147325 ], [ -120.892452, 40.147047 ], [ -120.893698, 40.147047 ], [ -120.895843, 40.146972 ], [ -120.895869, 40.146972 ], [ -120.897458, 40.146917 ], [ -120.897365, 40.150998 ], [ -120.897334, 40.150999 ], [ -120.896621, 40.151012 ], [ -120.894475, 40.151053 ] ] ] } }
+]
+}

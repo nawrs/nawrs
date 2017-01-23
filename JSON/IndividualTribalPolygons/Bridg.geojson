@@ -1,0 +1,7 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "AIANNHCE": "0350", "AIANNHNS": "02419320", "GEOID": "0350R", "NAME": "Bridgeport", "NAMELSAD": "Bridgeport Reservation", "LSAD": "86", "COMPTYP": "R", "CLASSFP": "D2", "AIANNHR": "F", "MTFCC": "G2101", "FUNCSTAT": "A", "ALAND": 142706.0, "AWATER": 0.0, "INTPTLAT": "+38.2663364", "INTPTLON": "-119.2159366" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -119.218032, 38.266547 ], [ -119.217979, 38.26811 ], [ -119.216767, 38.268094 ], [ -119.213846, 38.268066 ], [ -119.213842, 38.267726 ], [ -119.21376, 38.264725 ], [ -119.213922, 38.264712 ], [ -119.214684, 38.264653 ], [ -119.215218, 38.26462 ], [ -119.216204, 38.264575 ], [ -119.216354, 38.264545 ], [ -119.217815, 38.2646 ], [ -119.21807, 38.264612 ], [ -119.218058, 38.265601 ], [ -119.218032, 38.266547 ] ] ] } }
+]
+}

@@ -1,0 +1,7 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "AIANNHCE": "4235", "AIANNHNS": "00032748", "GEOID": "4235R", "NAME": "Tonto Apache", "NAMELSAD": "Tonto Apache Reservation", "LSAD": "86", "COMPTYP": "R", "CLASSFP": "D2", "AIANNHR": "F", "MTFCC": "G2101", "FUNCSTAT": "A", "ALAND": 344696.0, "AWATER": 0.0, "INTPTLAT": "+34.2211230", "INTPTLON": "-111.3283997" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -111.331765, 34.219713 ], [ -111.33176, 34.219768 ], [ -111.331796, 34.221142 ], [ -111.330118, 34.221139 ], [ -111.330145, 34.22469 ], [ -111.325821, 34.224729 ], [ -111.325825, 34.221128 ], [ -111.32567, 34.218102 ], [ -111.330782, 34.218078 ], [ -111.331721, 34.218077 ], [ -111.331748, 34.219272 ], [ -111.331765, 34.219713 ] ] ] } }
+]
+}

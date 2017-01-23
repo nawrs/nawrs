@@ -1,0 +1,7 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "AIANNHCE": "0095", "AIANNHNS": "00218194", "GEOID": "0095R", "NAME": "Alturas", "NAMELSAD": "Alturas Indian Rancheria", "LSAD": "97", "COMPTYP": "R", "CLASSFP": "D2", "AIANNHR": "F", "MTFCC": "G2101", "FUNCSTAT": "A", "ALAND": 100606.0, "AWATER": 0.0, "INTPTLAT": "+41.4776544", "INTPTLON": "-120.5244037" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -120.523198, 41.479934 ], [ -120.523186, 41.479271 ], [ -120.523239, 41.475394 ], [ -120.524404, 41.475383 ], [ -120.525637, 41.475393 ], [ -120.525598, 41.477759 ], [ -120.52559, 41.478151 ], [ -120.525552, 41.479937 ], [ -120.525449, 41.479936 ], [ -120.524356, 41.479925 ], [ -120.523198, 41.479934 ] ] ] } }
+]
+}

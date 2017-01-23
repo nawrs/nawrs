@@ -1,0 +1,7 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "AIANNHCE": "1055", "AIANNHNS": "00259950", "GEOID": "1055R", "NAME": "Enterprise", "NAMELSAD": "Enterprise Rancheria", "LSAD": "85", "COMPTYP": "R", "CLASSFP": "D2", "AIANNHR": "F", "MTFCC": "G2101", "FUNCSTAT": "A", "ALAND": 168284.0, "AWATER": 0.0, "INTPTLAT": "+39.5616380", "INTPTLON": "-121.3554802" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -121.354456, 39.559788 ], [ -121.357857, 39.559771 ], [ -121.357861, 39.563459 ], [ -121.353131, 39.563539 ], [ -121.353107, 39.560327 ], [ -121.35307, 39.559792 ], [ -121.353497, 39.559785 ], [ -121.354456, 39.559788 ] ] ] } }
+]
+}

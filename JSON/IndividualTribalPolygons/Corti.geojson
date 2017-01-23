@@ -1,0 +1,7 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "AIANNHCE": "0780", "AIANNHNS": "00221603", "GEOID": "0780R", "NAME": "Cortina", "NAMELSAD": "Cortina Indian Rancheria", "LSAD": "97", "COMPTYP": "R", "CLASSFP": "D2", "AIANNHR": "F", "MTFCC": "G2101", "FUNCSTAT": "A", "ALAND": 3077779.0, "AWATER": 0.0, "INTPTLAT": "+39.0182965", "INTPTLON": "-122.2904112" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -122.286428, 39.026145 ], [ -122.28023, 39.026208 ], [ -122.280181, 39.01971 ], [ -122.280175, 39.014095 ], [ -122.280172, 39.010432 ], [ -122.282045, 39.010445 ], [ -122.300722, 39.010581 ], [ -122.300744, 39.016361 ], [ -122.300747, 39.01706 ], [ -122.300745, 39.017151 ], [ -122.300706, 39.020203 ], [ -122.300662, 39.025701 ], [ -122.300663, 39.025997 ], [ -122.286428, 39.026145 ] ] ] } }
+]
+}
