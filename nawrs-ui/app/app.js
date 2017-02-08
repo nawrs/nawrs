@@ -1,82 +1,100 @@
-'use strict';
+//'use strict';
 
-angular.module('nawrsapp', ['ui-leaflet', 'elasticsearch'])
+window.Nawrsapp = angular.module('nawrsapp', ['ui-leaflet', 'elasticsearch']);
 
-.controller("GeoJSONController", [ '$scope', '$http', function($scope, $http) {
+// the application
+Nawrsapp.controller('mapCtrl', ['mapService', '$scope', '$location', function(docs, $scope, $location){
+  var initChoices = ['navajo', 'paiute'];
+
+  var idx = Math.floor(Math.random() * initChoices.length);
+
   angular.extend($scope, {
-    grants: {
-      lat: 35,
-      lng: -108,
-      zoom: 8
-    },
-    defaults: {
-      scrollWheelZoom: false
-    }
-  });
+    elasticcentroid: {},
+    elasticjson: {}
+  })
 
-  // Get the countries geojson data from a JSON
-  $http.get("data/Acoma.geojson").success(function(data, status) {
-    angular.extend($scope, {
-      geojson: {
-        data: data,
-        style: {
-          fillColor: "orange",
-          weight: 2,
-          opacity: 1,
-          color: 'orange',
-          dashArray: '1',
-          fillOpacity: 0.3
-        }
+  $scope.elasticcentroid = {
+    // placeholder property
+    lat: 39.5,
+    lng: -98.35,
+    zoom: 4
+  }
+
+  $scope.docs = [];
+  $scope.page = 0;
+  $scope.allResults = false;
+
+  $scope.searchTerm = $location.search().q || initChoices[idx];
+
+  $scope.search = function(){
+    $scope.page = 0;
+    $scope.docs = [];
+    $scope.allResults = false;
+    $location.search({'q': $scope.searchTerm});
+    $scope.loadmore();
+  };
+
+  $scope.loadmore = function(){
+    docs.search($scope.searchTerm, $scope.page++).then(function(results){
+      if(results.length !== 10){
+        $scope.allResults = true;
+      }
+
+      var ii = 0;
+
+      for (; ii < results.length; ii++){
+        $scope.docs.push(results[ii]);
+      }
+      $scope.elasticcentroid = {
+        lat: $scope.docs[0].centroid.features[0].geometry.coordinates[1],
+        lng: $scope.docs[0].centroid.features[0].geometry.coordinates[0],
+        zoom: 8
+      }
+      $scope.elasticjson = {
+        data: $scope.docs[0].polygon
       }
     });
-  });
+  };
+
+  $scope.loadmore();
 }])
 
-.controller('ElasticsearchHealthcheck', function($scope, elasticClient) {
-  elasticClient.cluster.health(function (err, resp) {
-    if (err) {
-      console.error(err.message);
-    } else {
-      $scope.name = resp.cluster_name;
-      $scope.status = resp.status;
-    }
+Nawrsapp.factory('mapService', ['$q', 'esFactory', '$location', function($q, elasticsearch, $location){
+  var client = elasticsearch({
+    host: $location.host() + ':9200'
   });
-})
 
-.controller('ElasticsearchQuery', function($scope, elasticClient){
-  elasticClient.search({
-    index: 'tweets',
-    type: 'tweet',
-    body: {
-      query: {
-        match: {
-          text: 'Trump'
-        }
+  var search = function(term, offset) {
+    var deferred = $q.defer();
+    var query = {
+      match: {
+        _all: term
       }
-    }
-  }).then(function (resp) {
-    //console.log('Query success')
-    $scope.tweets = [];
-    $scope.totalhits = resp.hits.total;
-    $scope.datadump = resp.hits.hits[0];
-    $scope.tweettext = resp.hits.hits[0]._source.text;
-    angular.forEach(resp.hits.hits, function(data){
-      angular.forEach(data, function(){
-        var tweetdata = data._source.text;
-        //console.log(tweetdata);
-        $scope.tweets.push({tweetdata});
-      });
-    });
-    $scope.numtweets = $scope.tweets.length;
-}, function (err) {
-  console.trace(err.message);
-});
-})
+    };
 
-.factory('elasticClient', ['esFactory', function(esFactory) {
-  return esFactory({
-    host: 'localhost:9200',
-    sniffOnStart: true,
-    sniffInterval: 300000
-  });
+    client.search({
+      index: "nawrs",
+      type: "item",
+      body: {
+        size: 10,
+        from: (offset || 0) * 10,
+        query: query
+      }
+    }).then(function(result){
+      console.log(result);
+      var ii = 0, hits_in, hits_out = [];
+      hits_in = (result.hits || {}).hits || [];
+      for(; ii < hits_in.length; ii++){
+        hits_out.push(hits_in[ii]._source);
+      }
+      deferred.resolve(hits_out);
+    }, deferred.reject);
+
+    return deferred.promise;
+  };
+
+  return {
+    search: search
+  };
+
 }]);

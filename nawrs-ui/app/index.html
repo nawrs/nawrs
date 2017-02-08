@@ -14,25 +14,27 @@
 
 <body>
   <div>
-    <h1>GeoJSON Data Loading Test</h1>
-    <div ng-controller="GeoJSONController">
-      <leaflet id="map-geojson" center="grants" geojson="geojson" width="100%" height="480px"></leaflet>
+    <h1>Native American Water Rights</h1>
+    <div ng-controller="mapCtrl">
+      <leaflet id="map-elastic" center="elasticcentroid" geojson="elasticjson" width="100%" height="480px"></leaflet>
+      <br /><br />
+      <section class="searchField">
+        <form ng-submit="search()">
+          <input type="text" ng-model="searchTerm">
+          <input type="submit" value="Search">
+        </form>
+      </section>
+      <section class="results">
+        <div class="no-docs" ng-hide="docs.length">No results</div>
+        <article class="doc" ng-repeat="doc in docs" ng-cloak>
+          <p>
+            {{doc.title}}: <a href="{{doc.identifier}}">{{doc.identifier}}</a>
+          </p>
+        </article>
+        <div class="load-more" ng-hide="allResults" ng-cloak>
+          <a ng-click="loadMore()">More...</a>
+        </div>
+      </section>
     </div>
-  </div>
-  <div>
-    <h1>Elasticsearch Test</h1>
-    <div ng-controller="ElasticsearchHealthcheck">
-      <p>Name: {{name}}</p>
-      <p>Status: {{status}}</p>
-    </div>
-    <div ng-controller="ElasticsearchQuery">
-      <h2>Responses: {{numtweets}} of {{totalhits}}</h2>
-      <ul>
-        <li ng-repeat="tweet in tweets">{{tweet.tweetdata}}</li>
-      </ul>
-      <!--p>Raw JSON sample:<br /><br /> {{datadump}}</p>
-      <p>Tweet text sample:<br /><br /> {{tweettext}}</p-->
-    </div>
-  </div>
 </body>
 </html>
