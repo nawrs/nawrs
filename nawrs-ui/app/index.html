@@ -18,10 +18,8 @@
   <div>
     <div ng-controller="mapCtrl">
       <leaflet id="map-elastic" center="elasticcentroid" layers="layers" event-broadcast="events" geojson="elasticjson" style="width: 75%; height: 480px;"></leaflet>
-      <!--div>
-        {{ selectedState.properties.name || 'No state'}}
-      </div-->
       <br /><br />
+      <p>Selected: {{selectedFeature}}</p>
 
       <section class="results">
         <div class="no-docs" ng-hide="docs.length">No results</div>

@@ -8,32 +8,6 @@ Nawrsapp.controller('mapCtrl', ['mapService', '$scope', '$http', '$location', fu
 
   var idx = Math.floor(Math.random() * initChoices.length);
 
-  /*$scope.$on("leafletDirectiveGeoJson.map-elastic.mouseover", function(ev, leafletPayload) {
-    stateMouseover(leafletPayload.leafletObject.feature, leafletPayload.leafletEvent);
-  });
-
-  $scope.$on("leafletDirectiveGeoJson.map-elastic.click", function(ev, leafletPayload) {
-    stateClick(leafletPayload.leafletObject, leafletPayload.leafletEvent);
-  });
-
-  function stateClick(state, event) {
-    state = state.feature;
-    console.log(state);
-  }
-
-  // Mouse over function, called from the Leaflet Map Events
-  function stateMouseover(feature, leafletEvent) {
-    var layer = leafletEvent.target;
-    layer.setStyle({
-      weight: 2,
-      color: '#666',
-      fillColor: 'white'
-    });
-    layer.bringToFront();
-    $scope.selectedState = feature;
-    console.log(feature);
-  }*/
-
   angular.extend($scope, {
     elasticcentroid: {},
     elasticjson: {},
@@ -60,17 +34,6 @@ Nawrsapp.controller('mapCtrl', ['mapService', '$scope', '$http', '$location', fu
   })
 
   $http.get('data/us_state_PR_1hundthDD.geojson').success(function(data, status){
-    /*$scope.states = [];
-
-    var i = 0;
-
-    for (; i< data.features.length; i++) {
-      var statedata = data.features[i].properties;
-      var statename = statedata['NAME']
-      $scope.states.push(statename);
-      //console.log(statename);
-    }*/
-
     angular.extend($scope.layers.overlays, {
       states: {
         name: 'States',
@@ -79,18 +42,15 @@ Nawrsapp.controller('mapCtrl', ['mapService', '$scope', '$http', '$location', fu
         layerOptions: {
           style: {
             color: 'blue',
-            fillColor: 'none',
+            fillColor: 'blue',
             weight: 1.5,
             opacity: 0.3,
-            //fillOpacity: 0.1
-          }
+            fillOpacity: 0.1
+          },
+          onEachFeature: onSelect
         }
       }
     })
-
-    /*angular.extend($scope, {
-      selectedState: {}
-    })*/
   })
 
   $http.get('/data/wbdhu2_PR_1hundthDD.geojson').success(function(data, status){
@@ -102,21 +62,29 @@ Nawrsapp.controller('mapCtrl', ['mapService', '$scope', '$http', '$location', fu
         layerOptions: {
           style: {
             color: 'blue',
-            fillColor: 'none',
+            fillColor: 'blue',
             weight: 1.5,
             opacity: 0.3,
-            //fillOpacity: 0.1
-          }
+            fillOpacity: 0.1
+          },
+          onEachFeature: onSelect
         }
       }
     })
   })
 
-  //$http.get("data/us_state_PR_1hundthDD.geojson").success(function(data, status) {
-
-  // Put the countries on an associative array
-
-  //});
+  function onSelect(feature, layer) {
+    layer.on({
+      click: function() {
+        console.log(layer.feature.properties.NAME);
+        $scope.$apply(function () {
+          $scope.selectedFeature = layer.feature.properties.NAME;
+          $scope.searchTerm = layer.feature.properties.NAME;
+          $scope.search();
+        })
+      }
+    })
+  }
 
   $scope.elasticcentroid = {
     // placeholder property
