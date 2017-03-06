@@ -1,24 +1,3 @@
- var style = new ol.style.Style({
-        fill: new ol.style.Fill({
-          color: 'transparent'
-        }),
-        stroke: new ol.style.Stroke({
-          color: '#319FD3',
-          width: 1
-        }),
-        text: new ol.style.Text({
-          font: '12px Calibri,sans-serif',
-          fill: new ol.style.Fill({
-            color: '#000'
-          }),
-          stroke: new ol.style.Stroke({
-            color: '#fff',
-            width: 3
-          })
-        })
-      });  
-	  
-
 
 // Basemaps
 
@@ -67,13 +46,12 @@ var Layer_USGSTopo = (new ol.layer.Tile({
 
 var Layer_States = new ol.layer.Vector({
         source: new ol.source.Vector({
-		  //url: 'https://raw.githubusercontent.com/nawrs/nawrs/GeoJSON/JSON/ReferenceLayers/cb_2015_us_state_500k.geojson',
+		  //url: 'https://raw.githubusercontent.com/nawrs/nawrs/GeoJSON/JSON/ReferenceLayers/cb_2015_us_state_500k.geojson',  //largest file and highest resolution
 		  //url: 'https://raw.githubusercontent.com/nawrs/nawrs/GeoJSON/JSON/ReferenceLayers/us_state_BS_1hundthDD.geojson',
 		  url: 'https://raw.githubusercontent.com/nawrs/nawrs/GeoJSON/JSON/ReferenceLayers/us_state_BS_5hundthDD.geojson',
-		  //url: 'https://raw.githubusercontent.com/nawrs/nawrs/GeoJSON/JSON/ReferenceLayers/us_state_PR_1hundthDD.geojson',
+		  //url: 'https://raw.githubusercontent.com/nawrs/nawrs/GeoJSON/JSON/ReferenceLayers/us_state_PR_1hundthDD.geojson',  //smallest file and lowest resolution
           format: new ol.format.GeoJSON(),
         }),
-		//opacity: 0.1,
 		  style: new ol.style.Style({
             fill: new ol.style.Fill({
               color: 'transparent'
@@ -93,18 +71,14 @@ var Layer_States = new ol.layer.Vector({
 			})
 			})
 		})
-        /*style: function(feature, resolution) {
-          style.getText().setText(resolution < 5000 ? feature.get('name') : '');
-          return style;
-        }  */
       });
 	  Layer_States.setVisible(false);
 
 var Layer_Watersheds = new ol.layer.Vector({
         source: new ol.source.Vector({
-		  //url: 'https://raw.githubusercontent.com/nawrs/nawrs/GeoJSON/JSON/ReferenceLayers/wbdhu2_BS_1hundthDD.geojson',
+		  //url: 'https://raw.githubusercontent.com/nawrs/nawrs/GeoJSON/JSON/ReferenceLayers/wbdhu2_BS_1hundthDD.geojson',  //largest file and highest resolution
 		  //url: 'https://raw.githubusercontent.com/nawrs/nawrs/GeoJSON/JSON/ReferenceLayers/wbdhu2_BS_5hundthDD.geojson',
-		 url: 'https://raw.githubusercontent.com/nawrs/nawrs/GeoJSON/JSON/ReferenceLayers/wbdhu2_PR_1hundthDD.geojson',
+		 url: 'https://raw.githubusercontent.com/nawrs/nawrs/GeoJSON/JSON/ReferenceLayers/wbdhu2_PR_1hundthDD.geojson',  //smallest file and lowest resolution
          format: new ol.format.GeoJSON(),
         }),
 		style: new ol.style.Style({
@@ -126,19 +100,44 @@ var Layer_Watersheds = new ol.layer.Vector({
 			})
 			})
 		})
-        /*style: function(feature, resolution) {
-          style.getText().setText(resolution < 5000 ? feature.get('name') : '');
-          return style;
-        } */
       });
 	  Layer_Watersheds.setVisible(false);
+	  
+var Layer_WatershedsHU4 = new ol.layer.Vector({
+        source: new ol.source.Vector({
+		  //url: 'https://raw.githubusercontent.com/nawrs/nawrs/GeoJSON/JSON/ReferenceLayers/wbdhu4_BS_1hundthDD.geojson',  //largest file and highest resolution
+		  //url: 'https://raw.githubusercontent.com/nawrs/nawrs/GeoJSON/JSON/ReferenceLayers/wbdhu4_BS_5hundthDD.geojson',
+		 url: 'https://raw.githubusercontent.com/nawrs/nawrs/GeoJSON/JSON/ReferenceLayers/wbdhu4_PR_1hundthDD.geojson',  //smallest file and lowest resolution
+         format: new ol.format.GeoJSON(),
+        }),
+		style: new ol.style.Style({
+            fill: new ol.style.Fill({
+              color: 'transparent'
+			}),
+			stroke: new ol.style.Stroke({
+			color: '#1976D2',
+			width: 2
+			}),
+			text: new ol.style.Text({
+			font: '12px Calibri,sans-serif',
+			fill: new ol.style.Fill({
+				color: '#000'
+			}),
+			stroke: new ol.style.Stroke({
+				color: '#fff',
+				width:3
+			})
+			})
+		})
+      });
+	  Layer_WatershedsHU4.setVisible(false);
  
 var Layer_Boundaries = new ol.layer.Vector({
 		source: new ol.source.Vector({
-			//url: 'https://raw.githubusercontent.com/nawrs/nawrs/GeoJSON/JSON/ReferenceLayers/tl_2011_us_aiannh.geojson',
-			url: 'https://raw.githubusercontent.com/nawrs/nawrs/GeoJSON/JSON/ReferenceLayers/tl_2011_BS_1hundthDD.geojson',
+			//url: 'https://raw.githubusercontent.com/nawrs/nawrs/GeoJSON/JSON/ReferenceLayers/tl_2011_us_aiannh.geojson',  //largest file and highest resolution
+			//url: 'https://raw.githubusercontent.com/nawrs/nawrs/GeoJSON/JSON/ReferenceLayers/tl_2011_BS_1hundthDD.geojson',
 			//url: 'https://raw.githubusercontent.com/nawrs/nawrs/GeoJSON/JSON/ReferenceLayers/tl_2011_BS_5hundthDD.geojson',
-			//url: 'https://raw.githubusercontent.com/nawrs/nawrs/GeoJSON/JSON/ReferenceLayers/tl_2011_PR_1hundthDD.geojson',
+			url: 'https://raw.githubusercontent.com/nawrs/nawrs/GeoJSON/JSON/ReferenceLayers/tl_2011_PR_1hundthDD.geojson',  //smallest file and lowest resolution
 			format: new ol.format.GeoJSON()
 			}),
 			style: new ol.style.Style({
@@ -159,10 +158,6 @@ var Layer_Boundaries = new ol.layer.Vector({
 						width: 3
 					})
 				}) 
-			/*style: function(feature, resolution) {
-				style.getText().setText(resolution < 5000 ? feature.get('NAME') : '');
-				return style;
-			} */
 			})
 });
 Layer_Boundaries.setVisible(false);
@@ -172,16 +167,31 @@ var Layer_Settlements = new ol.layer.Vector({
 		  url: 'https://nawrs.github.io/nawrs-data/JSON/Polygons/FtPec_21798_SS.geojson', //Placeholder link
           format: new ol.format.GeoJSON()
         }),
-        style: function(feature, resolution) {
-          style.getText().setText(resolution < 5000 ? feature.get('name') : '');
-          return style;
-        }
+        style: new ol.style.Style({
+				fill: new ol.style.Fill({
+				color: 'transparent'
+				}),
+				stroke: new ol.style.Stroke({
+					color: '#FF9800', 
+					width: 3
+				}),
+				text: new ol.style.Text({
+					font: '12px Calibri,sans-serif',
+					fill: new ol.style.Fill({
+						color: '#000'
+					}),
+					stroke: new ol.style.Stroke({
+						color: '#fff',
+						width: 3
+					})
+				}) 
+			})
       });
 	  Layer_Settlements.setVisible(false);
 		
 
 
-var refLayer = [Layer_States, Layer_Watersheds, Layer_Boundaries, Layer_Settlements];
+var refLayer = [Layer_States, Layer_Watersheds, Layer_WatershedsHU4, Layer_Boundaries, Layer_Settlements];
 var basemaps = [Layer_Stamen_terrain, Layer_OSM, Layer_USGSTopo,/*Layer_Stamen_watercolor*/];
 
  var myMap = new ol.Map({
@@ -225,6 +235,9 @@ myMap.addLayer(Layer_Boundaries)
   
 myMap.addLayer(Layer_Settlements)
   opacity: 0.85;  
+  
+myMap.addLayer(Layer_WatershedsHU4)
+  opacity: 0.85;
 	
 //from OpenLayers example Layer Group for checkboxes, calls layers from the addLayer section and the first in the array is apparently the setMapType basemap.
 
@@ -270,7 +283,7 @@ mapReset()  */
                 color: 'rgba(255,255,0,0.2)'
               }),
               text: new ol.style.Text({
-                font: '12px Calibri,sans-serif',
+                font: '18px Calibri,sans-serif',
                 text: text,
                 fill: new ol.style.Fill({
                   color: '#000'
