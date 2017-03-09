@@ -3,7 +3,8 @@
 window.Nawrsapp = angular.module('nawrsapp', ['ui-leaflet', 'elasticsearch']);
 
 // the application
-Nawrsapp.controller('mapCtrl', ['mapService', '$scope', '$http', '$location', function(docs, $scope, $http, $location){
+
+Nawrsapp.controller('mapCtrl', ['mapService', '$scope', '$http', '$location', 'leafletMapEvents', function(mapService, $scope, $http, $location, leafletMapEvents){
   var initChoices = ['navajo', 'paiute', 'settlement'];
 
   var idx = Math.floor(Math.random() * initChoices.length);
@@ -11,6 +12,12 @@ Nawrsapp.controller('mapCtrl', ['mapService', '$scope', '$http', '$location', fu
   angular.extend($scope, {
     elasticcentroid: {},
     elasticjson: {},
+    events: {
+      map: {
+        enable: ['click'],
+        logic: 'emit'
+      }
+    },
     layers: {
       baselayers: {
         osm: {
@@ -76,15 +83,24 @@ Nawrsapp.controller('mapCtrl', ['mapService', '$scope', '$http', '$location', fu
   function onSelect(feature, layer) {
     layer.on({
       click: function() {
-        console.log(layer.feature.properties.NAME);
+        //console.log(layer.feature.properties.NAME);
         $scope.$apply(function () {
           $scope.selectedFeature = layer.feature.properties.NAME;
-          $scope.searchTerm = layer.feature.properties.NAME;
-          $scope.search();
+          $scope.selectedPolygon = layer.feature.geometry.coordinates[0][0];
+          //$scope.searchTerm = layer.feature.properties.NAME;
+          //$scope.search();
         })
       }
     })
   }
+
+  //$scope.spatialTerm = {};
+
+  $scope.$on('leafletDirectiveMap.click', function(event, args){
+    $scope.searchTerm = $scope.selectedPolygon;
+    //console.log($scope.spatialTerm);
+    $scope.search();
+  });
 
   $scope.elasticcentroid = {
     // placeholder property
@@ -103,12 +119,12 @@ Nawrsapp.controller('mapCtrl', ['mapService', '$scope', '$http', '$location', fu
     $scope.page = 0;
     $scope.docs = [];
     $scope.allResults = false;
-    $location.search({'q': $scope.searchTerm});
+    //$location.search({'q': $scope.searchTerm});
     $scope.loadmore();
   };
 
   $scope.loadmore = function(){
-    docs.search($scope.searchTerm, $scope.page++).then(function(results){
+    mapService.search($scope.searchTerm, $scope.page++).then(function(results){
       if(results.length !== 10){
         $scope.allResults = true;
       }
@@ -118,11 +134,6 @@ Nawrsapp.controller('mapCtrl', ['mapService', '$scope', '$http', '$location', fu
       for (; ii < results.length; ii++){
         $scope.docs.push(results[ii]);
       }
-      //$scope.elasticcentroid = {
-      //lat: $scope.docs[0].centroid.features[0].geometry.coordinates[1],
-      //lng: $scope.docs[0].centroid.features[0].geometry.coordinates[0],
-      //zoom: 8
-      //}
       $scope.elasticjson = {
         data: $scope.docs[0].polygon
       }
@@ -142,9 +153,28 @@ Nawrsapp.factory('mapService', ['$q', 'esFactory', '$location', function($q, ela
 
   var search = function(term, offset) {
     var deferred = $q.defer();
-    var query = {
-      match: {
-        _all: term
+    var query = {};
+
+    if(term.constructor === Array) {
+      query = {
+        "bool" : {
+            "must" : {
+                "match_all" : {}
+            },
+            "filter" : {
+                "geo_polygon" : {
+                    "coverage" : {
+                        "points" : term
+                    }
+                }
+            }
+        }
+      }
+    } else {
+      query = {
+        match: {
+          _all: term
+        }
       }
     };
 

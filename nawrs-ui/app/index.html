@@ -17,7 +17,7 @@
 <body>
   <div>
     <div ng-controller="mapCtrl">
-      <leaflet id="map-elastic" center="elasticcentroid" layers="layers" event-broadcast="events" geojson="elasticjson" style="width: 75%; height: 480px;"></leaflet>
+      <leaflet center="elasticcentroid" layers="layers" geojson="elasticjson" event-broadcast="events" style="width: 75%; height: 480px;"></leaflet>
       <br /><br />
       <p>Selected: {{selectedFeature}}</p>
 
