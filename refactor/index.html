@@ -21,6 +21,8 @@
 
 <body>
   <div ng-controller="geoSearch">
+    <leaflet center="centroid" tiles="tiles" layers="layers" event-broadcast="events" style="width: 75%; height: 480px;"></leaflet>
+    <br /><br />
     <br /><br />
     <section class="results">
       <table ng-table="vm.tableParams" class="table" show-filter="false" style="width: 75%;">
@@ -45,6 +47,11 @@
               <div>
                 <br /><br />
                 <h4>Select a Baselayer</h4>
+                <p>
+                  <button ng-click="changeTiles('osm')" class="btn btn-default" style="min-width:200px; background-color:rgb(4, 112, 184);color:white;">OpenStreetMaps</button><br/><br />
+                  <button ng-click="changeTiles('stamen_ter')" class="btn btn-default" style="min-width:200px; background-color:rgb(4, 112, 184);color:white;">Stamen Terrain</button><br/><br />
+                  <button ng-click="changeTiles('esri_world')" class="btn btn-default" style="min-width:200px; background-color:rgb(4, 112, 184);color:white;">ESRI World Imagery</button>
+                </p>
               </div>
               <br /><br />
               <p>Filter by Document Type</p>

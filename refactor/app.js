@@ -3,12 +3,121 @@
 window.Nawrs = angular.module('nawrs', ['ui-leaflet', 'elasticsearch', 'ngTable']);
 
 // the application
-Nawrs.controller('geoSearch', ['$scope', 'client', 'esFactory', '$location', 'NgTableParams', function ($scope, client, esFactory, $location, NgTableParams) {
+Nawrs.controller('geoSearch', ['$scope', '$http', 'client', 'esFactory', '$location', 'NgTableParams', 'leafletMapEvents', 'leafletData', function ($scope, $http, client, esFactory, $location, NgTableParams, leafletMapEvents, leafletData) {
+  // Map bindings
 
+  var tilesDict = {
+    osm: {
+      name: "OpenStreetMap",
+      url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      type: 'xyz',
+      options: {
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }
+    },
+    stamen_ter: {
+      name: "Stamen Terrain",
+      url: 'http://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.{ext}',
+      options: {
+        attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        ext: 'png'
+      }
+    },
+    esri_world: {
+      name: "ESRI World Imagery",
+      url: 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+      options: {
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+      }
+    }
+  }
+
+  angular.extend($scope, {
+    tiles: tilesDict.osm,
+    centroid: {
+      lat: 39.5,
+      lng: -98.35,
+      zoom: 4
+    },
+    events: {
+      map: {
+        enable: ['click'],
+        logic: 'emit'
+      }
+    },
+    layers: {
+      overlays: {}
+    },
+  })
+
+  $http.get('data/us_state_PR_1hundthDD.geojson').success(function(data, status){
+    angular.extend($scope.layers.overlays, {
+      states: {
+        name: 'States',
+        type: 'geoJSONShape',
+        data: data,
+        layerOptions: {
+          style: {
+            color: 'blue',
+            fillColor: 'blue',
+            weight: 1.5,
+            opacity: 0.3,
+            fillOpacity: 0.1
+          },
+          onEachFeature: onSelect
+        }
+      }
+    })
+  })
+
+  $http.get('/data/wbdhu2_PR_1hundthDD.geojson').success(function(data, status){
+    angular.extend($scope.layers.overlays, {
+      watersheds: {
+        name: 'Watersheds',
+        type: 'geoJSONShape',
+        data: data,
+        visible: false,
+        layerOptions: {
+          style: {
+            color: 'blue',
+            fillColor: 'blue',
+            weight: 1.5,
+            opacity: 0.3,
+            fillOpacity: 0.1
+          },
+          onEachFeature: onSelect
+        }
+      }
+    })
+  })
+
+  function onSelect(feature, layer) {
+    layer.on({
+      click: function() {
+        $scope.$apply(function () {
+          $scope.selectedFeature = layer.feature.properties.NAME;
+          $scope.selectedPolygon = layer.feature.geometry.coordinates[0][0];
+        })
+      }
+    })
+  }
+
+  $scope.changeTiles = function(tiles) {
+    $scope.tiles = tilesDict[tiles];
+  }
+
+  $scope.$on('leafletDirectiveMap.click', function(event, args){
+    // Use a separate term for a geospatial search,
+    // do sorting in search() and facet_search() methods
+    //$scope.searchTerm = $scope.selectedPolygon;
+    $scope.search();
+  });
+
+  // Handle search and facet bindings
   var self = this;
   self.tableParams = new NgTableParams({}, { dataset: $scope.docs});
 
-  $scope.searchTerm = $location.search().q || ' ';
+  $scope.searchTerm = $location.search().q || 'water rights';
   $scope.docs = [];
   $scope.doc_type = [];
   $scope.subject = [];
@@ -91,6 +200,8 @@ Nawrs.controller('geoSearch', ['$scope', 'client', 'esFactory', '$location', 'Ng
       }
     })
   }
+
+  $scope.search();
 
 }]);
 
