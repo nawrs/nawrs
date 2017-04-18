@@ -48,14 +48,14 @@
               </div>
               <br /><br />
               <p>Filter by Document Type</p>
-              <form ng-model="faceted_search">
+              <form ng-model="current_filters">
                 <label ng-repeat="dt in doc_type">
                   <input
                   type="checkbox"
                   name="typeFilter"
-                  value="{{dt.key}}"
-                  ng-model="doc_type"
-                  ng-change='facet("type", "{{dt.key}}")'
+                  value="dt.key"
+                  ng-model="dt.selected"
+                  ng-change='set_facets()'
                   > {{dt.key}}&nbsp;({{dt.doc_count}})&nbsp;&nbsp;
                 </label>
                 <br /><br />
@@ -64,9 +64,9 @@
                   <input
                   type="checkbox"
                   name="typeFilter"
-                  value="{{s.key}}"
-                  ng-model="subject"
-                  ng-change='facet("subject", "{{s.key}}")'
+                  value="s.key"
+                  ng-model="s.selected"
+                  ng-change='set_facets()'
                   > {{s.key}}&nbsp;({{s.doc_count}})&nbsp;&nbsp;
                 </label>
               </form>

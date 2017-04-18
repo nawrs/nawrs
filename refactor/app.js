@@ -12,66 +12,66 @@ Nawrs.controller('geoSearch', ['$scope', 'client', 'esFactory', '$location', 'Ng
   $scope.docs = [];
   $scope.doc_type = [];
   $scope.subject = [];
-  $scope.filters = [];
-  $scope.hold_filters = [];
-  $scope.faceted_search = function(bucket, filter_term){
-    // do stuff here - get checked boxes and parse into
-    // query filters
-  };
+  $scope.facets = [];
 
   $scope.search = function(){
     $scope.docs = [];
-    $scope.filters = [];
-    $scope.hold_filters = [];
+    $scope.facets = [];
     client.search($scope.searchTerm, $scope.filters).then(function(results){
-      //console.log(results);
       i = 0;
       for (; i < results[1].length; i++){
         $scope.docs.push(results[1][i]);
       }
-      //console.log($scope.docs);
+      ii = 0;
       $scope.doc_type = results[0].doc_type.buckets;
+      for (; ii < $scope.doc_type.length; ii++){
+        $scope.doc_type[ii].selected = false;
+      }
       $scope.subject = results[0].subject.buckets;
+      iii = 0;
+      for (; iii < $scope.subject.length; iii++){
+        $scope.subject[iii].selected = false;
+      }
     })
   }
 
-  // todo: bind to checkboxes, on change get all checked boxes
-  // and build filters our of an array of checked facets
-  $scope.facet = function(bucket, filter_term){
-    var ii = 0;
-    $scope.category = bucket;
-    $scope.docs = [];
-    $scope.filters = [{
-      "term": {
-        [bucket]: filter_term
+  $scope.set_facets = function(){
+    // get all checked and build search - don't store old
+    $scope.facets = [];
+    angular.forEach($scope.doc_type, function(facet){
+      if (facet.selected){
+        var f = {
+          "term": {}
+        };
+        f.term.type = facet.key;
+        $scope.facets.push(f);
       }
-    }
-  ];
-  for (; ii < $scope.hold_filters.length; ii++){
-    $scope.filters.push($scope.hold_filters[i]);
-  }
-  console.log($scope.filters)
-  client.search($scope.searchTerm, $scope.filters).then(function(results){
-    //console.log(results);
-    i = 0;
-    for (; i < results[1].length; i++){
-      $scope.docs.push(results[1][i]);
-    }
-    //console.log($scope.docs);
-    $scope.doc_type = results[0].doc_type.buckets;
-    $scope.subject = results[0].subject.buckets;
-  })
-  $scope.hold_filters = [];
-  var iii = 0;
-  for (; iii < $scope.filters.length; iii++){}
-}
+    })
+    angular.forEach($scope.subject, function(facet){
+      if (facet.selected){
+        var f = {
+          "term": {}
+        };
+        f.term.subject = facet.key;
+        $scope.facets.push(f);
+      }
+    })
+    $scope.facet_search();
+  };
 
-$scope.search();
+  $scope.facet_search = function(){
+    $scope.docs = [];
+    client.search($scope.searchTerm, $scope.facets).then(function(results){
+      i = 0;
+      for (; i < results[1].length; i++){
+        $scope.docs.push(results[1][i]);
+      }
+    })
+  }
 
 }]);
 
 Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $location, $q) {
-  //var es =  require('elasticsearch');
   var client = esFactory({
     host: $location.host() + ':9205',
     apiVersion: '5.0'
@@ -89,8 +89,6 @@ Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $l
 
   var search = function(term, filter_terms){
     var deferred = $q.defer();
-    //var filter = [filter_terms];
-    //console.log(filter_terms)
     var query = {
       bool: {
         must: [{
@@ -102,7 +100,6 @@ Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $l
       filter: filter_terms
     }
   };
-  //console.log(query);
   client.search({
     index: 'nawrs',
     type: 'item',
@@ -123,8 +120,6 @@ Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $l
       }
     }
   }).then(function(result){
-    //console.log(result.hits);
-    //console.log(result.aggregations);
     var docs_aggs = [];
     docs_aggs.push(result.aggregations);
     var ii = 0, hits_in, hits_out = [];
