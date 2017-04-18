@@ -66,6 +66,29 @@ Nawrs.controller('geoSearch', ['$scope', 'client', 'esFactory', '$location', 'Ng
       for (; i < results[1].length; i++){
         $scope.docs.push(results[1][i]);
       }
+      // Update document count in facets
+      ii = 0;
+      for (; ii < $scope.doc_type.length; ii++){
+        // Reset doc count to zero - this seems like a hack but it works
+        $scope.doc_type[ii].doc_count = 0;
+        iii = 0;
+        for (; iii < results[0].doc_type.buckets.length; iii++){
+          if ($scope.doc_type[ii].key == results[0].doc_type.buckets[iii].key){
+            $scope.doc_type[ii].doc_count = results[0].doc_type.buckets[iii].doc_count;
+          }
+        }
+      }
+      iv = 0;
+      for (; iv < $scope.subject.length; iv++){
+        // Reset doc count to zero - this seems like a hack but it works
+        $scope.subject[iv].doc_count = 0;
+        v = 0;
+        for (; v < results[0].subject.buckets.length; v++){
+          if ($scope.subject[iv].key == results[0].subject.buckets[v].key){
+            $scope.subject[iv].doc_count = results[0].subject.buckets[v].doc_count;
+          }
+        }
+      }
     })
   }
 
@@ -120,6 +143,7 @@ Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $l
       }
     }
   }).then(function(result){
+    console.log(result);
     var docs_aggs = [];
     docs_aggs.push(result.aggregations);
     var ii = 0, hits_in, hits_out = [];
