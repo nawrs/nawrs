@@ -21,7 +21,7 @@
 
 <body>
   <div ng-controller="geoSearch">
-    <leaflet center="centroid" tiles="tiles" geojson="result_json" layers="layers" event-broadcast="events" style="width: 75%; height: 480px;"></leaflet>
+    <leaflet center="centroid" tiles="tiles" layers="layers" event-broadcast="events" style="width: 75%; height: 480px;"></leaflet>
     <br /><br />
     <br /><br />
     <section class="results">
@@ -54,6 +54,12 @@
                 </p>
               </div>
               <br /><br />
+              <p style="font-weight:bold;">Filter by Tribal Boundary</p>
+              <form>
+                <select ng-model="doc_geometry.selected" ng-options="df.properties.NAMELSAD for df in doc_geometry">
+                  <option value="">-- choose a tribal boundary --</option>
+                </select>
+                <br /><br />
               <p>Filter by Document Type</p>
               <form>
                 <label ng-repeat="dt in doc_type">
