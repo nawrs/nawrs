@@ -58,6 +58,15 @@
               <select ng-model="doc_geometry.selected" ng-options="df.properties.NAMELSAD for df in doc_geometry" ng-change='set_facets()'>
                 <option value="">-- choose a tribal boundary --</option>
               </select>
+              <!--label ng-repeat="df in doc_geometry">
+              <input
+              type="checkbox"
+              name="shapeFilter"
+              value="df.properties.NAMELSAD"
+              ng-model="df.selected"
+              ng-change='set_facets()'
+              > {{df.properties.NAMELSAD}}&nbsp;&nbsp;
+            </label-->
               <br /><br />
               <!--p>Filter by Document Type</p>
               <form>

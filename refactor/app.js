@@ -112,21 +112,6 @@ onEachFeature: onSelect
 })
 })*/
 
-$scope.selectedPolygon = [];
-
-function onSelect(feature, layer) {
-  layer.on({
-    click: function() {
-      $scope.$apply(function () {
-        $scope.selectedFeature = layer.feature.properties.NAME;
-        $scope.selectedPolygon = layer.feature.geometry.coordinates[0][0];
-        //console.log($scope.selectedPolygon);
-        $scope.search('geospatial');
-      })
-    }
-  })
-}
-
 $scope.changeTiles = function(tiles) {
   $scope.tiles = tilesDict[tiles];
 }
@@ -141,26 +126,22 @@ $scope.doc_type = [];
 $scope.doc_geometry = [];
 $scope.subject = [];
 $scope.facets = [];
-$scope.res_polys = [];
+$scope.geo_facets = [];
 $scope.feature_set = L.featureGroup();
 
 $scope.search = function(search_type){
-  var s_type = search_type || 'metadata';
-  var q_data = [];
   $scope.docs = [];
   $scope.facets = [];
+  $scope.geo_facets = [];
   $scope.doc_geometry = [];
+  $scope.doc_type = [];
+  $scope.subject = [];
 
   leafletData.getMap().then(function(map){
     $scope.feature_set.clearLayers();
   })
 
-  if(s_type == 'geospatial'){
-    q_data = $scope.selectedPolygon;
-  } else {
-    q_data = $scope.searchTerm;
-  }
-  client.search(q_data, $scope.filters, s_type).then(function(results){
+  client.search($scope.searchTerm, $scope.facets, $scope.geo_facets).then(function(results){
     var i = 0;
     for (; i < results[1].length; i++){
       $scope.docs.push(results[1][i]);
@@ -180,10 +161,9 @@ $scope.search = function(search_type){
     for (; iv < $scope.doc_geometry.length; iv++){
       $scope.doc_geometry[iv].selected = false;
     }
-    var v = 0;
     leafletData.getMap().then(function(map){
+      var v = 0;
       for (; v < $scope.doc_geometry.length; v++) {
-        // adding geospatial search facets here
         var newLayer =  L.geoJSON($scope.doc_geometry[v], {
           style: function(feature){
             return {color: "red"};
@@ -191,17 +171,14 @@ $scope.search = function(search_type){
           onEachFeature: function(feature, layer){
             layer.on({
               click: function(){
-                //console.log("a click on " + layer.feature.properties.NAMELSAD);
-                $scope.$apply(function () {
-                  // do search
-                  $scope.set_facets();
-                })
+                layer.feature.selected = true;
+                $scope.set_facets();
               }
             })
           }
-        })//.bindPopup (function(layer){
-          //return layer.feature.properties.NAMELSAD;
-          //});
+        }).bindPopup (function(layer){
+          return layer.feature.properties.NAMELSAD;
+          });
           $scope.feature_set.addLayer(newLayer);
         }
         $scope.feature_set.addTo(map);
@@ -213,6 +190,7 @@ $scope.search = function(search_type){
   $scope.set_facets = function(){
     // get all checked and build search - don't store old
     $scope.facets = [];
+    $scope.geo_facets = [];
     angular.forEach($scope.doc_type, function(facet){
       if (facet.selected){
         var f = {
@@ -231,12 +209,26 @@ $scope.search = function(search_type){
         $scope.facets.push(f);
       }
     })
+    angular.forEach($scope.doc_geometry, function(facet){
+      if (facet.selected){
+        console.log(facet.properties.NAMELSAD);
+        if (facet.geometry.coordinates[0].length == 1){
+          $scope.geo_facets.push(facet.geometry.coordinates[0][0])
+        } else {
+          $scope.geo_facets.push(facet.geometry.coordinates[0]);
+        }
+      }
+    })
     $scope.facet_search();
   };
 
   $scope.facet_search = function(){
     $scope.docs = [];
-    client.search($scope.searchTerm, $scope.facets).then(function(results){
+    var v = 0;
+    for (; v < $scope.doc_geometry.length; v++){
+      $scope.doc_geometry[v].selected = false;
+    }
+    client.search($scope.searchTerm, $scope.facets, $scope.geo_facets).then(function(results){
       i = 0;
       for (; i < results[1].length; i++){
         $scope.docs.push(results[1][i]);
@@ -267,7 +259,7 @@ $scope.search = function(search_type){
     })
   }
 
-  $scope.search('metadata');
+  $scope.search();
 
 }]);
 
@@ -287,10 +279,10 @@ Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $l
     }
   });
 
-  var search = function(term, filter_terms, search_type){
+  var search = function(term, filter_terms, filter_geo){
     var deferred = $q.defer();
     var query = {};
-    if (search_type == 'geospatial'){
+    if (filter_geo.length != 0 && filter_terms.length == 0){
       query = {
         "bool" : {
           "must" : {
@@ -299,13 +291,13 @@ Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $l
           "filter" : {
             "geo_polygon" : {
               "coverage" : {
-                "points" : term
+                "points" : filter_geo[0]
               }
             }
           }
         }
       }
-    } else {
+    } else if (filter_geo.length == 0 && filter_terms.length != 0){
       query = {
         bool: {
           must: [{
@@ -317,40 +309,70 @@ Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $l
         filter: filter_terms
       }
     }
-  };
-  client.search({
-    index: 'nawrs',
-    type: 'item',
-    size: 1000,
-    body: {
-      query: query,
-      aggregations: {
-        doc_type: {
-          terms: {
-            field: "type"
+  } else if (filter_geo.length != 0 && filter_terms.length != 0){
+    query = {
+      bool: {
+        must: [{
+          match: {
+            _all: term
+          },
+          "filter" : {
+            "geo_polygon" : {
+              "coverage" : {
+                "points" : filter_geo[0]
+              }
+            }
           }
-        },
-        subject: {
-          terms: {
-            field: "subject"
-          }
+        }
+      ],
+      filter: filter_terms
+    }
+  }
+} else if (filter_geo.length == 0 && filter_terms.length == 0){
+  query = {
+    bool: {
+      must: [{
+        match: {
+          _all: term
+        }
+      }
+    ]
+  }
+}
+};
+client.search({
+  index: 'nawrs',
+  type: 'item',
+  size: 1000,
+  body: {
+    query: query,
+    aggregations: {
+      doc_type: {
+        terms: {
+          field: "type"
+        }
+      },
+      subject: {
+        terms: {
+          field: "subject"
         }
       }
     }
-  }).then(function(result){
-    //console.log(result);
-    var docs_aggs = [];
-    docs_aggs.push(result.aggregations);
-    var ii = 0, hits_in, hits_out = [];
-    hits_in = (result.hits || {}).hits || [];
-    for(; ii < hits_in.length; ii++){
-      hits_out.push(hits_in[ii]._source);
-    }
-    docs_aggs.push(hits_out);
-    deferred.resolve(docs_aggs);
-  }, deferred.reject);
+  }
+}).then(function(result){
+  //console.log(result);
+  var docs_aggs = [];
+  docs_aggs.push(result.aggregations);
+  var ii = 0, hits_in, hits_out = [];
+  hits_in = (result.hits || {}).hits || [];
+  for(; ii < hits_in.length; ii++){
+    hits_out.push(hits_in[ii]._source);
+  }
+  docs_aggs.push(hits_out);
+  deferred.resolve(docs_aggs);
+}, deferred.reject);
 
-  return deferred.promise;
+return deferred.promise;
 
 };
 
