@@ -48,8 +48,6 @@ Nawrs.controller('geoSearch', ['$scope', '$http', 'client', 'esFactory', '$locat
     layers: {
       overlays: {}
     }
-    //bounds: {}
-    //result_json: {}
   })
 
   $http.get('data/us_state_PR_1hundthDD.geojson').success(function(data, status){
@@ -65,8 +63,8 @@ Nawrs.controller('geoSearch', ['$scope', '$http', 'client', 'esFactory', '$locat
             weight: 1.5,
             opacity: 0.3,
             fillOpacity: 0.1
-          },
-          onEachFeature: onSelect
+          }
+          //onEachFeature: onSelect
         }
       }
     })
@@ -86,117 +84,128 @@ Nawrs.controller('geoSearch', ['$scope', '$http', 'client', 'esFactory', '$locat
             weight: 1.5,
             opacity: 0.3,
             fillOpacity: 0.1
-          },
-          onEachFeature: onSelect
+          }
+          //onEachFeature: onSelect
         }
       }
     })
   })
 
   /*$http.get('/data/tl_2011_PR_1hundthDD.geojson').success(function(data, status){
-    angular.extend($scope.layers.overlays, {
-      tribalbds: {
-        name: 'Tribal Boundaries',
-        type: 'geoJSONShape',
-        data: data,
-        visible: false,
-        layerOptions: {
-          style: {
-            color: 'blue',
-            fillColor: 'blue',
-            weight: 1.5,
-            opacity: 0.3,
-            fillOpacity: 0.1
-          },
-          onEachFeature: onSelect
-        }
-      }
-    })
-  })*/
+  angular.extend($scope.layers.overlays, {
+  tribalbds: {
+  name: 'Tribal Boundaries',
+  type: 'geoJSONShape',
+  data: data,
+  visible: false,
+  layerOptions: {
+  style: {
+  color: 'blue',
+  fillColor: 'blue',
+  weight: 1.5,
+  opacity: 0.3,
+  fillOpacity: 0.1
+},
+onEachFeature: onSelect
+}
+}
+})
+})*/
 
-  $scope.selectedPolygon = [];
-  $scope.resultshape = {
-    "type": "FeatureCollection",
-    "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-    "features": []
-  }
-  $scope.resultshape.features = [];
+$scope.selectedPolygon = [];
 
-  function onSelect(feature, layer) {
-    layer.on({
-      click: function() {
-        $scope.$apply(function () {
-          $scope.selectedFeature = layer.feature.properties.NAME;
-          $scope.selectedPolygon = layer.feature.geometry.coordinates[0][0];
-          //console.log($scope.selectedPolygon);
-          $scope.search('geospatial');
-        })
-      }
-    })
-  }
-
-  $scope.changeTiles = function(tiles) {
-    $scope.tiles = tilesDict[tiles];
-  }
-
-  // Handle search and facet bindings
-  var self = this;
-  self.tableParams = new NgTableParams({}, { dataset: $scope.docs});
-
-  $scope.searchTerm = $location.search().q || 'water rights';
-  $scope.docs = [];
-  $scope.doc_type = [];
-  $scope.doc_geometry = [];
-  $scope.subject = [];
-  $scope.facets = [];
-  $scope.res_polys = [];
-  $scope.feature_array = [];
-
-  $scope.search = function(search_type){
-    var s_type = search_type || 'metadata';
-    var q_data = [];
-    $scope.docs = [];
-    $scope.facets = [];
-    $scope.feature_array = [];
-    $scope.doc_geometry = [];
-
-    if(s_type == 'geospatial'){
-      q_data = $scope.selectedPolygon;
-    } else {
-      q_data = $scope.searchTerm;
+function onSelect(feature, layer) {
+  layer.on({
+    click: function() {
+      $scope.$apply(function () {
+        $scope.selectedFeature = layer.feature.properties.NAME;
+        $scope.selectedPolygon = layer.feature.geometry.coordinates[0][0];
+        //console.log($scope.selectedPolygon);
+        $scope.search('geospatial');
+      })
     }
-    client.search(q_data, $scope.filters, s_type).then(function(results){
-      var i = 0;
-      for (; i < results[1].length; i++){
-        $scope.docs.push(results[1][i]);
-        // the next line pushes all the features into a single feature set
-        $scope.resultshape.features.push(results[1][i].polygon);
-        // the next line pushes all the features in an array of individual feature sets
-        $scope.doc_geometry.push(results[1][i].polygon.features[0]);
-      }
-      //console.log($scope.doc_geometry[0].properties.NAMELSAD);
-      var ii = 0;
-      $scope.doc_type = results[0].doc_type.buckets;
-      for (; ii < $scope.doc_type.length; ii++){
-        $scope.doc_type[ii].selected = false;
-      }
-      $scope.subject = results[0].subject.buckets;
-      var iii = 0;
-      for (; iii < $scope.subject.length; iii++){
-        $scope.subject[iii].selected = false;
-      }
-      var iv = 0;
-      for (; iv < $scope.doc_geometry.length; iv++){
-        $scope.doc_geometry[iv].selected = false;
-      }
-      var v = 0;
-      leafletData.getMap().then(function(map){
-        for (; v < $scope.doc_geometry.length; v++) {
-          $scope.feature_array.push(L.geoJSON($scope.doc_geometry[v], {style: function(feature){ return {color: "green"};}}));
+  })
+}
+
+$scope.changeTiles = function(tiles) {
+  $scope.tiles = tilesDict[tiles];
+}
+
+// Handle search and facet bindings
+var self = this;
+self.tableParams = new NgTableParams({}, { dataset: $scope.docs});
+
+$scope.searchTerm = $location.search().q || 'water rights';
+$scope.docs = [];
+$scope.doc_type = [];
+$scope.doc_geometry = [];
+$scope.subject = [];
+$scope.facets = [];
+$scope.res_polys = [];
+$scope.feature_set = L.featureGroup();
+
+$scope.search = function(search_type){
+  var s_type = search_type || 'metadata';
+  var q_data = [];
+  $scope.docs = [];
+  $scope.facets = [];
+  $scope.doc_geometry = [];
+
+  leafletData.getMap().then(function(map){
+    $scope.feature_set.clearLayers();
+  })
+
+  if(s_type == 'geospatial'){
+    q_data = $scope.selectedPolygon;
+  } else {
+    q_data = $scope.searchTerm;
+  }
+  client.search(q_data, $scope.filters, s_type).then(function(results){
+    var i = 0;
+    for (; i < results[1].length; i++){
+      $scope.docs.push(results[1][i]);
+      $scope.doc_geometry.push(results[1][i].polygon.features[0]);
+    }
+    var ii = 0;
+    $scope.doc_type = results[0].doc_type.buckets;
+    for (; ii < $scope.doc_type.length; ii++){
+      $scope.doc_type[ii].selected = false;
+    }
+    $scope.subject = results[0].subject.buckets;
+    var iii = 0;
+    for (; iii < $scope.subject.length; iii++){
+      $scope.subject[iii].selected = false;
+    }
+    var iv = 0;
+    for (; iv < $scope.doc_geometry.length; iv++){
+      $scope.doc_geometry[iv].selected = false;
+    }
+    var v = 0;
+    leafletData.getMap().then(function(map){
+      for (; v < $scope.doc_geometry.length; v++) {
+        // adding geospatial search facets here
+        var newLayer =  L.geoJSON($scope.doc_geometry[v], {
+          style: function(feature){
+            return {color: "red"};
+          },
+          onEachFeature: function(feature, layer){
+            layer.on({
+              click: function(){
+                //console.log("a click on " + layer.feature.properties.NAMELSAD);
+                $scope.$apply(function () {
+                  // do search
+                  $scope.set_facets();
+                })
+              }
+            })
+          }
+        })//.bindPopup (function(layer){
+          //return layer.feature.properties.NAMELSAD;
+          //});
+          $scope.feature_set.addLayer(newLayer);
         }
-        var fGroup = L.featureGroup($scope.feature_array);
-        fGroup.addTo(map);
-        map.fitBounds(fGroup.getBounds());
+        $scope.feature_set.addTo(map);
+        map.fitBounds($scope.feature_set.getBounds());
       })
     })
   }

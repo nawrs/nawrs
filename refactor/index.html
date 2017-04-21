@@ -55,36 +55,35 @@
               </div>
               <br /><br />
               <p style="font-weight:bold;">Filter by Tribal Boundary</p>
+              <select ng-model="doc_geometry.selected" ng-options="df.properties.NAMELSAD for df in doc_geometry" ng-change='set_facets()'>
+                <option value="">-- choose a tribal boundary --</option>
+              </select>
+              <br /><br />
+              <!--p>Filter by Document Type</p>
               <form>
-                <select ng-model="doc_geometry.selected" ng-options="df.properties.NAMELSAD for df in doc_geometry">
-                  <option value="">-- choose a tribal boundary --</option>
-                </select>
-                <br /><br />
-              <p>Filter by Document Type</p>
-              <form>
-                <label ng-repeat="dt in doc_type">
-                  <input
-                  type="checkbox"
-                  name="typeFilter"
-                  value="dt.key"
-                  ng-model="dt.selected"
-                  ng-change='set_facets()'
-                  > {{dt.key}}&nbsp;({{dt.doc_count}})&nbsp;&nbsp;
-                </label>
-                <br /><br />
-                <p>Filter by Subject</p>
-                <label ng-repeat="s in subject">
-                  <input
-                  type="checkbox"
-                  name="typeFilter"
-                  value="s.key"
-                  ng-model="s.selected"
-                  ng-change='set_facets()'
-                  > {{s.key}}&nbsp;({{s.doc_count}})&nbsp;&nbsp;
-                </label>
-              </form>
-            </div>
-          </section>
-        </div>
-      </body>
-      </html>
+              <label ng-repeat="dt in doc_type">
+              <input
+              type="checkbox"
+              name="typeFilter"
+              value="dt.key"
+              ng-model="dt.selected"
+              ng-change='set_facets()'
+              > {{dt.key}}&nbsp;({{dt.doc_count}})&nbsp;&nbsp;
+            </label>
+            <br /><br />
+            <p>Filter by Subject</p>
+            <label ng-repeat="s in subject">
+            <input
+            type="checkbox"
+            name="typeFilter"
+            value="s.key"
+            ng-model="s.selected"
+            ng-change='set_facets()'
+            > {{s.key}}&nbsp;({{s.doc_count}})&nbsp;&nbsp;
+          </label>
+        </form-->
+      </div>
+    </section>
+  </div>
+</body>
+</html>
