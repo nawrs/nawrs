@@ -3,8 +3,17 @@
 window.Nawrs = angular.module('nawrs', ['ui-leaflet', 'elasticsearch', 'ngTable']);
 
 // the application
-Nawrs.controller('geoSearch', ['$scope', '$http', 'client', 'esFactory', '$location', 'NgTableParams', 'leafletMapEvents', 'leafletData', function ($scope, $http, client, esFactory, $location, NgTableParams, leafletMapEvents, leafletData) {
+Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactory', '$location', 'NgTableParams', 'leafletMapEvents', 'leafletData', function ($scope, $http, $filter, client, esFactory, $location, NgTableParams, leafletMapEvents, leafletData) {
   // Map bindings
+
+  $scope.state_ref_layer = L.featureGroup();
+  $scope.state_select = [];
+
+  $scope.watershed_ref_layer = L.featureGroup();
+  $scope.watershed_select = [];
+
+  $scope.tribal_boundary_layer = L.featureGroup();
+  $scope.tribal_boundary_select = [];
 
   var tilesDict = {
     osm: {
@@ -46,139 +55,124 @@ Nawrs.controller('geoSearch', ['$scope', '$http', 'client', 'esFactory', '$locat
       }
     },
     layers: {
-      overlays: {}
+      //overlays: {}
     }
   })
 
   $http.get('data/us_state_PR_1hundthDD.geojson').success(function(data, status){
-    angular.extend($scope.layers.overlays, {
-      states: {
-        name: 'States',
-        type: 'geoJSONShape',
-        data: data,
-        layerOptions: {
-          style: {
-            color: 'blue',
-            fillColor: 'blue',
-            weight: 1.5,
-            opacity: 0.3,
-            fillOpacity: 0.1
-          }
-          //onEachFeature: onSelect
+    leafletData.getMap().then(function(map){
+      var newLayer = L.geoJSON(data, {
+        onEachFeature: function(feature, layer){
+          $scope.state_select.push(layer.feature);
         }
-      }
+      });
+      $scope.state_ref_layer.addLayer(newLayer);
     })
   })
 
   $http.get('/data/wbdhu2_PR_1hundthDD.geojson').success(function(data, status){
-    angular.extend($scope.layers.overlays, {
-      watersheds: {
-        name: 'Watersheds',
-        type: 'geoJSONShape',
-        data: data,
-        visible: false,
-        layerOptions: {
-          style: {
-            color: 'blue',
-            fillColor: 'blue',
-            weight: 1.5,
-            opacity: 0.3,
-            fillOpacity: 0.1
-          }
-          //onEachFeature: onSelect
+    leafletData.getMap().then(function(map){
+      var newLayer = L.geoJSON(data, {
+        onEachFeature: function(feature, layer){
+          $scope.watershed_select.push(layer.feature);
         }
-      }
+      });
+      $scope.watershed_ref_layer.addLayer(newLayer);
     })
   })
 
-  /*$http.get('/data/tl_2011_PR_1hundthDD.geojson').success(function(data, status){
-  angular.extend($scope.layers.overlays, {
-  tribalbds: {
-  name: 'Tribal Boundaries',
-  type: 'geoJSONShape',
-  data: data,
-  visible: false,
-  layerOptions: {
-  style: {
-  color: 'blue',
-  fillColor: 'blue',
-  weight: 1.5,
-  opacity: 0.3,
-  fillOpacity: 0.1
-},
-onEachFeature: onSelect
-}
-}
-})
-})*/
-
-$scope.changeTiles = function(tiles) {
-  $scope.tiles = tilesDict[tiles];
-}
-
-// Handle search and facet bindings
-var self = this;
-self.tableParams = new NgTableParams({}, { dataset: $scope.docs});
-
-$scope.searchTerm = $location.search().q || 'water rights';
-$scope.docs = [];
-$scope.doc_type = [];
-$scope.doc_geometry = [];
-$scope.subject = [];
-$scope.facets = [];
-$scope.geo_facets = [];
-$scope.feature_set = L.featureGroup();
-
-$scope.search = function(search_type){
-  $scope.docs = [];
-  $scope.facets = [];
-  $scope.geo_facets = [];
-  $scope.doc_geometry = [];
-  $scope.doc_type = [];
-  $scope.subject = [];
-
-  leafletData.getMap().then(function(map){
-    $scope.feature_set.clearLayers();
+  $http.get('/data/tl_2011_PR_1hundthDD.geojson').success(function(data, status){
+    leafletData.getMap().then(function(map){
+      var newLayer = L.geoJSON(data, {
+        onEachFeature: function(feature, layer){
+          $scope.tribal_boundary_select.push(layer.feature);
+        }
+      });
+      $scope.tribal_boundary_layer.addLayer(newLayer);
+    })
   })
 
-  client.search($scope.searchTerm, $scope.facets, $scope.geo_facets).then(function(results){
-    var i = 0;
-    for (; i < results[1].length; i++){
-      $scope.docs.push(results[1][i]);
-      $scope.doc_geometry.push(results[1][i].polygon.features[0]);
-    }
-    var ii = 0;
-    $scope.doc_type = results[0].doc_type.buckets;
-    for (; ii < $scope.doc_type.length; ii++){
-      $scope.doc_type[ii].selected = false;
-    }
-    $scope.subject = results[0].subject.buckets;
-    var iii = 0;
-    for (; iii < $scope.subject.length; iii++){
-      $scope.subject[iii].selected = false;
-    }
-    var iv = 0;
-    for (; iv < $scope.doc_geometry.length; iv++){
-      $scope.doc_geometry[iv].selected = false;
+  $scope.changeTiles = function(tiles) {
+    $scope.tiles = tilesDict[tiles];
+  }
+
+  $scope.ref_layer_select = function(selected){
+    $scope.facets = [];
+    $scope.geo_facets = [];
+    if (selected.geometry.coordinates[0].length == 1){
+      $scope.geo_facets.push(selected.geometry.coordinates[0][0])
+    } else {
+      $scope.geo_facets.push(selected.geometry.coordinates[0]);
     }
     leafletData.getMap().then(function(map){
-      var v = 0;
-      for (; v < $scope.doc_geometry.length; v++) {
-        var newLayer =  L.geoJSON($scope.doc_geometry[v], {
-          style: function(feature){
-            return {color: "red"};
-          },
-          onEachFeature: function(feature, layer){
-            layer.on({
-              click: function(){
-                layer.feature.selected = true;
-                $scope.set_facets();
-              }
-            })
-          }
-        }).bindPopup (function(layer){
-          return layer.feature.properties.NAMELSAD;
-          });
+      var newLayer = L.geoJSON(selected).addTo(map);
+    })
+    $scope.facet_search();
+  }
+
+  // Handle search and facet bindings
+  var self = this;
+  self.tableParams = new NgTableParams({}, { dataset: $scope.docs});
+
+  $scope.searchTerm = $location.search().q;
+  $scope.docs = [];
+  $scope.doc_type = [];
+  $scope.doc_geometry = [];
+  $scope.subject = [];
+  $scope.facets = [];
+  $scope.geo_facets = [];
+  $scope.feature_set = L.featureGroup();
+
+  $scope.search = function(search_type){
+    $scope.docs = [];
+    $scope.facets = [];
+    $scope.geo_facets = [];
+    $scope.doc_geometry = [];
+    $scope.doc_type = [];
+    $scope.subject = [];
+
+    leafletData.getMap().then(function(map){
+      $scope.feature_set.clearLayers();
+    })
+
+    client.search($scope.searchTerm, $scope.facets, $scope.geo_facets).then(function(results){
+      var i = 0;
+      for (; i < results[1].length; i++){
+        $scope.docs.push(results[1][i]);
+        $scope.doc_geometry.push(results[1][i].polygon.features[0]);
+      }
+      var ii = 0;
+      $scope.doc_type = results[0].doc_type.buckets;
+      for (; ii < $scope.doc_type.length; ii++){
+        $scope.doc_type[ii].selected = false;
+      }
+      $scope.subject = results[0].subject.buckets;
+      var iii = 0;
+      for (; iii < $scope.subject.length; iii++){
+        $scope.subject[iii].selected = false;
+      }
+      var iv = 0;
+      for (; iv < $scope.doc_geometry.length; iv++){
+        $scope.doc_geometry[iv].selected = false;
+      }
+      leafletData.getMap().then(function(map){
+        var v = 0;
+        for (; v < $scope.doc_geometry.length; v++) {
+          var newLayer =  L.geoJSON($scope.doc_geometry[v], {
+            style: function(feature){
+              return {color: "red"};
+            },
+            onEachFeature: function(feature, layer){
+              layer.on({
+                click: function(){
+                  layer.feature.selected = true;
+                  $scope.set_facets();
+                }
+              })
+            }
+          })/*.bindPopup (function(layer){
+            return layer.feature.properties.NAMELSAD;
+          })*/;
           $scope.feature_set.addLayer(newLayer);
         }
         $scope.feature_set.addTo(map);
@@ -211,7 +205,7 @@ $scope.search = function(search_type){
     })
     angular.forEach($scope.doc_geometry, function(facet){
       if (facet.selected){
-        console.log(facet.properties.NAMELSAD);
+        //console.log(facet.properties.NAMELSAD);
         if (facet.geometry.coordinates[0].length == 1){
           $scope.geo_facets.push(facet.geometry.coordinates[0][0])
         } else {
@@ -224,14 +218,19 @@ $scope.search = function(search_type){
 
   $scope.facet_search = function(){
     $scope.docs = [];
+    leafletData.getMap().then(function(map){
+      $scope.feature_set.clearLayers();
+    })
     var v = 0;
     for (; v < $scope.doc_geometry.length; v++){
       $scope.doc_geometry[v].selected = false;
     }
+    $scope.doc_geometry = [];
     client.search($scope.searchTerm, $scope.facets, $scope.geo_facets).then(function(results){
       i = 0;
       for (; i < results[1].length; i++){
         $scope.docs.push(results[1][i]);
+        $scope.doc_geometry.push(results[1][i].polygon.features[0]);
       }
       // Update document count in facets
       ii = 0;
@@ -256,6 +255,29 @@ $scope.search = function(search_type){
           }
         }
       }
+      leafletData.getMap().then(function(map){
+        var vi = 0;
+        for (; vi < $scope.doc_geometry.length; vi++) {
+          var newLayer =  L.geoJSON($scope.doc_geometry[vi], {
+            style: function(feature){
+              return {color: "red"};
+            },
+            onEachFeature: function(feature, layer){
+              layer.on({
+                click: function(){
+                  layer.feature.selected = true;
+                  $scope.set_facets();
+                }
+              })
+            }
+          })/*.bindPopup (function(layer){
+            return layer.feature.properties.NAMELSAD;
+          })*/;
+          $scope.feature_set.addLayer(newLayer);
+        }
+        $scope.feature_set.addTo(map);
+        map.fitBounds($scope.feature_set.getBounds());
+      })
     })
   }
 
@@ -275,7 +297,7 @@ Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $l
     if (error) {
       console.error('elasticsearch cluster is down!');
     } else {
-      console.log('All is well');
+      //console.log('All is well');
     }
   });
 

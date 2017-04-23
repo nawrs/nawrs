@@ -54,20 +54,20 @@
                 </p>
               </div>
               <br /><br />
+              <p style="font-weight:bold;">Filter by State</p>
+              <select style="max-width:300px;" ng-model="state_select.properties" ng-options="st.properties.NAME for st in state_select track by st.properties.GEOID" ng-change="ref_layer_select(state_select.properties)">
+                <option value="">-- choose a state --</option>
+              </select>
+              <br /><br />
               <p style="font-weight:bold;">Filter by Tribal Boundary</p>
-              <select ng-model="doc_geometry.selected" ng-options="df.properties.NAMELSAD for df in doc_geometry" ng-change='set_facets()'>
+              <select style="max-width:300px;" ng-model="tribal_boundary_select.properties" ng-options="tb.properties.NAME for tb in tribal_boundary_select track by tb.properties.GEOID" ng-change="ref_layer_select(tribal_boundary_select.properties)">
                 <option value="">-- choose a tribal boundary --</option>
               </select>
-              <!--label ng-repeat="df in doc_geometry">
-              <input
-              type="checkbox"
-              name="shapeFilter"
-              value="df.properties.NAMELSAD"
-              ng-model="df.selected"
-              ng-change='set_facets()'
-              > {{df.properties.NAMELSAD}}&nbsp;&nbsp;
-            </label-->
               <br /><br />
+              <p style="font-weight:bold;">Filter by Watershed</p>
+              <select style="min-width:300px;" ng-model="watershed_select.properties" ng-options="ws.properties.NAME for ws in watershed_select track by ws.properties.HUC2" ng-change="ref_layer_select(watershed_select.properties)">
+                <option value="">-- choose a watershed --</option>
+              </select>
               <!--p>Filter by Document Type</p>
               <form>
               <label ng-repeat="dt in doc_type">
