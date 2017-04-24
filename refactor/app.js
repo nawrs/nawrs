@@ -148,9 +148,6 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
 
     leafletData.getMap().then(function(map){
       $scope.feature_set.clearLayers();
-      $scope.state_ref_layer.clearLayers();
-      $scope.watershed_ref_layer.clearLayers();
-      $scope.tribal_boundary_layer.clearLayers();
     })
 
     client.search($scope.searchTerm, $scope.facets, $scope.geo_facets).then(function(results){
@@ -215,6 +212,11 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
     // get all checked and build search - don't store old
     $scope.facets = [];
     $scope.geo_facets = [];
+    leafletData.getMap().then(function(map){
+      $scope.watershed_facets.clearLayers();
+      $scope.state_facets.clearLayers();
+      $scope.tribal_boundary_facets.clearLayers();
+    })
     angular.forEach($scope.doc_type, function(facet){
       if (facet.selected){
         var f = {
@@ -252,7 +254,9 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
           $scope.geo_facets.push(facet.geometry.coordinates[0]);
         }
         leafletData.getMap().then(function(map){
-          var newLayer = L.geoJSON(facet).addTo(map);
+          var newLayer = L.geoJSON(facet);
+          $scope.state_facets.addLayer(newLayer);
+          $scope.state_facets.addTo(map);
         })
       }
     })
@@ -264,7 +268,9 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
           $scope.geo_facets.push(facet.geometry.coordinates[0]);
         }
         leafletData.getMap().then(function(map){
-          var newLayer = L.geoJSON(facet).addTo(map);
+          var newLayer = L.geoJSON(facet);
+          $scope.watershed_facets.addLayer(newLayer);
+          $scope.watershed_facets.addTo(map);
         })
       }
     })
@@ -276,7 +282,9 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
           $scope.geo_facets.push(facet.geometry.coordinates[0]);
         }
         leafletData.getMap().then(function(map){
-          var newLayer = L.geoJSON(facet).addTo(map);
+          var newLayer = L.geoJSON(facet);
+          $scope.tribal_boundary_facets.addLayer(newLayer);
+          $scope.tribal_boundary_facets.addTo(map);
         })
       }
     })
@@ -292,7 +300,7 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
     for (; v < $scope.doc_geometry.length; v++){
       $scope.doc_geometry[v].selected = false;
     }
-    //$scope.doc_geometry = [];
+    $scope.doc_geometry = [];
     client.search($scope.searchTerm, $scope.facets, $scope.geo_facets).then(function(results){
       var i = 0;
       for (; i < results[1].length; i++){
