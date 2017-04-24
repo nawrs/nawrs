@@ -35,6 +35,8 @@
                 {{doc.type}}</td>
               </tr>
             </table>
+          </section>
+          <section class="ui">
             <div class="pane">
               <img id="logo" src="https://raw.githubusercontent.com/nawrs/nawrs-web/master/images/nawrs.png" alt="NAWRS Logo" >
               <h2>Keyword Search</h2>
@@ -44,30 +46,66 @@
                   <input type="submit" value="Search">
                 </form>
               </section>
+              <br />
               <div>
-                <br /><br />
                 <h4>Select a Baselayer</h4>
                 <p>
-                  <button ng-click="changeTiles('osm')" class="btn btn-default" style="min-width:200px; background-color:rgb(4, 112, 184);color:white;">OpenStreetMaps</button><br/><br />
-                  <button ng-click="changeTiles('stamen_ter')" class="btn btn-default" style="min-width:200px; background-color:rgb(4, 112, 184);color:white;">Stamen Terrain</button><br/><br />
-                  <button ng-click="changeTiles('esri_world')" class="btn btn-default" style="min-width:200px; background-color:rgb(4, 112, 184);color:white;">ESRI World Imagery</button>
+                  <button ng-click="changeTiles('osm')" class="btn btn-default" style="background-color:rgb(4, 112, 184);color:white;">Street</button>
+                  <button ng-click="changeTiles('stamen_ter')" class="btn btn-default" style="background-color:rgb(4, 112, 184);color:white;">Terrain</button>
+                  <button ng-click="changeTiles('esri_world')" class="btn btn-default" style="background-color:rgb(4, 112, 184);color:white;">Satellite</button>
                 </p>
+                <hr />
               </div>
-              <br /><br />
-              <p style="font-weight:bold;">Filter by State</p>
-              <select style="max-width:300px;" ng-model="state_select.properties" ng-options="st.properties.NAME for st in state_select track by st.properties.GEOID" ng-change="ref_layer_select(state_select.properties)">
-                <option value="">-- choose a state --</option>
-              </select>
-              <br /><br />
-              <p style="font-weight:bold;">Filter by Tribal Boundary</p>
-              <select style="max-width:300px;" ng-model="tribal_boundary_select.properties" ng-options="tb.properties.NAME for tb in tribal_boundary_select track by tb.properties.GEOID" ng-change="ref_layer_select(tribal_boundary_select.properties)">
-                <option value="">-- choose a tribal boundary --</option>
-              </select>
-              <br /><br />
-              <p style="font-weight:bold;">Filter by Watershed</p>
-              <select style="min-width:300px;" ng-model="watershed_select.properties" ng-options="ws.properties.NAME for ws in watershed_select track by ws.properties.HUC2" ng-change="ref_layer_select(watershed_select.properties)">
-                <option value="">-- choose a watershed --</option>
-              </select>
+              <div>
+                <h4>Facets</h4>
+                <label style="font-weight:bold;">
+                  <input type="checkbox" ng-model="watershedChecked">
+                  Show Watershed Facets
+                </label>
+                <form ng-show="watershedChecked">
+                  <label ng-repeat="ws in watershed_select | orderBy: 'properties.NAME'">
+                    <input
+                    type="checkbox"
+                    name="watershedFilter"
+                    value="ws.properties.NAME"
+                    ng-model="ws.selected"
+                    ng-change='set_facets()'
+                    > {{ws.properties.NAME}}&nbsp;&nbsp;
+                  </label>
+                </form>
+                <br />
+                <label style="font-weight:bold;">
+                  <input type="checkbox" ng-model="stateChecked">
+                  Show State Facets
+                </label>
+                <form ng-show="stateChecked">
+                  <label ng-repeat="st in state_select | orderBy: 'properties.NAME'">
+                    <input
+                    type="checkbox"
+                    name="stateFilter"
+                    value="st.properties.NAME"
+                    ng-model="st.selected"
+                    ng-change='set_facets()'
+                    > {{st.properties.NAME}}&nbsp;&nbsp;
+                  </label>
+                </form>
+                <br />
+                <label style="font-weight:bold;">
+                  <input type="checkbox" ng-model="tribalBoundaryChecked">
+                  Show Tribal Boundary Facets
+                </label>
+                <form ng-show="tribalBoundaryChecked">
+                  <label ng-repeat="tb in tribal_boundary_select | orderBy: 'properties.NAME'">
+                    <input
+                    type="checkbox"
+                    name="tribalBoundaryFilter"
+                    value="tb.properties.NAME"
+                    ng-model="tb.selected"
+                    ng-change='set_facets()'
+                    > {{tb.properties.NAME}}&nbsp;&nbsp;
+                  </label>
+                </form>
+              </div>
               <!--p>Filter by Document Type</p>
               <form>
               <label ng-repeat="dt in doc_type">
@@ -92,7 +130,7 @@
           </label>
         </form-->
       </div>
-    </section>
+    </select>
   </div>
 </body>
 </html>

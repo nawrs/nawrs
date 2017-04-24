@@ -7,12 +7,15 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
   // Map bindings
 
   $scope.state_ref_layer = L.featureGroup();
+  $scope.state_facets = L.featureGroup();
   $scope.state_select = [];
 
   $scope.watershed_ref_layer = L.featureGroup();
+  $scope.watershed_facets = L.featureGroup();
   $scope.watershed_select = [];
 
   $scope.tribal_boundary_layer = L.featureGroup();
+  $scope.tribal_boundary_facets = L.featureGroup();
   $scope.tribal_boundary_select = [];
 
   var tilesDict = {
@@ -66,6 +69,10 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
           $scope.state_select.push(layer.feature);
         }
       });
+      var i = 0;
+      for (; i < $scope.state_select.length; i++){
+        $scope.state_select[i].selected = false;
+      }
       $scope.state_ref_layer.addLayer(newLayer);
     })
   })
@@ -77,6 +84,10 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
           $scope.watershed_select.push(layer.feature);
         }
       });
+      var i = 0;
+      for (; i < $scope.watershed_select.length; i++){
+        $scope.watershed_select[i].selected = false;
+      }
       $scope.watershed_ref_layer.addLayer(newLayer);
     })
   })
@@ -88,6 +99,10 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
           $scope.tribal_boundary_select.push(layer.feature);
         }
       });
+      var i = 0;
+      for (; i < $scope.tribal_boundary_select.length; i++){
+        $scope.tribal_boundary_select[i].selected = false;
+      }
       $scope.tribal_boundary_layer.addLayer(newLayer);
     })
   })
@@ -133,6 +148,9 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
 
     leafletData.getMap().then(function(map){
       $scope.feature_set.clearLayers();
+      $scope.state_ref_layer.clearLayers();
+      $scope.watershed_ref_layer.clearLayers();
+      $scope.tribal_boundary_layer.clearLayers();
     })
 
     client.search($scope.searchTerm, $scope.facets, $scope.geo_facets).then(function(results){
@@ -154,6 +172,18 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
       var iv = 0;
       for (; iv < $scope.doc_geometry.length; iv++){
         $scope.doc_geometry[iv].selected = false;
+      }
+      var vi = 0;
+      for (; vi < $scope.state_select.length; vi++){
+        $scope.state_select[vi].selected = false;
+      }
+      var vii = 0;
+      for (; vii < $scope.watershed_select.length; vii++){
+        $scope.watershed_select[vii].selected = false;
+      }
+      var viii = 0;
+      for (; viii < $scope.tribal_boundary_select.length; viii++){
+        $scope.tribal_boundary_select[viii].selected = false;
       }
       leafletData.getMap().then(function(map){
         var v = 0;
@@ -213,6 +243,43 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
         }
       }
     })
+    angular.forEach($scope.state_select, function(facet){
+      if (facet.selected){
+        //console.log(facet.properties.NAME)
+        if (facet.geometry.coordinates[0].length == 1){
+          $scope.geo_facets.push(facet.geometry.coordinates[0][0])
+        } else {
+          $scope.geo_facets.push(facet.geometry.coordinates[0]);
+        }
+        leafletData.getMap().then(function(map){
+          var newLayer = L.geoJSON(facet).addTo(map);
+        })
+      }
+    })
+    angular.forEach($scope.watershed_select, function(facet){
+      if (facet.selected){
+        if (facet.geometry.coordinates[0].length == 1){
+          $scope.geo_facets.push(facet.geometry.coordinates[0][0])
+        } else {
+          $scope.geo_facets.push(facet.geometry.coordinates[0]);
+        }
+        leafletData.getMap().then(function(map){
+          var newLayer = L.geoJSON(facet).addTo(map);
+        })
+      }
+    })
+    angular.forEach($scope.tribal_boundary_select, function(facet){
+      if (facet.selected){
+        if (facet.geometry.coordinates[0].length == 1){
+          $scope.geo_facets.push(facet.geometry.coordinates[0][0])
+        } else {
+          $scope.geo_facets.push(facet.geometry.coordinates[0]);
+        }
+        leafletData.getMap().then(function(map){
+          var newLayer = L.geoJSON(facet).addTo(map);
+        })
+      }
+    })
     $scope.facet_search();
   };
 
@@ -225,30 +292,30 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
     for (; v < $scope.doc_geometry.length; v++){
       $scope.doc_geometry[v].selected = false;
     }
-    $scope.doc_geometry = [];
+    //$scope.doc_geometry = [];
     client.search($scope.searchTerm, $scope.facets, $scope.geo_facets).then(function(results){
-      i = 0;
+      var i = 0;
       for (; i < results[1].length; i++){
         $scope.docs.push(results[1][i]);
         $scope.doc_geometry.push(results[1][i].polygon.features[0]);
       }
       // Update document count in facets
-      ii = 0;
+      var ii = 0;
       for (; ii < $scope.doc_type.length; ii++){
         // Reset doc count to zero - this seems like a hack but it works
         $scope.doc_type[ii].doc_count = 0;
-        iii = 0;
+        var iii = 0;
         for (; iii < results[0].doc_type.buckets.length; iii++){
           if ($scope.doc_type[ii].key == results[0].doc_type.buckets[iii].key){
             $scope.doc_type[ii].doc_count = results[0].doc_type.buckets[iii].doc_count;
           }
         }
       }
-      iv = 0;
+      var iv = 0;
       for (; iv < $scope.subject.length; iv++){
         // Reset doc count to zero - this seems like a hack but it works
         $scope.subject[iv].doc_count = 0;
-        v = 0;
+        var v = 0;
         for (; v < results[0].subject.buckets.length; v++){
           if ($scope.subject[iv].key == results[0].subject.buckets[v].key){
             $scope.subject[iv].doc_count = results[0].subject.buckets[v].doc_count;
@@ -272,7 +339,7 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
             }
           })/*.bindPopup (function(layer){
             return layer.feature.properties.NAMELSAD;
-          })*/;
+          });*/
           $scope.feature_set.addLayer(newLayer);
         }
         $scope.feature_set.addTo(map);
