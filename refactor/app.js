@@ -111,18 +111,27 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
     $scope.tiles = tilesDict[tiles];
   }
 
-  $scope.ref_layer_select = function(selected){
+  $scope.clearFacets = function(){
     $scope.facets = [];
     $scope.geo_facets = [];
-    if (selected.geometry.coordinates[0].length == 1){
-      $scope.geo_facets.push(selected.geometry.coordinates[0][0])
-    } else {
-      $scope.geo_facets.push(selected.geometry.coordinates[0]);
+    var vi = 0;
+    for (; vi < $scope.state_select.length; vi++){
+      $scope.state_select[vi].selected = false;
+    }
+    var vii = 0;
+    for (; vii < $scope.watershed_select.length; vii++){
+      $scope.watershed_select[vii].selected = false;
+    }
+    var viii = 0;
+    for (; viii < $scope.tribal_boundary_select.length; viii++){
+      $scope.tribal_boundary_select[viii].selected = false;
     }
     leafletData.getMap().then(function(map){
-      var newLayer = L.geoJSON(selected).addTo(map);
+      $scope.watershed_facets.clearLayers();
+      $scope.state_facets.clearLayers();
+      $scope.tribal_boundary_facets.clearLayers();
     })
-    $scope.facet_search();
+    $scope.search();
   }
 
   // Handle search and facet bindings
@@ -148,6 +157,9 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
 
     leafletData.getMap().then(function(map){
       $scope.feature_set.clearLayers();
+      $scope.watershed_facets.clearLayers();
+      $scope.state_facets.clearLayers();
+      $scope.tribal_boundary_facets.clearLayers();
     })
 
     client.search($scope.searchTerm, $scope.facets, $scope.geo_facets).then(function(results){
@@ -193,13 +205,13 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
               layer.on({
                 click: function(){
                   layer.feature.selected = true;
-                  $scope.set_facets();
+                  //$scope.set_facets();
                 }
               })
             }
-          })/*.bindPopup (function(layer){
+          }).bindPopup (function(layer){
             return layer.feature.properties.NAMELSAD;
-          })*/;
+          });
           $scope.feature_set.addLayer(newLayer);
         }
         $scope.feature_set.addTo(map);
@@ -235,7 +247,7 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
         $scope.facets.push(f);
       }
     })
-    angular.forEach($scope.doc_geometry, function(facet){
+    /*angular.forEach($scope.doc_geometry, function(facet){
       if (facet.selected){
         //console.log(facet.properties.NAMELSAD);
         if (facet.geometry.coordinates[0].length == 1){
@@ -244,10 +256,9 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
           $scope.geo_facets.push(facet.geometry.coordinates[0]);
         }
       }
-    })
+    })*/
     angular.forEach($scope.state_select, function(facet){
       if (facet.selected){
-        //console.log(facet.properties.NAME)
         if (facet.geometry.coordinates[0].length == 1){
           $scope.geo_facets.push(facet.geometry.coordinates[0][0])
         } else {
@@ -292,7 +303,7 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
   };
 
   $scope.facet_search = function(){
-    $scope.docs = [];
+    //$scope.docs = [];
     leafletData.getMap().then(function(map){
       $scope.feature_set.clearLayers();
     })
@@ -300,7 +311,7 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
     for (; v < $scope.doc_geometry.length; v++){
       $scope.doc_geometry[v].selected = false;
     }
-    $scope.doc_geometry = [];
+    //$scope.doc_geometry = [];
     client.search($scope.searchTerm, $scope.facets, $scope.geo_facets).then(function(results){
       var i = 0;
       for (; i < results[1].length; i++){
@@ -341,13 +352,13 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
               layer.on({
                 click: function(){
                   layer.feature.selected = true;
-                  $scope.set_facets();
+                  //$scope.set_facets();
                 }
               })
             }
-          })/*.bindPopup (function(layer){
+          }).bindPopup (function(layer){
             return layer.feature.properties.NAMELSAD;
-          });*/
+          });
           $scope.feature_set.addLayer(newLayer);
         }
         $scope.feature_set.addTo(map);
@@ -356,7 +367,7 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
     })
   }
 
-  $scope.search();
+  //$scope.search();
 
 }]);
 
@@ -380,15 +391,26 @@ Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $l
     var deferred = $q.defer();
     var query = {};
     if (filter_geo.length != 0 && filter_terms.length == 0){
+      var outer = [];
+      var c = 0;
+      for (;c < filter_geo.length; c++){
+        var inner = [];
+        inner.push(filter_geo[c]);
+        outer.push(inner);
+      }
       query = {
         "bool" : {
           "must" : {
             "match_all" : {}
           },
           "filter" : {
-            "geo_polygon" : {
-              "coverage" : {
-                "points" : filter_geo[0]
+            "geo_shape": {
+              "centroid.features.geometry": {
+                "shape": {
+                  "type": "multipolygon",
+                  "coordinates" : outer
+                },
+                "relation": "within"
               }
             }
           }
@@ -407,6 +429,13 @@ Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $l
       }
     }
   } else if (filter_geo.length != 0 && filter_terms.length != 0){
+    var outer = [];
+    var c = 0;
+    for (;c < filter_geo.length; c++){
+      var inner = [];
+      inner.push(filter_geo[c]);
+      outer.push(inner);
+    }
     query = {
       bool: {
         must: [{
@@ -414,9 +443,13 @@ Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $l
             _all: term
           },
           "filter" : {
-            "geo_polygon" : {
-              "coverage" : {
-                "points" : filter_geo[0]
+            "geo_shape": {
+              "centroid.features.geometry": {
+                "shape": {
+                  "type": "multipolygon",
+                  "coordinates" : outer
+                },
+                "relation": "within"
               }
             }
           }

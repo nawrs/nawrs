@@ -60,7 +60,7 @@
                 <h4>Facets</h4>
                 <label style="font-weight:bold;">
                   <input type="checkbox" ng-model="watershedChecked">
-                  Show Watershed Facets
+                  Display Watershed Facets
                 </label>
                 <form ng-show="watershedChecked">
                   <label ng-repeat="ws in watershed_select | orderBy: 'properties.NAME'">
@@ -76,7 +76,7 @@
                 <br />
                 <label style="font-weight:bold;">
                   <input type="checkbox" ng-model="stateChecked">
-                  Show State Facets
+                  Display State Facets
                 </label>
                 <form ng-show="stateChecked">
                   <label ng-repeat="st in state_select | orderBy: 'properties.NAME'">
@@ -92,7 +92,7 @@
                 <br />
                 <label style="font-weight:bold;">
                   <input type="checkbox" ng-model="tribalBoundaryChecked">
-                  Show Tribal Boundary Facets
+                  Display Tribal Boundary Facets
                 </label>
                 <form ng-show="tribalBoundaryChecked">
                   <label ng-repeat="tb in tribal_boundary_select | orderBy: 'properties.NAME'">
@@ -104,7 +104,8 @@
                     ng-change='set_facets()'
                     > {{tb.properties.NAME}}&nbsp;&nbsp;
                   </label>
-                </form>
+                </form><br />
+                <button ng-click="clearFacets()" class="btn btn-default" style="background-color:rgb(4, 112, 184);color:white;">Remove All</button>
               </div>
               <!--p>Filter by Document Type</p>
               <form>
