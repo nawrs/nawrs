@@ -142,6 +142,7 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
   $scope.docs = [];
   $scope.doc_type = [];
   $scope.doc_geometry = [];
+  $scope.cur_doc_geometry = [];
   $scope.subject = [];
   $scope.facets = [];
   $scope.geo_facets = [];
@@ -152,6 +153,7 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
     $scope.facets = [];
     $scope.geo_facets = [];
     $scope.doc_geometry = [];
+    $scope.cur_doc_geometry = [];
     $scope.doc_type = [];
     $scope.subject = [];
 
@@ -197,17 +199,10 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
       leafletData.getMap().then(function(map){
         var v = 0;
         for (; v < $scope.doc_geometry.length; v++) {
+          $scope.doc_geometry[v].selected = true;
           var newLayer =  L.geoJSON($scope.doc_geometry[v], {
             style: function(feature){
               return {color: "red"};
-            },
-            onEachFeature: function(feature, layer){
-              layer.on({
-                click: function(){
-                  layer.feature.selected = true;
-                  //$scope.set_facets();
-                }
-              })
             }
           }).bindPopup (function(layer){
             return layer.feature.properties.NAMELSAD;
@@ -221,10 +216,16 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
   }
 
   $scope.set_facets = function(){
-    // get all checked and build search - don't store old
+    // get all checked and redo search - don't store old
+    var xx = 0;
+    for (;xx < $scope.doc_geometry.length; xx++){
+      $scope.cur_doc_geometry.push($scope.doc_geometry[xx]);
+    }
     $scope.facets = [];
     $scope.geo_facets = [];
+    $scope.doc_geometry = [];
     leafletData.getMap().then(function(map){
+      $scope.feature_set.clearLayers();
       $scope.watershed_facets.clearLayers();
       $scope.state_facets.clearLayers();
       $scope.tribal_boundary_facets.clearLayers();
@@ -247,16 +248,15 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
         $scope.facets.push(f);
       }
     })
-    /*angular.forEach($scope.doc_geometry, function(facet){
+    angular.forEach($scope.cur_doc_geometry, function(facet){
       if (facet.selected){
-        //console.log(facet.properties.NAMELSAD);
         if (facet.geometry.coordinates[0].length == 1){
           $scope.geo_facets.push(facet.geometry.coordinates[0][0])
         } else {
           $scope.geo_facets.push(facet.geometry.coordinates[0]);
         }
       }
-    })*/
+    })
     angular.forEach($scope.state_select, function(facet){
       if (facet.selected){
         if (facet.geometry.coordinates[0].length == 1){
@@ -303,43 +303,12 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
   };
 
   $scope.facet_search = function(){
-    //$scope.docs = [];
-    leafletData.getMap().then(function(map){
-      $scope.feature_set.clearLayers();
-    })
-    var v = 0;
-    for (; v < $scope.doc_geometry.length; v++){
-      $scope.doc_geometry[v].selected = false;
-    }
-    //$scope.doc_geometry = [];
+    $scope.docs = [];
     client.search($scope.searchTerm, $scope.facets, $scope.geo_facets).then(function(results){
       var i = 0;
       for (; i < results[1].length; i++){
         $scope.docs.push(results[1][i]);
         $scope.doc_geometry.push(results[1][i].polygon.features[0]);
-      }
-      // Update document count in facets
-      var ii = 0;
-      for (; ii < $scope.doc_type.length; ii++){
-        // Reset doc count to zero - this seems like a hack but it works
-        $scope.doc_type[ii].doc_count = 0;
-        var iii = 0;
-        for (; iii < results[0].doc_type.buckets.length; iii++){
-          if ($scope.doc_type[ii].key == results[0].doc_type.buckets[iii].key){
-            $scope.doc_type[ii].doc_count = results[0].doc_type.buckets[iii].doc_count;
-          }
-        }
-      }
-      var iv = 0;
-      for (; iv < $scope.subject.length; iv++){
-        // Reset doc count to zero - this seems like a hack but it works
-        $scope.subject[iv].doc_count = 0;
-        var v = 0;
-        for (; v < results[0].subject.buckets.length; v++){
-          if ($scope.subject[iv].key == results[0].subject.buckets[v].key){
-            $scope.subject[iv].doc_count = results[0].subject.buckets[v].doc_count;
-          }
-        }
       }
       leafletData.getMap().then(function(map){
         var vi = 0;
@@ -347,14 +316,6 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
           var newLayer =  L.geoJSON($scope.doc_geometry[vi], {
             style: function(feature){
               return {color: "red"};
-            },
-            onEachFeature: function(feature, layer){
-              layer.on({
-                click: function(){
-                  layer.feature.selected = true;
-                  //$scope.set_facets();
-                }
-              })
             }
           }).bindPopup (function(layer){
             return layer.feature.properties.NAMELSAD;
@@ -366,8 +327,6 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
       })
     })
   }
-
-  //$scope.search();
 
 }]);
 
@@ -490,7 +449,6 @@ client.search({
     }
   }
 }).then(function(result){
-  //console.log(result);
   var docs_aggs = [];
   docs_aggs.push(result.aggregations);
   var ii = 0, hits_in, hits_out = [];

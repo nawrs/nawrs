@@ -8,15 +8,12 @@
   <script src="bower_components/ui-leaflet/dist/ui-leaflet.min.js"></script>
   <script src="bower_components/elasticsearch/elasticsearch.angular.js"></script>
   <script src="bower_components/ng-table/bundles/ng-table.min.js"></script>
-  <!--script src="basicmap/basicmap.js"></script-->
   <script src="app.js"></script>
   <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
-  <!--link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"/-->
   <link rel="stylesheet" href="css/ol.css" type="text/css">
   <link rel="stylesheet" href="css/style.css" type="text/css">
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
   <link rel="stylesheet" href="css/ng-table.min.css" type="text/css">
-  <!--link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" /-->
 </head>
 
 <body>
@@ -58,6 +55,8 @@
               </div>
               <div>
                 <h4>Facets</h4>
+                <button ng-click="clearFacets()" class="btn btn-default" style="background-color:rgb(4, 112, 184);color:white;">Remove All Facets</button>
+                <br /><br />
                 <label style="font-weight:bold;">
                   <input type="checkbox" ng-model="watershedChecked">
                   Display Watershed Facets
@@ -104,32 +103,8 @@
                     ng-change='set_facets()'
                     > {{tb.properties.NAME}}&nbsp;&nbsp;
                   </label>
-                </form><br />
-                <button ng-click="clearFacets()" class="btn btn-default" style="background-color:rgb(4, 112, 184);color:white;">Remove All</button>
+                </form>
               </div>
-              <!--p>Filter by Document Type</p>
-              <form>
-              <label ng-repeat="dt in doc_type">
-              <input
-              type="checkbox"
-              name="typeFilter"
-              value="dt.key"
-              ng-model="dt.selected"
-              ng-change='set_facets()'
-              > {{dt.key}}&nbsp;({{dt.doc_count}})&nbsp;&nbsp;
-            </label>
-            <br /><br />
-            <p>Filter by Subject</p>
-            <label ng-repeat="s in subject">
-            <input
-            type="checkbox"
-            name="typeFilter"
-            value="s.key"
-            ng-model="s.selected"
-            ng-change='set_facets()'
-            > {{s.key}}&nbsp;({{s.doc_count}})&nbsp;&nbsp;
-          </label>
-        </form-->
       </div>
     </select>
   </div>
