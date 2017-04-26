@@ -54,59 +54,76 @@
                 <hr />
               </div>
               <div>
-                <h4>Facets</h4>
-                <button ng-click="clearFacets()" class="btn btn-default" style="background-color:rgb(4, 112, 184);color:white;">Remove All Facets</button>
-                <br /><br />
-                <label style="font-weight:bold;">
-                  <input type="checkbox" ng-model="watershedChecked">
-                  Display Watershed Facets
-                </label>
-                <form ng-show="watershedChecked">
-                  <label ng-repeat="ws in watershed_select | orderBy: 'properties.NAME'">
-                    <input
-                    type="checkbox"
-                    name="watershedFilter"
-                    value="ws.properties.NAME"
-                    ng-model="ws.selected"
-                    ng-change='set_facets()'
-                    > {{ws.properties.NAME}}&nbsp;&nbsp;
+                <h5>About the NAWRS Mapper</h5>
+                <div style="font-size: small;">
+                <p>This application provides metadata and geospatial discovery of Native American Water Rights Settlment documents available from
+                  the University of New Mexico's Digital Repository at
+                  <a href="http://digitalrepository.unm.edu/nawrs/">http://digitalrepository.unm.edu/nawrs/</a>.
+                </p>
+                <p>
+                  To search, enter a keyword or search term in the text box above. Results can be expanded using the
+                  facets provided below. </p>
+                  <p>
+                    Alternatively, searches can be started using just facets to search documents by
+                    geospatial properties including their corresponding watershed, state, or tribal boundaries.
+                  </p>
+                </div>
+                  <hr />
+                </div>
+                <div>
+                  <h4>Facets</h4>
+                  <button ng-click="clearFacets()" class="btn btn-default" style="background-color:rgb(4, 112, 184);color:white;">Remove All Facets</button>
+                  <br /><br />
+                  <label style="font-weight:bold;">
+                    <input type="checkbox" ng-model="watershedChecked">
+                    Display Watershed Facets
                   </label>
-                </form>
-                <br />
-                <label style="font-weight:bold;">
-                  <input type="checkbox" ng-model="stateChecked">
-                  Display State Facets
-                </label>
-                <form ng-show="stateChecked">
-                  <label ng-repeat="st in state_select | orderBy: 'properties.NAME'">
-                    <input
-                    type="checkbox"
-                    name="stateFilter"
-                    value="st.properties.NAME"
-                    ng-model="st.selected"
-                    ng-change='set_facets()'
-                    > {{st.properties.NAME}}&nbsp;&nbsp;
+                  <form ng-show="watershedChecked">
+                    <label ng-repeat="ws in watershed_select | orderBy: 'properties.NAME'">
+                      <input
+                      type="checkbox"
+                      name="watershedFilter"
+                      value="ws.properties.NAME"
+                      ng-model="ws.selected"
+                      ng-change='set_facets()'
+                      > {{ws.properties.NAME}}&nbsp;&nbsp;
+                    </label>
+                  </form>
+                  <br />
+                  <label style="font-weight:bold;">
+                    <input type="checkbox" ng-model="stateChecked">
+                    Display State Facets
                   </label>
-                </form>
-                <br />
-                <label style="font-weight:bold;">
-                  <input type="checkbox" ng-model="tribalBoundaryChecked">
-                  Display Tribal Boundary Facets
-                </label>
-                <form ng-show="tribalBoundaryChecked">
-                  <label ng-repeat="tb in tribal_boundary_select | orderBy: 'properties.NAME'">
-                    <input
-                    type="checkbox"
-                    name="tribalBoundaryFilter"
-                    value="tb.properties.NAME"
-                    ng-model="tb.selected"
-                    ng-change='set_facets()'
-                    > {{tb.properties.NAME}}&nbsp;&nbsp;
+                  <form ng-show="stateChecked">
+                    <label ng-repeat="st in state_select | orderBy: 'properties.NAME'">
+                      <input
+                      type="checkbox"
+                      name="stateFilter"
+                      value="st.properties.NAME"
+                      ng-model="st.selected"
+                      ng-change='set_facets()'
+                      > {{st.properties.NAME}}&nbsp;&nbsp;
+                    </label>
+                  </form>
+                  <br />
+                  <label style="font-weight:bold;">
+                    <input type="checkbox" ng-model="tribalBoundaryChecked">
+                    Display Tribal Boundary Facets
                   </label>
-                </form>
+                  <form ng-show="tribalBoundaryChecked">
+                    <label ng-repeat="tb in tribal_boundary_select | orderBy: 'properties.NAME'">
+                      <input
+                      type="checkbox"
+                      name="tribalBoundaryFilter"
+                      value="tb.properties.NAME"
+                      ng-model="tb.selected"
+                      ng-change='set_facets()'
+                      > {{tb.properties.NAME}}&nbsp;&nbsp;
+                    </label>
+                  </form>
+                </div>
               </div>
-      </div>
-    </select>
-  </div>
-</body>
-</html>
+            </select>
+          </div>
+        </body>
+        </html>
