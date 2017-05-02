@@ -1,0 +1,55 @@
+#layertree li > span {
+	cursor: pointer;
+}
+
+html {
+	height:100%
+
+}
+
+#js-map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 25%;
+}
+
+.pane {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 25%;
+  background: white;
+  border-left: 3px solid rgb(4, 112, 184);
+  box-sizing: border-box;
+  padding: 0 20px;
+}
+
+#logo {
+	width:90%;
+	padding-left:5%;
+	padding-right:5%;
+	padding-top: 5%;
+	padding-bottom:5%
+
+}
+
+.keyword {
+    padding-left: 3%;
+}
+
+.refSearch {
+	padding-bottom: 5%;
+}
+
+
+.basemap {
+	padding-bottom: 5%;
+}
+
+#map_selector li {
+	cursor:pointer;
+	width:150px;
+}

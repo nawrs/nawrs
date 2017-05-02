@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html ng-app="nawrs">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="nawrs/angular/angular.min.js"></script>
+  <script src="nawrs/leaflet/dist/leaflet.js"></script>
+  <script src="nawrs/angular-simple-logger/dist/angular-simple-logger.js"></script>
+  <script src="nawrs/ui-leaflet/dist/ui-leaflet.min.js"></script>
+  <script src="nawrs/elasticsearch/elasticsearch.angular.js"></script>
+  <script src="nawrs/ng-table/bundles/ng-table.min.js"></script>
+  <script src="nawrs/javascripts/app.js"></script>
+  <link rel="stylesheet" href="nawrs/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="nawrs/stylesheets/ol.css" type="text/css">
+  <link rel="stylesheet" href="nawrs/stylesheets/style.css" type="text/css">
+  <link rel="stylesheet" href="nawrs/bootstrap/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="nawrs/stylesheets/ng-table.min.css" type="text/css">
+</head>
+
+<body>
+  <div ng-controller="geoSearch">
+    <leaflet center="centroid" tiles="tiles" layers="layers" event-broadcast="events" style="width: 75%; height: 480px;"></leaflet>
+    <br /><br />
+    <br /><br />
+    <section class="results">
+      <table ng-table="vm.tableParams" class="table" show-filter="false" style="width: 75%;">
+        <tr ng-repeat="doc in docs">
+          <td title="'Title'" filter="{title: 'text'}" sortable="'title'">
+            {{doc.title}}</td>
+            <td title="'URL'" filter="{url: 'text'}" sortable="'url'">
+              <a href="{{doc.identifier}}">{{doc.identifier}}</a></td>
+              <td title="'Type'" filter="{type: 'text'}" sortable="'type'">
+                {{doc.type}}</td>
+              </tr>
+            </table>
+          </section>
+          <section class="ui">
+            <div class="pane">
+              <img id="logo" src="https://raw.githubusercontent.com/nawrs/nawrs-web/master/images/nawrs.png" alt="NAWRS Logo" >
+              <h2>Keyword Search</h2>
+              <section class="searchField">
+                <form ng-submit="search()">
+                  <input type="text" ng-model="searchTerm">
+                  <input type="submit" value="Search">
+                </form>
+              </section>
+              <br />
+              <div>
+                <h4>Select a Baselayer</h4>
+                <p>
+                  <button ng-click="changeTiles('osm')" class="btn btn-default" style="background-color:rgb(4, 112, 184);color:white;">Street</button>
+                  <button ng-click="changeTiles('stamen_ter')" class="btn btn-default" style="background-color:rgb(4, 112, 184);color:white;">Terrain</button>
+                  <button ng-click="changeTiles('esri_world')" class="btn btn-default" style="background-color:rgb(4, 112, 184);color:white;">Satellite</button>
+                </p>
+                <hr />
+              </div>
+              <div>
+                <h5>About the NAWRS Mapper</h5>
+                <div style="font-size: small;">
+                <p>This application provides metadata and geospatial discovery of Native American Water Rights Settlment documents available from
+                  the University of New Mexico's Digital Repository at
+                  <a href="http://digitalrepository.unm.edu/nawrs/">http://digitalrepository.unm.edu/nawrs/</a>.
+                </p>
+                <p>
+                  To search, enter a keyword or search term in the text box above. Results can be expanded using the
+                  facets provided below. </p>
+                  <p>
+                    Alternatively, searches can be started using just facets to search documents by
+                    geospatial properties including their corresponding watershed, state, or tribal boundaries.
+                  </p>
+                </div>
+                  <hr />
+                </div>
+                <div>
+                  <h4>Facets</h4>
+                  <button ng-click="clearFacets()" class="btn btn-default" style="background-color:rgb(4, 112, 184);color:white;">Remove All Facets</button>
+                  <br /><br />
+                  <label style="font-weight:bold;">
+                    <input type="checkbox" ng-model="watershedChecked">
+                    Display Watershed Facets
+                  </label>
+                  <form ng-show="watershedChecked">
+                    <label ng-repeat="ws in watershed_select | orderBy: 'properties.NAME'">
+                      <input
+                      type="checkbox"
+                      name="watershedFilter"
+                      value="ws.properties.NAME"
+                      ng-model="ws.selected"
+                      ng-change='set_facets()'
+                      > {{ws.properties.NAME}}&nbsp;&nbsp;
+                    </label>
+                  </form>
+                  <br />
+                  <label style="font-weight:bold;">
+                    <input type="checkbox" ng-model="stateChecked">
+                    Display State Facets
+                  </label>
+                  <form ng-show="stateChecked">
+                    <label ng-repeat="st in state_select | orderBy: 'properties.NAME'">
+                      <input
+                      type="checkbox"
+                      name="stateFilter"
+                      value="st.properties.NAME"
+                      ng-model="st.selected"
+                      ng-change='set_facets()'
+                      > {{st.properties.NAME}}&nbsp;&nbsp;
+                    </label>
+                  </form>
+                  <br />
+                  <label style="font-weight:bold;">
+                    <input type="checkbox" ng-model="tribalBoundaryChecked">
+                    Display Tribal Boundary Facets
+                  </label>
+                  <form ng-show="tribalBoundaryChecked">
+                    <label ng-repeat="tb in tribal_boundary_select | orderBy: 'properties.NAME'">
+                      <input
+                      type="checkbox"
+                      name="tribalBoundaryFilter"
+                      value="tb.properties.NAME"
+                      ng-model="tb.selected"
+                      ng-change='set_facets()'
+                      > {{tb.properties.NAME}}&nbsp;&nbsp;
+                    </label>
+                  </form>
+                </div>
+              </div>
+            </select>
+          </div>
+        </body>
+        </html>
