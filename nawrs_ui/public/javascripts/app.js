@@ -292,7 +292,8 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
         } else {
           $scope.geo_facets.push(facet.geometry.coordinates[0]);
         }*/
-        $scope.geo_facets.push(facet.geometry.coordinates);
+        last_index = facet.geometry.coordinates.length - 1;
+        $scope.geo_facets.push(facet.geometry.coordinates[last_index]);
         leafletData.getMap().then(function(map){
           var newLayer = L.geoJSON(facet);
           $scope.tribal_boundary_facets.addLayer(newLayer);
