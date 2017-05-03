@@ -369,7 +369,7 @@ Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $l
                   "type": "multipolygon",
                   "coordinates" : outer
                 },
-                "relation": "within"
+                "relation": "intersects"
               }
             }
           }
@@ -408,7 +408,7 @@ Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $l
                   "type": "multipolygon",
                   "coordinates" : outer
                 },
-                "relation": "within"
+                "relation": "intersects"
               }
             }
           }
