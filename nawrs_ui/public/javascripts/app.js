@@ -287,11 +287,12 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
     })
     angular.forEach($scope.tribal_boundary_select, function(facet){
       if (facet.selected){
-        if (facet.geometry.coordinates[0].length == 1){
+        /*if (facet.geometry.coordinates[0].length == 1){
           $scope.geo_facets.push(facet.geometry.coordinates[0][0])
         } else {
           $scope.geo_facets.push(facet.geometry.coordinates[0]);
-        }
+        }*/
+        $scope.geo_facets.push(facet.geometry.coordinates);
         leafletData.getMap().then(function(map){
           var newLayer = L.geoJSON(facet);
           $scope.tribal_boundary_facets.addLayer(newLayer);
