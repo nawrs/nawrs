@@ -5,7 +5,7 @@ FROM node:latest
 WORKDIR ./nawrsapp
 
 # Put all our code inside that directory that lives in the container
-ADD package.json bower.json /nawrsapp/
+ADD ./nawrsapp
 
 RUN apt-get update
 RUN npm install -g bower
