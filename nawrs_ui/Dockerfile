@@ -5,6 +5,7 @@ FROM node:latest
 WORKDIR ./nawrsapp
 
 # Put all our code inside that directory that lives in the container
+# last good
 ADD . /nawrsapp
 
 RUN apt-get update
