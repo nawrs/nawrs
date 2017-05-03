@@ -2,10 +2,10 @@
 FROM node:latest
 
 # Specify from which directory commands will run
-WORKDIR ./nawrsapp
+#WORKDIR ./nawrsapp
 
 # Put all our code inside that directory that lives in the container
-ADD . /nawrsapp
+#ADD . /nawrsapp
 
 RUN apt-get update
 RUN npm install -g bower
