@@ -332,7 +332,7 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
 
 Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $location, $q) {
   var client = esFactory({
-    host: 'compute.karlbenedict.com:8080/es',
+    host: 'compute.karlbenedict.com/es',
     apiVersion: '5.0'
   });
 
