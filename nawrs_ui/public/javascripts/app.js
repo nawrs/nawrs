@@ -287,12 +287,11 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
     })
     angular.forEach($scope.tribal_boundary_select, function(facet){
       if (facet.selected){
-        /*if (facet.geometry.coordinates[0].length == 1){
+        if (facet.geometry.coordinates[0].length == 1){
           $scope.geo_facets.push(facet.geometry.coordinates[0][0])
         } else {
           $scope.geo_facets.push(facet.geometry.coordinates[0]);
-        }*/
-        $scope.geo_facets.push(facet.geometry.coordinates);
+        }
         leafletData.getMap().then(function(map){
           var newLayer = L.geoJSON(facet);
           $scope.tribal_boundary_facets.addLayer(newLayer);
@@ -332,8 +331,11 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
 }]);
 
 Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $location, $q) {
+  var esHostname = location.hostname.concat("/es");
+  console.log(esHostname);
   var client = esFactory({
-    host: 'compute.karlbenedict.com/es',
+    host: esHostname,
+    //host: 'compute.karlbenedict.com/es',
     apiVersion: '5.0'
   });
 
@@ -348,6 +350,7 @@ Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $l
   });
 
   var search = function(term, filter_terms, filter_geo){
+    console.log(filter_geo);
     var deferred = $q.defer();
     var query = {};
     if (filter_geo.length != 0 && filter_terms.length == 0){
@@ -358,6 +361,7 @@ Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $l
         inner.push(filter_geo[c]);
         outer.push(inner);
       }
+      console.log(outer);
       query = {
         "bool" : {
           "must" : {
@@ -368,7 +372,7 @@ Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $l
               "centroid.features.geometry": {
                 "shape": {
                   "type": "multipolygon",
-                  "coordinates" : filter_geo
+                  "coordinates" : outer
                 },
                 "relation": "intersects"
               }
@@ -407,7 +411,7 @@ Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $l
               "centroid.features.geometry": {
                 "shape": {
                   "type": "multipolygon",
-                  "coordinates" : filter_geo
+                  "coordinates" : outer
                 },
                 "relation": "intersects"
               }
