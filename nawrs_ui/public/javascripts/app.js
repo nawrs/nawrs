@@ -134,6 +134,48 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
     $scope.search();
   }
 
+  $scope.show_watersheds = false;
+  $scope.set_watersheds_visible = "Show Watershed Filters"
+
+  $scope.show_ws = function(){
+    if ($scope.show_watersheds == false){
+      $scope.show_watersheds = true;
+      $scope.set_watersheds_visible = "Hide Watershed Filters"
+    } else if ($scope.show_watersheds == true) {
+      $scope.show_watersheds = false;
+      $scope.set_watersheds_visible = "Show Watershed Filters"
+    }
+
+  }
+
+  $scope.show_states = false;
+  $scope.set_states_visible = "Show State Filters"
+
+  $scope.show_st = function(){
+    if ($scope.show_states == false){
+      $scope.show_states = true;
+      $scope.set_states_visible = "Hide State Filters"
+    } else if ($scope.show_states == true) {
+      $scope.show_states = false;
+      $scope.set_states_visible = "Show State Filters"
+    }
+
+  }
+
+  $scope.show_boundaries = false;
+  $scope.set_boundaries_visible = "Show Tribal Boundary Filters"
+
+  $scope.show_bds = function(){
+    if ($scope.show_boundaries == false){
+      $scope.show_boundaries = true;
+      $scope.set_boundaries_visible = "Hide Tribal Boundary Filters"
+    } else if ($scope.show_boundaries == true) {
+      $scope.show_boundaries = false;
+      $scope.set_boundaries_visible = "Show Tribal Boundary Filters"
+    }
+
+  }
+
   // Handle search and facet bindings
   var self = this;
   self.tableParams = new NgTableParams({}, { dataset: $scope.docs});
@@ -265,7 +307,12 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
           $scope.geo_facets.push(facet.geometry.coordinates[0]);
         }
         leafletData.getMap().then(function(map){
-          var newLayer = L.geoJSON(facet);
+          //var newLayer = L.geoJSON(facet);
+          var newLayer =  L.geoJSON(facet, {
+            style: function(feature){
+              return {color: "green"};
+            }
+          });
           $scope.state_facets.addLayer(newLayer);
           $scope.state_facets.addTo(map);
         })
@@ -279,7 +326,11 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
           $scope.geo_facets.push(facet.geometry.coordinates[0]);
         }
         leafletData.getMap().then(function(map){
-          var newLayer = L.geoJSON(facet);
+          var newLayer =  L.geoJSON(facet, {
+            style: function(feature){
+              return {color: "blue"};
+            }
+          });
           $scope.watershed_facets.addLayer(newLayer);
           $scope.watershed_facets.addTo(map);
         })
@@ -293,7 +344,11 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
           $scope.geo_facets.push(facet.geometry.coordinates[0]);
         }
         leafletData.getMap().then(function(map){
-          var newLayer = L.geoJSON(facet);
+          var newLayer =  L.geoJSON(facet, {
+            style: function(feature){
+              return {color: "orange"};
+            }
+          });
           $scope.tribal_boundary_facets.addLayer(newLayer);
           $scope.tribal_boundary_facets.addTo(map);
         })
