@@ -7,7 +7,6 @@
   <script src="nawrs/leaflet/dist/leaflet.js"></script>
   <script src="nawrs/angular-simple-logger/dist/angular-simple-logger.js"></script>
   <script src="nawrs/ui-leaflet/dist/ui-leaflet.min.js"></script>
-  <!--script src="nawrs/elasticsearch/elasticsearch.angular.js"></script-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/elasticsearch/12.1.3/elasticsearch.angular.min.js"></script>
   <script src="nawrs/ng-table/bundles/ng-table.min.js"></script>
   <script src="nawrs/javascripts/app.js"></script>
@@ -73,14 +72,12 @@
                   <hr />
                 </div>
                 <div>
-                  <h4>Facets</h4>
-                  <button ng-click="clearFacets()" class="btn btn-default" style="background-color:rgb(4, 112, 184);color:white;">Remove All Facets</button>
+                  <h4>Filters</h4>
+                  <button ng-click="clearFacets()" class="btn btn-default" style="min-width:250px;background-color:rgb(0, 0, 0);color:white;">Remove All Filters</button>
                   <br /><br />
-                  <label style="font-weight:bold;">
-                    <input type="checkbox" ng-model="watershedChecked">
-                    Display Watershed Facets
-                  </label>
-                  <form ng-show="watershedChecked">
+                  <button ng-click="show_ws()" class="btn btn-default" style="min-width:250px;background-color:rgb(4, 112, 184);color:white;">{{set_watersheds_visible}}</button>
+                  <div ng-show="show_watersheds"><br />
+                  <form>
                     <label ng-repeat="ws in watershed_select | orderBy: 'properties.NAME'">
                       <input
                       type="checkbox"
@@ -91,12 +88,11 @@
                       > {{ws.properties.NAME}}&nbsp;&nbsp;
                     </label>
                   </form>
-                  <br />
-                  <label style="font-weight:bold;">
-                    <input type="checkbox" ng-model="stateChecked">
-                    Display State Facets
-                  </label>
-                  <form ng-show="stateChecked">
+                </div>
+                  <br /><br />
+                  <button ng-click="show_st()" class="btn btn-default" style="min-width:250px;background-color:rgb(0, 128, 0);color:white;">{{set_states_visible}}</button>
+                  <div ng-show="show_states"><br />
+                  <form>
                     <label ng-repeat="st in state_select | orderBy: 'properties.NAME'">
                       <input
                       type="checkbox"
@@ -107,12 +103,11 @@
                       > {{st.properties.NAME}}&nbsp;&nbsp;
                     </label>
                   </form>
-                  <br />
-                  <label style="font-weight:bold;">
-                    <input type="checkbox" ng-model="tribalBoundaryChecked">
-                    Display Tribal Boundary Facets
-                  </label>
-                  <form ng-show="tribalBoundaryChecked">
+                </div>
+                  <br /><br />
+                  <button ng-click="show_bds()" class="btn btn-default" style="min-width:250px;background-color:rgb(255, 140, 0);color:white;">{{set_boundaries_visible}}</button>
+                  <div ng-show="show_boundaries"><br />
+                  <form>
                     <label ng-repeat="tb in tribal_boundary_select | orderBy: 'properties.NAME'">
                       <input
                       type="checkbox"
@@ -123,6 +118,7 @@
                       > {{tb.properties.NAME}}&nbsp;&nbsp;
                     </label>
                   </form>
+                </div>
                 </div>
               </div>
             </select>
