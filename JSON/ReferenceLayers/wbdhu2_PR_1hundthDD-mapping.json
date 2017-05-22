@@ -1,0 +1,178 @@
+{
+    "watersheds": {
+        "mappings": {
+            "geojson": {
+                "properties": {
+                    "crs": {
+                        "properties": {
+                            "properties": {
+                                "properties": {
+                                    "name": {
+                                        "fields": {
+                                            "keyword": {
+                                                "ignore_above": 256,
+                                                "type": "keyword"
+                                            }
+                                        },
+                                        "type": "text"
+                                    }
+                                }
+                            },
+                            "type": {
+                                "fields": {
+                                    "keyword": {
+                                        "ignore_above": 256,
+                                        "type": "keyword"
+                                    }
+                                },
+                                "type": "text"
+                            }
+                        }
+                    },
+                    "features": {
+                        "properties": {
+                            "geometry": {
+                                "properties": {
+                                    "coordinates": {
+                                        "type": "float"
+                                    },
+                                    "type": {
+                                        "fields": {
+                                            "keyword": {
+                                                "ignore_above": 256,
+                                                "type": "keyword"
+                                            }
+                                        },
+                                        "type": "text"
+                                    }
+                                }
+                            },
+                            "properties": {
+                                "properties": {
+                                    "AREAACRES": {
+                                        "type": "float"
+                                    },
+                                    "AREASQKM": {
+                                        "type": "float"
+                                    },
+                                    "GNIS_ID": {
+                                        "type": "long"
+                                    },
+                                    "HUC2": {
+                                        "fields": {
+                                            "keyword": {
+                                                "ignore_above": 256,
+                                                "type": "keyword"
+                                            }
+                                        },
+                                        "type": "text"
+                                    },
+                                    "LOADDATE": {
+                                        "format": "yyyy/MM/dd HH:mm:ss||yyyy/MM/dd||epoch_millis",
+                                        "type": "date"
+                                    },
+                                    "METASOURCE": {
+                                        "fields": {
+                                            "keyword": {
+                                                "ignore_above": 256,
+                                                "type": "keyword"
+                                            }
+                                        },
+                                        "type": "text"
+                                    },
+                                    "MaxSimpTol": {
+                                        "type": "float"
+                                    },
+                                    "MinSimpTol": {
+                                        "type": "float"
+                                    },
+                                    "NAME": {
+                                        "fields": {
+                                            "keyword": {
+                                                "ignore_above": 256,
+                                                "type": "keyword"
+                                            }
+                                        },
+                                        "type": "text"
+                                    },
+                                    "OBJECTID": {
+                                        "type": "long"
+                                    },
+                                    "SOURCEDATA": {
+                                        "fields": {
+                                            "keyword": {
+                                                "ignore_above": 256,
+                                                "type": "keyword"
+                                            }
+                                        },
+                                        "type": "text"
+                                    },
+                                    "SOURCEFEAT": {
+                                        "fields": {
+                                            "keyword": {
+                                                "ignore_above": 256,
+                                                "type": "keyword"
+                                            }
+                                        },
+                                        "type": "text"
+                                    },
+                                    "SOURCEORIG": {
+                                        "fields": {
+                                            "keyword": {
+                                                "ignore_above": 256,
+                                                "type": "keyword"
+                                            }
+                                        },
+                                        "type": "text"
+                                    },
+                                    "STATES": {
+                                        "fields": {
+                                            "keyword": {
+                                                "ignore_above": 256,
+                                                "type": "keyword"
+                                            }
+                                        },
+                                        "type": "text"
+                                    },
+                                    "Shape_Area": {
+                                        "type": "float"
+                                    },
+                                    "Shape_Leng": {
+                                        "type": "float"
+                                    },
+                                    "TNMID": {
+                                        "fields": {
+                                            "keyword": {
+                                                "ignore_above": 256,
+                                                "type": "keyword"
+                                            }
+                                        },
+                                        "type": "text"
+                                    }
+                                }
+                            },
+                            "type": {
+                                "fields": {
+                                    "keyword": {
+                                        "ignore_above": 256,
+                                        "type": "keyword"
+                                    }
+                                },
+                                "type": "text"
+                            }
+                        }
+                    },
+                    "type": {
+                        "fields": {
+                            "keyword": {
+                                "ignore_above": 256,
+                                "type": "keyword"
+                            }
+                        },
+                        "type": "text"
+                    }
+                }
+            }
+        }
+    }
+}
