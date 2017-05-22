@@ -32,20 +32,10 @@
                     "features": {
                         "properties": {
                             "geometry": {
-                                "properties": {
-                                    "coordinates": {
-                                        "type": "float"
-                                    },
-                                    "type": {
-                                        "fields": {
-                                            "keyword": {
-                                                "ignore_above": 256,
-                                                "type": "keyword"
-                                            }
-                                        },
-                                        "type": "text"
-                                    }
-                                }
+                                "type":"geo_shape",
+                                "tree":"geohash",
+                                "precision":"100m",
+                                "strategy":"recursive"
                             },
                             "properties": {
                                 "properties": {
