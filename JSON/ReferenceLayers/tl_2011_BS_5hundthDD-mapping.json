@@ -36,7 +36,6 @@
                                 "tree":"geohash",
                                 "precision":"100m",
                                 "strategy":"recursive"
-                            }
                             },
                             "properties": {
                                 "properties": {
