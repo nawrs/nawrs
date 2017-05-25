@@ -9,7 +9,7 @@
   <script src="nawrs/ui-leaflet/dist/ui-leaflet.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/elasticsearch/12.1.3/elasticsearch.angular.min.js"></script>
   <script src="nawrs/ng-table/bundles/ng-table.min.js"></script>
-  <script src="nawrs/javascripts/app.js"></script>
+  <script src="nawrs/javascripts/app.dev.js"></script>
   <link rel="stylesheet" href="nawrs/leaflet/dist/leaflet.css" />
   <link rel="stylesheet" href="nawrs/stylesheets/ol.css" type="text/css">
   <link rel="stylesheet" href="nawrs/stylesheets/style.css" type="text/css">
@@ -62,16 +62,30 @@
                   <a href="http://digitalrepository.unm.edu/nawrs/">http://digitalrepository.unm.edu/nawrs/</a>.
                 </p>
                 <p>
-                  To search, enter a keyword or search term in the text box above. Results can be expanded using the
+                  To search, enter a keyword or search term in the text box above. Results can be refined using the
                   facets provided below. </p>
-                  <p>
+                  <!--p>
                     Alternatively, searches can be started using just facets to search documents by
                     geospatial properties including their corresponding watershed, state, or tribal boundaries.
-                  </p>
+                  </p-->
                 </div>
                   <hr />
-                </div>
-                <div>
+              </div>
+	      <!--div>
+		<h4>Filters</h4>
+		<form>
+		  <label ng-repeat="ws in wtshd_check | orderBy: 'features.properties.NAME'">
+		    <input
+		       type="radio"
+		       name="watershedFacets"
+		       value="ws.features.properties.NAME"
+		       ng-model="ws.selected"
+		       ng-change='set_facets()'>
+		       {{ws.features.properties.NAME}}&nbsp;&nbsp;
+		  </label>
+		</form>
+	      </div-->
+                <!--div>
                   <h4>Filters</h4>
                   <button ng-click="clearFacets()" class="btn btn-default" style="min-width:250px;background-color:rgb(0, 0, 0);color:white;">Remove All Filters</button>
                   <br /><br />
@@ -120,7 +134,7 @@
                   </form>
                 </div>
                 </div>
-              </div>
+              </div-->
             </select>
           </div>
         </body>

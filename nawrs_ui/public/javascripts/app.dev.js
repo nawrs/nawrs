@@ -62,7 +62,8 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
     }
   })
 
-  // TODO: geojson files below will not be used for faceting, re-purpose as reference layers
+    // TODO: geojson files below will not be used for faceting, re-purpose as reference layers
+    // Begin GeoJSON bindings for beta facets, including show/hide buttons
 
   $http.get('nawrs/data/us_state_PR_1hundthDD.geojson').success(function(data, status){
     leafletData.getMap().then(function(map){
@@ -178,11 +179,11 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
 
   }
 
+    // end GeoJSON bindings for facets
+
   // Handle search and facet bindings
   var self = this;
     self.tableParams = new NgTableParams({}, { dataset: $scope.docs});
-
-    //client.search();
 
   $scope.searchTerm = $location.search().q;
   $scope.docs = [];
@@ -192,16 +193,23 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
   $scope.subject = [];
   $scope.facets = [];
   $scope.geo_facets = [];
-  $scope.feature_set = L.featureGroup();
+    $scope.feature_set = L.featureGroup();
 
-  $scope.search = function(search_type){
+    // refactoring facets
+    // bind geometries returned by search to checkbox (single selection)
+    $scope.state_check = [];
+    $scope.wtshd_check = [];
+    $scope.tblbd_check = [];
+
+    $scope.search = function(search_type){
     $scope.docs = [];
     $scope.facets = [];
     $scope.geo_facets = [];
     $scope.doc_geometry = [];
     $scope.cur_doc_geometry = [];
     $scope.doc_type = [];
-    $scope.subject = [];
+      $scope.subject = [];
+      $scope.wtshd_check = [];
 
     leafletData.getMap().then(function(map){
       $scope.feature_set.clearLayers();
@@ -211,42 +219,25 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
     })
 
       client.search($scope.searchTerm, $scope.facets, $scope.geo_facets).then(function(results){
-	  console.log(results);
+	  //console.log(results.facets.hits.hits);
       var i = 0;
-      for (; i < results[1].length; i++){
-        $scope.docs.push(results[1][i]);
-        $scope.doc_geometry.push(results[1][i].polygon.features[0]);
-      }
-      var ii = 0;
-      $scope.doc_type = results[0].doc_type.buckets;
-      for (; ii < $scope.doc_type.length; ii++){
-        $scope.doc_type[ii].selected = false;
-      }
-      $scope.subject = results[0].subject.buckets;
-      var iii = 0;
-      for (; iii < $scope.subject.length; iii++){
-        $scope.subject[iii].selected = false;
-      }
-      var iv = 0;
-      for (; iv < $scope.doc_geometry.length; iv++){
-        $scope.doc_geometry[iv].selected = false;
-      }
-      var vi = 0;
-      for (; vi < $scope.state_select.length; vi++){
-        $scope.state_select[vi].selected = false;
-      }
+	  for (; i < results.documents.hits.hits.length; i++){
+        $scope.docs.push(results.documents.hits.hits[i]._source);
+        $scope.doc_geometry.push(results.documents.hits.hits[i]._source.polygon.features[0]);
+	  }
+	  var ii = 0;
+	  for (; ii < results.facets.hits.hits.length; ii++){
+	      $scope.wtshd_check.push(results.facets.hits.hits[ii]._source);
+	  }
       var vii = 0;
-      for (; vii < $scope.watershed_select.length; vii++){
-        $scope.watershed_select[vii].selected = false;
+      for (; vii < $scope.wtshd_check.length; vii++){
+          $scope.wtshd_check[vii].selected = false;
       }
-      var viii = 0;
-      for (; viii < $scope.tribal_boundary_select.length; viii++){
-        $scope.tribal_boundary_select[viii].selected = false;
-      }
+	  console.log($scope.wtshd_check);
       leafletData.getMap().then(function(map){
         var v = 0;
         for (; v < $scope.doc_geometry.length; v++) {
-          $scope.doc_geometry[v].selected = true;
+          //$scope.doc_geometry[v].selected = true;
           var newLayer =  L.geoJSON($scope.doc_geometry[v], {
             style: function(feature){
               return {color: "red"};
@@ -415,12 +406,12 @@ Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $l
 	var docIndex = 'nawrs';
 	var docIndexType = 'item';
 	var docSearchString = term;
-	var docReturnFields = ['polygon.features.properties.NAME', 'title', 'identifier', 'type'];
+	var docReturnFields = ['polygon.features', 'title', 'identifier', 'type'];
 	var docGeometryField = 'polygon.features.geometry';
 	// next variable needs to be parameterized
 	var refIndex = 'watersheds';
 	var refIndexType = 'geojson';
-	var refReturnField = ['features.properties.NAME'];
+	var refReturnField = ['features.properties'];
 	var query = {
 		"query_string": {
 		    "query": docSearchString
@@ -474,7 +465,7 @@ Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $l
 	    }
 	}).then(function(result){
 	    //console.log(result);
-	    docs_facets.facet = result;
+	    docs_facets.facets = result;
 	    var iii = 0, hits_in, hits_out = [];
 	    hits_in = (result.hits || {}).hits || [];
 	    for(; iii < hits_in.length; iii++){
