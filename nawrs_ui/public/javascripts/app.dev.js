@@ -192,8 +192,10 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
   $scope.cur_doc_geometry = [];
   $scope.subject = [];
   $scope.facets = [];
-  $scope.geo_facets = [];
+    $scope.geo_facets = {};
+    $scope.geo_facets.watershed = [];
     $scope.feature_set = L.featureGroup();
+
 
     // refactoring facets
     // bind geometries returned by search to checkbox (single selection)
@@ -201,10 +203,21 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
     $scope.wtshd_check = [];
     $scope.tblbd_check = [];
 
-    $scope.search = function(search_type){
+    //$scope.$watch($scope.geo_facets, function(watershed){
+	//console.log($scope.geo_facets.watershed);
+    //})
+
+    $scope.set_wtshd = function(){
+	//console.log($scope.geo_facets.watershed);
+	$scope.set_facets();
+    }
+
+
+    $scope.search = function(){
     $scope.docs = [];
     $scope.facets = [];
-    $scope.geo_facets = [];
+	$scope.geo_facets = {};
+	$scope.geo_facets.watershed = [];
     $scope.doc_geometry = [];
     $scope.cur_doc_geometry = [];
     $scope.doc_type = [];
@@ -218,22 +231,21 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
       $scope.tribal_boundary_facets.clearLayers();
     })
 
-      client.search($scope.searchTerm, $scope.facets, $scope.geo_facets).then(function(results){
-	  //console.log(results.facets.hits.hits);
+      client.search($scope.searchTerm, $scope.geo_facets).then(function(results){
       var i = 0;
 	  for (; i < results.documents.hits.hits.length; i++){
         $scope.docs.push(results.documents.hits.hits[i]._source);
         $scope.doc_geometry.push(results.documents.hits.hits[i]._source.polygon.features[0]);
 	  }
 	  var ii = 0;
+	  console.log(results.facets.hits.hits)
 	  for (; ii < results.facets.hits.hits.length; ii++){
-	      $scope.wtshd_check.push(results.facets.hits.hits[ii]._source);
+	      $scope.wtshd_check.push(results.facets.hits.hits[ii]);
 	  }
       var vii = 0;
       for (; vii < $scope.wtshd_check.length; vii++){
           $scope.wtshd_check[vii].selected = false;
       }
-	  console.log($scope.wtshd_check);
       leafletData.getMap().then(function(map){
         var v = 0;
         for (; v < $scope.doc_geometry.length; v++) {
@@ -260,69 +272,17 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
       $scope.cur_doc_geometry.push($scope.doc_geometry[xx]);
     }
     $scope.facets = [];
-    $scope.geo_facets = [];
-    $scope.doc_geometry = [];
+      $scope.doc_geometry = [];
+      
     leafletData.getMap().then(function(map){
       $scope.feature_set.clearLayers();
       $scope.watershed_facets.clearLayers();
       $scope.state_facets.clearLayers();
       $scope.tribal_boundary_facets.clearLayers();
     })
-    angular.forEach($scope.doc_type, function(facet){
-      if (facet.selected){
-        var f = {
-          "term": {}
-        };
-        f.term.type = facet.key;
-        $scope.facets.push(f);
-      }
-    })
-    angular.forEach($scope.subject, function(facet){
-      if (facet.selected){
-        var f = {
-          "term": {}
-        };
-        f.term.subject = facet.key;
-        $scope.facets.push(f);
-      }
-    })
-    angular.forEach($scope.cur_doc_geometry, function(facet){
-      if (facet.selected){
-        if (facet.geometry.coordinates[0].length == 1){
-          $scope.geo_facets.push(facet.geometry.coordinates[0][0])
-        } else {
-          $scope.geo_facets.push(facet.geometry.coordinates[0]);
-        }
-      }
-    })
-    angular.forEach($scope.state_select, function(facet){
-      if (facet.selected){
-        if (facet.geometry.coordinates[0].length == 1){
-          $scope.geo_facets.push(facet.geometry.coordinates[0][0])
-        } else {
-          $scope.geo_facets.push(facet.geometry.coordinates[0]);
-        }
+      
         leafletData.getMap().then(function(map){
-          //var newLayer = L.geoJSON(facet);
-          var newLayer =  L.geoJSON(facet, {
-            style: function(feature){
-              return {color: "green"};
-            }
-          });
-          $scope.state_facets.addLayer(newLayer);
-          $scope.state_facets.addTo(map);
-        })
-      }
-    })
-    angular.forEach($scope.watershed_select, function(facet){
-      if (facet.selected){
-        if (facet.geometry.coordinates[0].length == 1){
-          $scope.geo_facets.push(facet.geometry.coordinates[0][0])
-        } else {
-          $scope.geo_facets.push(facet.geometry.coordinates[0]);
-        }
-        leafletData.getMap().then(function(map){
-          var newLayer =  L.geoJSON(facet, {
+          var newLayer =  L.geoJSON($scope.geo_facets.watershed.features, {
             style: function(feature){
               return {color: "blue"};
             }
@@ -330,36 +290,16 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
           $scope.watershed_facets.addLayer(newLayer);
           $scope.watershed_facets.addTo(map);
         })
-      }
-    })
-    angular.forEach($scope.tribal_boundary_select, function(facet){
-      if (facet.selected){
-        if (facet.geometry.coordinates[0].length == 1){
-          $scope.geo_facets.push(facet.geometry.coordinates[0][0])
-        } else {
-          $scope.geo_facets.push(facet.geometry.coordinates[0]);
-        }
-        leafletData.getMap().then(function(map){
-          var newLayer =  L.geoJSON(facet, {
-            style: function(feature){
-              return {color: "orange"};
-            }
-          });
-          $scope.tribal_boundary_facets.addLayer(newLayer);
-          $scope.tribal_boundary_facets.addTo(map);
-        })
-      }
-    })
     $scope.facet_search();
   };
 
   $scope.facet_search = function(){
     $scope.docs = [];
-    client.search($scope.searchTerm, $scope.facets, $scope.geo_facets).then(function(results){
+      client.search($scope.searchTerm, $scope.geo_facets).then(function(results){
       var i = 0;
-      for (; i < results[1].length; i++){
-        $scope.docs.push(results[1][i]);
-        $scope.doc_geometry.push(results[1][i].polygon.features[0]);
+	for (; i < results.documents.hits.hits.length; i++){
+	    $scope.docs.push(results.documents.hits.hits[i]._source);
+        $scope.doc_geometry.push(results.documents.hits.hits[i]._source.polygon.features[0]);
       }
       leafletData.getMap().then(function(map){
         var vi = 0;
@@ -400,7 +340,7 @@ Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $l
     }
   });
 
-    var search = function(term){
+    var search = function(term, geo_facets){
 	var docs_facets = {};
 	var deferred = $q.defer();
 	var docIndex = 'nawrs';
@@ -411,12 +351,44 @@ Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $l
 	// next variable needs to be parameterized
 	var refIndex = 'watersheds';
 	var refIndexType = 'geojson';
-	var refReturnField = ['features.properties'];
-	var query = {
+	var refReturnField = ['features'];
+	//var query = {
+		//"query_string": {
+		//    "query": docSearchString
+		//}
+		//}
+	var query = {};
+	if (geo_facets.watershed.length == 0){
+	    query = {
 		"query_string": {
 		    "query": docSearchString
 		}
+	    }
+	} else {
+	    console.log(geo_facets)
+	    query = {
+		"bool": {
+		    "must": [
+			{"match": {
+			    "_all": docSearchString
+			}},
+			{
+			    "geo_shape": {
+				"polygon.features.geometry": {
+				    "indexed_shape": {
+					"id": geo_facets.watershed,
+					"type": "geojson",
+					"index": "watersheds",
+					"path": "features.geometry"
+				    }
+				}
+			    }
+			}
+		    ]
+		}
+	    }
 	}
+	console.log(query)
     client.search({
 	index: docIndex,
 	type: docIndexType,
@@ -452,7 +424,7 @@ Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $l
 	}
 	var spatialQuery = {
 		"bool": {
-		    "should": geoQueryElements
+		    "must": geoQueryElements
 		}
 	}
 	client.search({

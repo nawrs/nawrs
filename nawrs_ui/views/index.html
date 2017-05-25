@@ -71,20 +71,21 @@
                 </div>
                   <hr />
               </div>
-	      <!--div>
+	      <div>
 		<h4>Filters</h4>
 		<form>
 		  <label ng-repeat="ws in wtshd_check | orderBy: 'features.properties.NAME'">
 		    <input
 		       type="radio"
 		       name="watershedFacets"
-		       value="ws.features.properties.NAME"
-		       ng-model="ws.selected"
-		       ng-change='set_facets()'>
-		       {{ws.features.properties.NAME}}&nbsp;&nbsp;
+		       ng-value="ws._id"
+		       ng-model="geo_facets.watershed"
+		       ng-change='set_wtshd()'
+		       >
+		       {{ws._source.features.properties.NAME}}&nbsp;&nbsp;
 		  </label>
 		</form>
-	      </div-->
+	      </div>
                 <!--div>
                   <h4>Filters</h4>
                   <button ng-click="clearFacets()" class="btn btn-default" style="min-width:250px;background-color:rgb(0, 0, 0);color:white;">Remove All Filters</button>
