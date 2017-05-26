@@ -72,17 +72,42 @@
                   <hr />
               </div>
 	      <div>
-		<h4>Filters</h4>
+		<h5>Watersheds</h5>
 		<form>
-		  <label ng-repeat="ws in wtshd_check | orderBy: 'features.properties.NAME'">
+		  <label ng-repeat="ws in wtshd_check | orderBy: '_source.features.properties.NAME'">
 		    <input
 		       type="radio"
 		       name="watershedFacets"
-		       ng-value="ws._id"
+		       ng-value="ws"
 		       ng-model="geo_facets.watershed"
 		       ng-change='set_wtshd()'
 		       >
 		       {{ws._source.features.properties.NAME}}&nbsp;&nbsp;
+		  </label>
+		</form>
+		<h5>States</h5>
+		<form>
+		  <label>
+		    <input ng-repeat="st in state_check | orderBy: '_source.features.properties.NAME'"
+		       type="radio"
+		       name="stateFacets"
+		       ng-value="st"
+		       ng-model="geo_facets.state"
+		       ng-change='set_state()'
+		       >{{st._source.features.properties.NAME}}&nbsp;&nbsp;
+		  </label>
+		</form>
+		<h5>Tribal Boundaries</h5>
+		<form>
+		  <label>
+		    <input ng-repeat="tb in tblbd_check | orderBy: '_source.features.properties.NAME'"
+			   type="radio"
+			   name="tribalBoundaryFacets"
+			   ng-value="tb"
+			   ng-model="geo_facets.tblbd"
+			   ng-change='set_tblbd()'
+		       >
+		    {{tb._source.features.properties.NAME}}&nbsp;&nbsp;
 		  </label>
 		</form>
 	      </div>
