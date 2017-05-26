@@ -58,56 +58,79 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
       }
     },
     layers: {
-      //overlays: {}
+	overlays: {}
     }
   })
+
+
 
     // TODO: geojson files below will not be used for faceting, re-purpose as reference layers
     // Begin GeoJSON bindings for beta facets, including show/hide buttons
 
-  $http.get('nawrs/data/us_state_PR_1hundthDD.geojson').success(function(data, status){
-    leafletData.getMap().then(function(map){
-      var newLayer = L.geoJSON(data, {
-        onEachFeature: function(feature, layer){
-          $scope.state_select.push(layer.feature);
-        }
-      });
-      var i = 0;
-      for (; i < $scope.state_select.length; i++){
-        $scope.state_select[i].selected = false;
-      }
-      $scope.state_ref_layer.addLayer(newLayer);
-    })
+    $http.get('nawrs/data/us_state_PR_1hundthDD.geojson').success(function(data, status){
+	angular.extend($scope.layers.overlays, {
+	    states: {
+		name: "States",
+		type: "geoJSONShape",
+		data: data,
+		layerOptions: {
+		    style: {
+			color: 'green',
+			fillColor: 'green',
+			weight: 1.5,
+			opacity: 0.2,
+			fillOpacity: 0.05
+		    },
+		    onEachFeature: function (feature, layer){
+			layer.bindPopup(feature.properties.NAME);
+		    }
+		}
+	    }
+	})
   })
 
-  $http.get('nawrs/data/wbdhu2_PR_1hundthDD.geojson').success(function(data, status){
-    leafletData.getMap().then(function(map){
-      var newLayer = L.geoJSON(data, {
-        onEachFeature: function(feature, layer){
-          $scope.watershed_select.push(layer.feature);
-        }
-      });
-      var i = 0;
-      for (; i < $scope.watershed_select.length; i++){
-        $scope.watershed_select[i].selected = false;
-      }
-      $scope.watershed_ref_layer.addLayer(newLayer);
-    })
+    $http.get('nawrs/data/wbdhu2_PR_1hundthDD.geojson').success(function(data, status){
+	angular.extend($scope.layers.overlays, {
+	    watersheds: {
+		name: "Watersheds",
+		type: "geoJSONShape",
+		data: data,
+		layerOptions: {
+		    style: {
+			color: 'blue',
+			fillColor: 'blue',
+			weight: 1.5,
+			opacity: 0.2,
+			fillOpacity: 0.05
+		    },
+		    onEachFeature: function (feature, layer){
+			layer.bindPopup(feature.properties.NAME);
+		    }
+		}
+	    }
+	})
   })
 
-  $http.get('nawrs/data/tl_2011_PR_1hundthDD.geojson').success(function(data, status){
-    leafletData.getMap().then(function(map){
-      var newLayer = L.geoJSON(data, {
-        onEachFeature: function(feature, layer){
-          $scope.tribal_boundary_select.push(layer.feature);
-        }
-      });
-      var i = 0;
-      for (; i < $scope.tribal_boundary_select.length; i++){
-        $scope.tribal_boundary_select[i].selected = false;
-      }
-      $scope.tribal_boundary_layer.addLayer(newLayer);
-    })
+    $http.get('nawrs/data/tl_2011_PR_1hundthDD.geojson').success(function(data, status){
+	angular.extend($scope.layers.overlays, {
+	    tblands: {
+		name: "Tribal Lands",
+		type: "geoJSONShape",
+		data: data,
+		layerOptions: {
+		    style: {
+			color: 'orange',
+			fillColor: 'orange',
+			weight: 1.5,
+			opacity: 0.2,
+			fillOpacity: 0.05
+		    },
+		    onEachFeature: function (feature, layer){
+			layer.bindPopup(feature.properties.NAME);
+		    }
+		}
+	    }
+	})
   })
 
   $scope.changeTiles = function(tiles) {
@@ -152,51 +175,9 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
 	$scope.set_facets();
     }
 
-  /*$scope.show_watersheds = false;
-  $scope.set_watersheds_visible = "Show Watershed Filters"
+    // Handle search and facet bindings
 
-  $scope.show_ws = function(){
-    if ($scope.show_watersheds == false){
-      $scope.show_watersheds = true;
-      $scope.set_watersheds_visible = "Hide Watershed Filters"
-    } else if ($scope.show_watersheds == true) {
-      $scope.show_watersheds = false;
-      $scope.set_watersheds_visible = "Show Watershed Filters"
-    }
-
-  }
-
-  $scope.show_states = false;
-  $scope.set_states_visible = "Show State Filters"
-
-  $scope.show_st = function(){
-    if ($scope.show_states == false){
-      $scope.show_states = true;
-      $scope.set_states_visible = "Hide State Filters"
-    } else if ($scope.show_states == true) {
-      $scope.show_states = false;
-      $scope.set_states_visible = "Show State Filters"
-    }
-
-  }
-
-  $scope.show_boundaries = false;
-  $scope.set_boundaries_visible = "Show Tribal Boundary Filters"
-
-  $scope.show_bds = function(){
-    if ($scope.show_boundaries == false){
-      $scope.show_boundaries = true;
-      $scope.set_boundaries_visible = "Hide Tribal Boundary Filters"
-    } else if ($scope.show_boundaries == true) {
-      $scope.show_boundaries = false;
-      $scope.set_boundaries_visible = "Show Tribal Boundary Filters"
-    }
-
-  }*/
-
-    // end GeoJSON bindings for facets
-
-  // Handle search and facet bindings
+    
   var self = this;
     self.tableParams = new NgTableParams({}, { dataset: $scope.docs});
 
@@ -213,6 +194,9 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
     $scope.geo_facets.tblbd = [];
     $scope.feature_set = L.featureGroup();
     $scope.searchTerm = '';
+    $scope.noResult = 'Sorry -- your search returned no results. Please enter a new search term or reset filters.';
+    $scope.show_no_result = false;
+    $scope.waiting = false;
 
 
     // refactoring facets
@@ -262,8 +246,15 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
       $scope.state_facets.clearLayers();
       $scope.tribal_boundary_facets.clearLayers();
     })
+	$scope.waiting = true;
+	$scope.show_no_result = false;
 
 	client.search($scope.searchTerm, $scope.geo_facets).then(function(results){
+	    $scope.waiting = false;
+	    if (results.documents.hits.hits.length == 0){
+		$scope.show_no_result = true;
+	    } else {
+		$scope.show_no_result = false;
       var i = 0;
 	  for (; i < results.documents.hits.hits.length; i++){
               $scope.docs.push(results.documents.hits.hits[i]._source);
@@ -287,10 +278,9 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
       leafletData.getMap().then(function(map){
         var v = 0;
         for (; v < $scope.doc_geometry.length; v++) {
-          //$scope.doc_geometry[v].selected = true;
           var newLayer =  L.geoJSON($scope.doc_geometry[v], {
             style: function(feature){
-              return {color: "red"};
+		return {color: "red"};
             }
           }).bindPopup (function(layer){
             return layer.feature.properties.NAMELSAD;
@@ -300,7 +290,7 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
         $scope.feature_set.addTo(map);
         map.fitBounds($scope.feature_set.getBounds());
       })
-	})
+	}})
   }
 
   $scope.set_facets = function(){
@@ -319,12 +309,10 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
     })
       
       leafletData.getMap().then(function(map){
-	  console.log($scope.geo_facets);
 	  if ($scope.geo_facets.watershed.length != 0){
-	      console.log($scope.geo_facets.watershed);
           var wsFacetLayer =  L.geoJSON($scope.geo_facets.watershed._source.features, {
             style: function(feature){
-              return {color: "blue"};
+		return {color: "blue", fill: false};
             }
           });
           $scope.watershed_facets.addLayer(wsFacetLayer);
@@ -333,7 +321,7 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
 	  if ($scope.geo_facets.state.length != 0){
 	  var stFacetLayer =  L.geoJSON($scope.geo_facets.state._source.features, {
 	      style: function(feature){
-		  return {color: "green"};
+		  return {color: "green", fill: false};
 	      }
 	  });
 	  $scope.state_facets.addLayer(stFacetLayer);
@@ -342,7 +330,7 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
 	  if ($scope.geo_facets.tblbd.length != 0){
 	  var tbFacetLayer =  L.geoJSON($scope.geo_facets.tblbd._source.features, {
 	      style: function(feature){
-		  return {color: "orange"};
+		  return {color: "orange", fill: false};
 	      }
 	  });
 	  $scope.tribal_boundary_facets.addLayer(wsFacetLayer);
@@ -353,8 +341,15 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
   };
 
   $scope.facet_search = function(){
-    $scope.docs = [];
+      $scope.docs = [];
+      $scope.waiting = true;
+      $scope.show_no_result = false;
       client.search($scope.searchTerm, $scope.geo_facets).then(function(results){
+	  $scope.waiting = false;
+	  if (results.documents.hits.hits.length == 0){
+		$scope.show_no_result = true;
+	  } else {
+	      $scope.show_no_result = false;
       var i = 0;
 	for (; i < results.documents.hits.hits.length; i++){
 	    $scope.docs.push(results.documents.hits.hits[i]._source);
@@ -375,7 +370,7 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
         $scope.feature_set.addTo(map);
         map.fitBounds($scope.feature_set.getBounds());
       })
-    })
+	    }})
   }
 
     $scope.search();
@@ -546,7 +541,7 @@ Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $l
 	    query: query
 	}
     }).then(function(result){
-	//console.log(result)
+	console.log(result)
 	docs_facets.documents = result;
 	var docIDs = [];
 	var i = 0;

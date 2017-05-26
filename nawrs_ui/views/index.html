@@ -19,10 +19,19 @@
 
 <body>
   <div ng-controller="geoSearch">
-    <leaflet center="centroid" tiles="tiles" layers="layers" event-broadcast="events" style="width: 75%; height: 480px;"></leaflet>
+    <leaflet center="centroid" tiles="tiles" controls="controls" layers="layers" event-broadcast="events" style="width: 75%; height: 480px;"></leaflet>
     <br /><br />
+    <div ng-show="show_no_result">
+      <p style="padding-left:15%;">{{noResult}}</p>
+    </div>
     <br /><br />
     <section class="results">
+      <div ng-show="waiting" style="font-family:sans-serif;background-color:rgba(255,255,255, 0.8);width:100%;height:20%;padding-left:30%;">
+	<p>Loading content, please wait. <br/><br/>
+	  <img src="http://www.nawrs.net/images/30.gif" />
+	</p>
+	<br />
+      </div>
       <table ng-table="vm.tableParams" class="table" show-filter="false" style="width: 75%;">
         <tr ng-repeat="doc in docs">
           <td title="'Title'" filter="{title: 'text'}" sortable="'title'">
@@ -48,9 +57,9 @@
               <div>
                 <h4>Select a Baselayer</h4>
                 <p>
-                  <button ng-click="changeTiles('osm')" class="btn btn-default" style="background-color:rgb(4, 112, 184);color:white;">Street</button>
-                  <button ng-click="changeTiles('stamen_ter')" class="btn btn-default" style="background-color:rgb(4, 112, 184);color:white;">Terrain</button>
-                  <button ng-click="changeTiles('esri_world')" class="btn btn-default" style="background-color:rgb(4, 112, 184);color:white;">Satellite</button>
+                  <button ng-click="changeTiles('osm')" class="btn btn-sm" style="background-color:rgb(4, 112, 184);color:white;">Street</button>
+                  <button ng-click="changeTiles('stamen_ter')" class="btn btn-sm" style="background-color:rgb(4, 112, 184);color:white;">Terrain</button>
+                  <button ng-click="changeTiles('esri_world')" class="btn btn-sm" style="background-color:rgb(4, 112, 184);color:white;">Satellite</button>
                 </p>
                 <hr />
               </div>
@@ -72,12 +81,12 @@
                   <hr />
               </div>
 	      <div>
-		<button ng-click="resetSearch()" class="btn btn-default" style="min-width:250px;background-color:rgb(4, 112, 184);color:white;">Reset Search</button>
-		<br /><br/>
-		<button ng-click="clearFacets()" class="btn btn-default" style="min-width:250px;background-color:rgb(0, 0, 0);color:white;">Remove All Filters</button>
+		<!--button ng-click="resetSearch()" class="btn btn-sm" style="background-color:rgb(4, 112, 184);color:white;">Reset Search</button>
+		<br /><br/-->
+		<button ng-click="clearFacets()" class="btn btn-sm" style="background-color:rgb(0, 0, 0);color:white;">Remove All Filters</button>
 		<br /><br />
 		<h5>Watersheds</h5>
-		<button ng-click="clearWtshd()" class="btn btn-default btn-sm" style="background-color:rgb(4, 112, 184);color:white;">Clear Selection</button><br />
+		<button ng-click="clearWtshd()" class="btn btn-sm" style="font-size:.7em;background-color:rgb(4, 112, 184);color:white;">Clear Selection</button><br />
 		<form>
 		  <label ng-repeat="ws in wtshd_check | orderBy: '_source.features.properties.NAME'">
 		    <input
@@ -91,7 +100,7 @@
 		  </label>
 		</form>
 		<h5>States</h5>
-		<button ng-click="clearState()" class="btn btn-default btn-sm" style="background-color:rgb(4, 112, 184);color:white;">Clear Selection</button><br />
+		<button ng-click="clearState()" class="btn btn-sm" style="font-size:.7em;background-color:rgb(4, 112, 184);color:white;">Clear Selection</button><br />
 		<form>
 		  <label ng-repeat="st in state_check | orderBy: '_source.features.properties.NAME'">
 		    <input
@@ -105,7 +114,7 @@
 		  </label>
 		</form>
 		<h5>Tribal Boundaries</h5>
-		<button ng-click="clearTblbd()" class="btn btn-default btn-sm" style="background-color:rgb(4, 112, 184);color:white;">Clear Selection</button><br />
+		<button ng-click="clearTblbd()" class="btn btn-sm" style="font-size:.7em;background-color:rgb(4, 112, 184);color:white;">Clear Selection</button><br />
 		<form>
 		  <label ng-repeat="tb in tblbd_check | orderBy: '_source.features.properties.NAME'">
 		    <input
