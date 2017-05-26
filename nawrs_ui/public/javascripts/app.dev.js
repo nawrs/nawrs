@@ -197,6 +197,8 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
     $scope.geo_facets.state = [];
     $scope.geo_facets.tblbd = [];
     $scope.feature_set = L.featureGroup();
+    $scope.searchTerm = '';
+    $scope.noResults = '';
 
 
     // refactoring facets
@@ -242,11 +244,16 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
       $scope.tribal_boundary_facets.clearLayers();
     })
 
-      client.search($scope.searchTerm, $scope.geo_facets).then(function(results){
+	client.search($scope.searchTerm, $scope.geo_facets).then(function(results){
       var i = 0;
 	  for (; i < results.documents.hits.hits.length; i++){
-        $scope.docs.push(results.documents.hits.hits[i]._source);
-        $scope.doc_geometry.push(results.documents.hits.hits[i]._source.polygon.features[0]);
+              $scope.docs.push(results.documents.hits.hits[i]._source);
+	      try {
+		  $scope.doc_geometry.push(results.documents.hits.hits[i]._source.polygon.features[0]);
+	      }
+	      catch(err){
+		  console.log(results.documents.hits.hits[i]);
+	      }
 	  }
 	  var ii = 0;
 	  for (; ii < results.facets.hits.hits.length; ii++){
@@ -274,7 +281,7 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
         $scope.feature_set.addTo(map);
         map.fitBounds($scope.feature_set.getBounds());
       })
-    })
+	})
   }
 
   $scope.set_facets = function(){
@@ -331,7 +338,17 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
 	for (; i < results.documents.hits.hits.length; i++){
 	    $scope.docs.push(results.documents.hits.hits[i]._source);
         $scope.doc_geometry.push(results.documents.hits.hits[i]._source.polygon.features[0]);
-      }
+	}
+	  var ii = 0;
+	  for (; ii < results.facets.hits.hits.length; ii++){
+	      if (results.facets.hits.hits[ii]._index == 'watersheds'){
+		  $scope.wtshd_check.push(results.facets.hits.hits[ii]);
+	      } else if (results.facets.hits.hits[ii]._index == 'usstates'){
+		  $scope.state_check.push(results.facets.hits.hits[ii]);
+	      } else if (results.facets.hits.hits[ii]._index == 'triballands'){
+		  $scope.tblbd_check.push(results.facets.hits.hits[ii]);
+	      }
+	  }
       leafletData.getMap().then(function(map){
         var vi = 0;
         for (; vi < $scope.doc_geometry.length; vi++) {
@@ -349,6 +366,8 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
       })
     })
   }
+
+    $scope.search();
 
 }]);
 
@@ -385,14 +404,71 @@ Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $l
 	var refReturnField = ['features'];
 	var query = {};
 	var geoFacetElements = [];
-	if (geo_facets.watershed.length == 0 && geo_facets.state.length == 0 && geo_facets.tblbd.length ==0){
+	if (geo_facets.watershed.length == 0 && geo_facets.state.length == 0 && geo_facets.tblbd.length ==0 && docSearchString == ''){
+	    query = {
+		"match_all": {}
+	    }
+	}
+	else if ((geo_facets.watershed.length == 0 && geo_facets.state.length == 0 && geo_facets.tblbd.length ==0) && docSearchString != ''){
 	    query = {
 		"query_string": {
 		    "query": docSearchString
 		}
 	    }
+	} else if ((geo_facets.watershed.length != 0 || geo_facets.state.length != 0 || geo_facets.tblbd.length != 0) && docSearchString == ''){
+	  if (geo_facets.watershed.length != 0){
+		var geoFacetElement = {
+		    "geo_shape": {
+			"polygon.features.geometry": {
+			    "indexed_shape": {
+				"id": geo_facets.watershed._id,
+				"type": "geojson",
+				"index": "watersheds",
+				"path": "features.geometry"
+			    }
+			}
+		    }
+		}
+		geoFacetElements.push(geoFacetElement);
+	    }
+	    if (geo_facets.state.length != 0){
+		var geoFacetElement = {
+		    "geo_shape": {
+			"polygon.features.geometry": {
+			    "indexed_shape": {
+				"id": geo_facets.state._id,
+				"type": "geojson",
+				"index": "usstates",
+				"path": "features.geometry"
+			    }
+			}
+		    }
+		}
+		geoFacetElements.push(geoFacetElement);
+	    }
+	    if (geo_facets.tblbd.length != 0){
+		var geoFacetElement = {
+		    "geo_shape": {
+			"features.geometry": {
+			    "indexed_shape": {
+				"id": geo_facets.tblbd._id,
+				"type": "geojson",
+				"index": "triballands",
+				"path": "features.geometry"
+			    }
+			}
+		    }
+		}
+		geoFacetElements.push(geoFacetElement);
+		}
+	    query = {
+		"bool": {
+		    "must": [
+			geoFacetElements
+		    ]
+		}
+	    }  
 	} else {
-	    console.log(geo_facets.watershed._id)
 	    if (geo_facets.watershed.length != 0){
 		var geoFacetElement = {
 		    "geo_shape": {
