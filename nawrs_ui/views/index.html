@@ -63,7 +63,7 @@
                 </p>
                 <p>
                   To search, enter a keyword or search term in the text box above. Results can be refined using the
-                  facets provided below. </p>
+                  filters provided below. </p>
                   <!--p>
                     Alternatively, searches can be started using just facets to search documents by
                     geospatial properties including their corresponding watershed, state, or tribal boundaries.
@@ -72,7 +72,12 @@
                   <hr />
               </div>
 	      <div>
+		<button ng-click="resetSearch()" class="btn btn-default" style="min-width:250px;background-color:rgb(4, 112, 184);color:white;">Reset Search</button>
+		<br /><br/>
+		<button ng-click="clearFacets()" class="btn btn-default" style="min-width:250px;background-color:rgb(0, 0, 0);color:white;">Remove All Filters</button>
+		<br /><br />
 		<h5>Watersheds</h5>
+		<button ng-click="clearWtshd()" class="btn btn-default btn-sm" style="background-color:rgb(4, 112, 184);color:white;">Clear Selection</button><br />
 		<form>
 		  <label ng-repeat="ws in wtshd_check | orderBy: '_source.features.properties.NAME'">
 		    <input
@@ -86,6 +91,7 @@
 		  </label>
 		</form>
 		<h5>States</h5>
+		<button ng-click="clearState()" class="btn btn-default btn-sm" style="background-color:rgb(4, 112, 184);color:white;">Clear Selection</button><br />
 		<form>
 		  <label ng-repeat="st in state_check | orderBy: '_source.features.properties.NAME'">
 		    <input
@@ -98,7 +104,8 @@
 		    {{st._source.features.properties.NAME}}&nbsp;&nbsp;
 		  </label>
 		</form>
-		<!--h5>Tribal Boundaries</h5>
+		<h5>Tribal Boundaries</h5>
+		<button ng-click="clearTblbd()" class="btn btn-default btn-sm" style="background-color:rgb(4, 112, 184);color:white;">Clear Selection</button><br />
 		<form>
 		  <label ng-repeat="tb in tblbd_check | orderBy: '_source.features.properties.NAME'">
 		    <input
@@ -110,58 +117,8 @@
 		       >
 		    {{tb._source.features.properties.NAME}}&nbsp;&nbsp;
 		  </label>
-		</form-->
+		</form>
 	      </div>
-                <!--div>
-                  <h4>Filters</h4>
-                  <button ng-click="clearFacets()" class="btn btn-default" style="min-width:250px;background-color:rgb(0, 0, 0);color:white;">Remove All Filters</button>
-                  <br /><br />
-                  <button ng-click="show_ws()" class="btn btn-default" style="min-width:250px;background-color:rgb(4, 112, 184);color:white;">{{set_watersheds_visible}}</button>
-                  <div ng-show="show_watersheds"><br />
-                  <form>
-                    <label ng-repeat="ws in watershed_select | orderBy: 'properties.NAME'">
-                      <input
-                      type="checkbox"
-                      name="watershedFilter"
-                      value="ws.properties.NAME"
-                      ng-model="ws.selected"
-                      ng-change='set_facets()'
-                      > {{ws.properties.NAME}}&nbsp;&nbsp;
-                    </label>
-                  </form>
-                </div>
-                  <br /><br />
-                  <button ng-click="show_st()" class="btn btn-default" style="min-width:250px;background-color:rgb(0, 128, 0);color:white;">{{set_states_visible}}</button>
-                  <div ng-show="show_states"><br />
-                  <form>
-                    <label ng-repeat="st in state_select | orderBy: 'properties.NAME'">
-                      <input
-                      type="checkbox"
-                      name="stateFilter"
-                      value="st.properties.NAME"
-                      ng-model="st.selected"
-                      ng-change='set_facets()'
-                      > {{st.properties.NAME}}&nbsp;&nbsp;
-                    </label>
-                  </form>
-                </div>
-                  <br /><br />
-                  <button ng-click="show_bds()" class="btn btn-default" style="min-width:250px;background-color:rgb(255, 140, 0);color:white;">{{set_boundaries_visible}}</button>
-                  <div ng-show="show_boundaries"><br />
-                  <form>
-                    <label ng-repeat="tb in tribal_boundary_select | orderBy: 'properties.NAME'">
-                      <input
-                      type="checkbox"
-                      name="tribalBoundaryFilter"
-                      value="tb.properties.NAME"
-                      ng-model="tb.selected"
-                      ng-change='set_facets()'
-                      > {{tb.properties.NAME}}&nbsp;&nbsp;
-                    </label>
-                  </form>
-                </div>
-                </div>
-              </div-->
             </select>
           </div>
         </body>
