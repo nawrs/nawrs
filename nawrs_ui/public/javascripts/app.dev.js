@@ -381,7 +381,7 @@ Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $l
 	var docGeometryField = 'polygon.features.geometry';
 	// next variable needs to be parameterized
 	//var refIndex = 'watersheds';
-	//var refIndexType = 'geojson';
+	var refIndexType = 'geojson';
 	var refReturnField = ['features'];
 	var query = {};
 	var geoFacetElements = [];
