@@ -34,7 +34,7 @@
                             "geometry": {
                                 "type":"geo_shape",
                                 "tree":"geohash",
-                                "precision":"100m",
+                                "precision":"1km",
                                 "strategy":"recursive"
                             },
                             "properties": {
