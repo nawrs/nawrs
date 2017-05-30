@@ -7,6 +7,15 @@ html {
 
 }
 
+form label {
+  display:block;
+}
+
+h5 {
+  background-color: #DDDDDD;
+  padding: 5px;
+}
+
 #js-map {
   position: absolute;
   top: 0;
