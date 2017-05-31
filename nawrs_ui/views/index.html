@@ -19,7 +19,7 @@
 
 <body>
   <div ng-controller="geoSearch">
-    <leaflet center="centroid" tiles="tiles" controls="controls" layers="layers" event-broadcast="events" style="width: 75%; height: 480px;"></leaflet>
+    <leaflet center="centroid" tiles="tiles" controls="controls" layers="layers" legend="legend" event-broadcast="events" style="width: 75%; height: 480px;"></leaflet>
     <br /><br />
     <div ng-show="show_no_result">
       <p style="padding-left:15%;">{{noResult}}</p>
@@ -85,8 +85,7 @@
 		<br /><br/-->
 		<button ng-click="clearFacets()" class="btn btn-sm" style="background-color:rgb(0, 0, 0);color:white;">Remove All Filters</button>
 		<br /><br />
-		<h5>Watersheds</h5>
-		<button ng-click="clearWtshd()" class="btn btn-sm" style="font-size:.7em;background-color:rgb(4, 112, 184);color:white;">Clear Selection</button><br />
+		<h5>Watersheds&nbsp;&nbsp;<button ng-click="clearWtshd()" class="btn btn-sm" style="font-size:.7em;background-color:rgb(4, 112, 184);color:white;">Clear Selection</button></h5>
 		<form>
 		  <label ng-repeat="ws in wtshd_check | orderBy: '_source.features.properties.NAME'">
 		    <input
@@ -99,8 +98,7 @@
 		    {{ws._source.features.properties.NAME}}&nbsp;&nbsp;
 		  </label>
 		</form>
-		<h5>States</h5>
-		<button ng-click="clearState()" class="btn btn-sm" style="font-size:.7em;background-color:rgb(4, 112, 184);color:white;">Clear Selection</button><br />
+		<h5>States&nbsp;&nbsp<button ng-click="clearState()" class="btn btn-sm" style="font-size:.7em;background-color:rgb(4, 112, 184);color:white;">Clear Selection</button></h5>
 		<form>
 		  <label ng-repeat="st in state_check | orderBy: '_source.features.properties.NAME'">
 		    <input
@@ -113,10 +111,9 @@
 		    {{st._source.features.properties.NAME}}&nbsp;&nbsp;
 		  </label>
 		</form>
-		<h5>Tribal Boundaries</h5>
-		<button ng-click="clearTblbd()" class="btn btn-sm" style="font-size:.7em;background-color:rgb(4, 112, 184);color:white;">Clear Selection</button><br />
+		<h5>Tribal Boundaries&nbsp;&nbsp<button ng-click="clearTblbd()" class="btn btn-sm" style="font-size:.7em;background-color:rgb(4, 112, 184);color:white;">Clear Selection</button></h5>
 		<form>
-		  <label ng-repeat="tb in tblbd_check | orderBy: '_source.features.properties.NAME'">
+		  <label ng-repeat="tb in tblbd_check | orderBy: '_source.features.properties.NAMELSAD'">
 		    <input
 			   type="radio"
 			   name="tribalBoundaryFacets"
@@ -124,11 +121,9 @@
 			   ng-model="geo_facets.tblbd"
 			   ng-change='set_tblbd()'
 		       >
-		    {{tb._source.features.properties.NAME}}&nbsp;&nbsp;
+		    {{tb._source.features.properties.NAMELSAD}}&nbsp;&nbsp;
 		  </label>
 		</form>
 	      </div>
-            </select>
-          </div>
         </body>
         </html>

@@ -59,7 +59,12 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
     },
     layers: {
 	overlays: {}
-    }
+    },
+      legend: {
+	  position: "bottomleft",
+	  colors: ["#ff0000", "#8bbd70", "#8986d3", "#efd37f"],
+	  labels: ["Tribal Lands with Associated Documents", "State Boundaries", "Watershed Boundaries", "Tribal Boundaries"]
+      }
   })
 
 
@@ -250,6 +255,7 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
 	$scope.show_no_result = false;
 
 	client.search($scope.searchTerm, $scope.geo_facets).then(function(results){
+	    console.log(results);
 	    $scope.waiting = false;
 	    if (results.documents.hits.hits.length == 0){
 		$scope.show_no_result = true;
@@ -280,7 +286,7 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
         for (; v < $scope.doc_geometry.length; v++) {
           var newLayer =  L.geoJSON($scope.doc_geometry[v], {
             style: function(feature){
-		return {color: "red"};
+		return {color: "red", weight: 1.5, opacity: 0.2};
             }
           }).bindPopup (function(layer){
             return layer.feature.properties.NAMELSAD;
@@ -294,7 +300,7 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
   }
 
   $scope.set_facets = function(){
-    // get all checked and redo search - don't store old
+    // Get all checked and redo search - don't store old
     var xx = 0;
     for (;xx < $scope.doc_geometry.length; xx++){
       $scope.cur_doc_geometry.push($scope.doc_geometry[xx]);
@@ -360,7 +366,7 @@ Nawrs.controller('geoSearch', ['$scope', '$http', '$filter', 'client', 'esFactor
         for (; vi < $scope.doc_geometry.length; vi++) {
           var newLayer =  L.geoJSON($scope.doc_geometry[vi], {
             style: function(feature){
-              return {color: "red"};
+		return {color: "red", weight: 1.5, opacity: 0.2};
             }
           }).bindPopup (function(layer){
             return layer.feature.properties.NAMELSAD;
@@ -531,8 +537,7 @@ Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $l
 		}
 	    }
 	}
-	//console.log(query)
-    client.search({
+	client.search({
 	index: docIndex,
 	type: docIndexType,
 	size: 1000,
@@ -540,9 +545,8 @@ Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $l
 	    _source: docReturnFields,
 	    query: query
 	}
-    }).then(function(result){
-	console.log(result)
-	docs_facets.documents = result;
+	}).then(function(result){
+	    docs_facets.documents = result;
 	var docIDs = [];
 	var i = 0;
 	for(; i < result.hits.hits.length; i++){
@@ -570,8 +574,6 @@ Nawrs.factory('client', ['esFactory', '$location', '$q', function (esFactory, $l
 		    "should": geoQueryElements
 		}
 	}
-	//console.log(geoQueryElements);
-	//console.log(spatialQuery);
 	client.search({
 	    index: ["watersheds", "usstates", "triballands"],
 	    type: refIndexType,
