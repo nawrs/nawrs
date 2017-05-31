@@ -34,11 +34,11 @@
       </div>
       <table ng-table="vm.tableParams" class="table" show-filter="false" style="width: 75%;">
         <tr ng-repeat="doc in docs">
-          <td title="'Title'" filter="{title: 'text'}" sortable="'title'">
+          <td title="'Title'" filter="{title: 'text'}">
             {{doc.title}}</td>
-            <td title="'URL'" filter="{url: 'text'}" sortable="'url'">
+            <td title="'URL'" filter="{url: 'text'}">
               <a href="{{doc.identifier}}">{{doc.identifier}}</a></td>
-              <td title="'Type'" filter="{type: 'text'}" sortable="'type'">
+              <td title="'Type'" filter="{type: 'text'}">
                 {{doc.type}}</td>
               </tr>
             </table>
