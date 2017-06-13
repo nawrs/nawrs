@@ -6,10 +6,10 @@ The document collection is maintained within UNM's institutional repository (IR)
 
 The project has received support from multiple sponsors, including:
 
-The Native American Rights Fund
-The National Congress of American Indians
-The Western States Water Council
-The Bureau of Indian Affairs
-The Rocky Mountain Mineral Foundation, and
-Department of Interior, Bureau of Reclamation
+* The Native American Rights Fund
+* The National Congress of American Indians
+* The Western States Water Council
+* The Bureau of Indian Affairs
+* The Rocky Mountain Mineral Foundation, and
+* Department of Interior, Bureau of Reclamation
 
