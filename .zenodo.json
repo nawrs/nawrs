@@ -1,0 +1,38 @@
+{
+    "description": "<p>Initial public production release</p>", 
+    "license": "other-open", 
+    "title": "Native American Water Rights Settlement Project Mapper (Version 1.0)", 
+    "upload_type": "software", 
+    "publication_date": "2017-06-14", 
+    "creators": [
+        {
+            "affiliation": "University of New Mexico", 
+            "name": "Jonathan Wheeler"
+        },
+        {
+            "affiliation": "University of New Mexico", 
+            "name": "Karl Benedict"
+        },
+        {
+            "affiliation": "University of New Mexico",
+            "name": "Akashia Allen"
+        },
+        {
+            "affiliation": "University of New Mexico",
+            "name": "Darcy Bushnell"
+        }        
+    ], 
+    "access_right": "open", 
+    "related_identifiers": [
+        {
+            "scheme": "url", 
+            "identifier": "https://github.com/nawrs/nawrs/tree/1.0", 
+            "relation": "isSupplementTo"
+        }, 
+        {
+            "scheme": "doi", 
+            "identifier": "10.5281/zenodo.808429", 
+            "relation": "isPartOf"
+        }
+    ]
+}
