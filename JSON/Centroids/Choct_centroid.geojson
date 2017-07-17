@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Choct_centroid",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "AIANNHCE": "5590", "AIANNHNS": "02418833", "GEOID": "5590R", "NAME": "Choctaw", "NAMELSAD": "Choctaw OTSA", "LSAD": "88", "COMPTYP": "R", "CLASSFP": "D6", "AIANNHR": "F", "MTFCC": "G2140", "FUNCSTAT": "S", "ALAND": 27459960550.0, "AWATER": 735531314.0, "INTPTLAT": "+34.5074645", "INTPTLON": "-095.4454226" }, "geometry": { "type": "Point", "coordinates": [ -95.380509342420552, 34.540981554122034 ] } }
+]
+}
