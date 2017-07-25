@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Pauma_centroid",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "AIANNHCE": "2715", "AIANNHNS": "00272896", "GEOID": "2715R", "NAME": "Pauma and Yuima", "NAMELSAD": "Pauma and Yuima Reservation", "LSAD": "86", "COMPTYP": "R", "CLASSFP": "D2", "AIANNHR": "F", "MTFCC": "G2101", "FUNCSTAT": "A", "ALAND": 24251871.0, "AWATER": 0.0, "INTPTLAT": "+33.3632161", "INTPTLON": "-116.9549491" }, "geometry": { "type": "Point", "coordinates": [ -116.954948273255354, 33.363217434708872 ] } }
+]
+}
