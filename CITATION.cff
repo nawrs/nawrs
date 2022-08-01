@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Wheeler"
+  given-names: "Jonathan"
+  orcid: "https://orcid.org/0000-0002-7166-3587"
+- family-names: "Benedict"
+  given-names: "Karl"
+  orcid: "https://orcid.org/0000-0002-9109-2072"
+- family-names: "Allen"
+  given-names: "Akashia"
+- family-names: "Bushnell"
+  given-names: "Darcy"
+title: "Native American Water Rights Settlement Project Mapper (Version 1.0)"
+version: 1.01
+doi: 10.5281/zenodo.808429
+date-released: 2017-06-14
+url: "https://github.com/nawrs/nawrs"
